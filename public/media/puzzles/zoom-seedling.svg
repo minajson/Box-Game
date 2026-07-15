@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="A young seedling sprouting from soil">
+  <defs>
+    <linearGradient id="leafA" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#15803d"/>
+      <stop offset="55%" stop-color="#34d06a"/>
+      <stop offset="100%" stop-color="#86efac"/>
+    </linearGradient>
+    <linearGradient id="leafB" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#166534"/>
+      <stop offset="55%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#a7f3c4"/>
+    </linearGradient>
+    <linearGradient id="soil" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8b5e3c"/>
+      <stop offset="100%" stop-color="#4e3323"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="76%" cy="16%" r="42%">
+      <stop offset="0%" stop-color="#fff3c4" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#fff3c4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="600" fill="#f2fbf5"/>
+  <circle cx="460" cy="110" r="190" fill="url(#sun)"/>
+
+  <!-- stem -->
+  <path d="M300 452V236" stroke="#1f9d4d" stroke-width="17" stroke-linecap="round"/>
+  <path d="M295 452V244" stroke="#4ade80" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- left leaf -->
+  <path d="M298 300c-14-62-78-96-136-84 4 66 62 106 136 84z"
+        fill="url(#leafA)" stroke="#0f6b33" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M298 300c-40-16-78-44-108-70" fill="none" stroke="#0f6b33"
+        stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <g stroke="#0f6b33" stroke-width="3.5" opacity="0.4" stroke-linecap="round">
+    <path d="M256 286l-12-26"/>
+    <path d="M226 272l-10-26"/>
+    <path d="M282 294l-8-30"/>
+  </g>
+
+  <!-- right leaf -->
+  <path d="M302 268c12-66 78-102 138-90-4 70-64 112-138 90z"
+        fill="url(#leafB)" stroke="#0f6b33" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M302 268c42-18 82-46 114-74" fill="none" stroke="#0f6b33"
+        stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <g stroke="#0f6b33" stroke-width="3.5" opacity="0.4" stroke-linecap="round">
+    <path d="M346 250l12-28"/>
+    <path d="M378 234l10-28"/>
+    <path d="M320 260l8-32"/>
+  </g>
+
+  <!-- a third small shoot, just breaking -->
+  <path d="M300 250c-6-26 6-46 26-56" fill="none" stroke="#22c55e"
+        stroke-width="9" stroke-linecap="round"/>
+
+  <!-- soil mound -->
+  <path d="M112 462c40-40 110-62 188-62s148 22 188 62v18H112z"
+        fill="url(#soil)" stroke="#3a2618" stroke-width="6"/>
+  <ellipse cx="300" cy="462" rx="188" ry="26" fill="#5f4029" opacity="0.55"/>
+  <g fill="#3a2618" opacity="0.45">
+    <circle cx="200" cy="452" r="7"/>
+    <circle cx="252" cy="470" r="5"/>
+    <circle cx="356" cy="456" r="6.5"/>
+    <circle cx="404" cy="472" r="5.5"/>
+    <circle cx="160" cy="474" r="5"/>
+    <circle cx="446" cy="464" r="4.5"/>
+  </g>
+  <rect x="112" y="478" width="376" height="20" rx="6" fill="#3a2618"/>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="A single jigsaw puzzle piece">
+  <defs>
+    <linearGradient id="pieceGrad" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="42%" stop-color="#12b45f"/>
+      <stop offset="100%" stop-color="#0a7d40"/>
+    </linearGradient>
+    <linearGradient id="pieceGloss" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="48%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="600" fill="#f4f7fa"/>
+
+  <!-- faint ghosts of the neighbouring pieces -->
+  <g opacity="0.1" stroke="#12233b" stroke-width="5" fill="none">
+    <path d="M120 92h130a26 26 0 0 1 0 52h-130z"/>
+    <path d="M470 240v130a26 26 0 0 1-52 0v-130z"/>
+  </g>
+
+  <ellipse cx="300" cy="512" rx="168" ry="24" fill="#12233b" opacity="0.12"/>
+
+  <g transform="rotate(-8 300 300)">
+    <!-- The classic jigsaw outline: a tab on the right, a blank on the bottom,
+         a tab on top, a blank on the left. -->
+    <path d="
+        M150 150
+        h72
+        a34 34 0 0 1 68 0
+        h72
+        v72
+        a34 34 0 0 0 0 68
+        v72
+        h-72
+        a34 34 0 0 0-68 0
+        h-72
+        v-72
+        a34 34 0 0 1 0-68
+        z"
+      fill="url(#pieceGrad)" stroke="#075c30" stroke-width="9" stroke-linejoin="round"/>
+
+    <path d="
+        M150 150
+        h72
+        a34 34 0 0 1 68 0
+        h72
+        v72
+        a34 34 0 0 0 0 68
+        v72
+        h-72
+        a34 34 0 0 0-68 0
+        h-72
+        v-72
+        a34 34 0 0 1 0-68
+        z"
+      fill="url(#pieceGloss)"/>
+
+    <!-- moulded highlight along the top-left edge -->
+    <path d="M164 232v-68h58" fill="none" stroke="#ffffff" stroke-width="10"
+          stroke-linecap="round" opacity="0.5"/>
+    <!-- cardboard speckle, so the zoomed-in crop has real texture -->
+    <g fill="#ffffff" opacity="0.16">
+      <circle cx="212" cy="206" r="4"/>
+      <circle cx="268" cy="250" r="3"/>
+      <circle cx="330" cy="198" r="3.5"/>
+      <circle cx="356" cy="286" r="4"/>
+      <circle cx="228" cy="318" r="3"/>
+      <circle cx="300" cy="352" r="4.5"/>
+      <circle cx="374" cy="228" r="3"/>
+      <circle cx="196" cy="278" r="3.5"/>
+    </g>
+  </g>
+</svg>

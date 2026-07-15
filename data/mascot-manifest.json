@@ -1,0 +1,66 @@
+[
+  {
+    "gender": "male",
+    "reaction": "correct",
+    "videoFile": "/media/avatars/male/male_correct_01.mp4",
+    "audioFile": "/media/audio/male_correct.wav",
+    "dialogue": "Good job! Well done!",
+    "durationSec": 4
+  },
+  {
+    "gender": "male",
+    "reaction": "correct",
+    "videoFile": "/media/avatars/male/male_correct_02.mp4",
+    "audioFile": "/media/audio/male_correct.wav",
+    "dialogue": "Good job! Well done!",
+    "durationSec": 4
+  },
+  {
+    "gender": "male",
+    "reaction": "wrong",
+    "videoFile": "/media/avatars/male/male_wrong_01.mp4",
+    "audioFile": "/media/audio/male_wrong.wav",
+    "dialogue": "Oh-oh! Please try again next time!",
+    "durationSec": 5
+  },
+  {
+    "gender": "male",
+    "reaction": "wrong",
+    "videoFile": "/media/avatars/male/male_wrong_02.mp4",
+    "audioFile": "/media/audio/male_wrong.wav",
+    "dialogue": "Oh-oh! Please try again next time!",
+    "durationSec": 5
+  },
+  {
+    "gender": "female",
+    "reaction": "correct",
+    "videoFile": "/media/avatars/female/female_correct_01.mp4",
+    "audioFile": "/media/audio/female_correct.wav",
+    "dialogue": "Good job! Well done!",
+    "durationSec": 4
+  },
+  {
+    "gender": "female",
+    "reaction": "correct",
+    "videoFile": "/media/avatars/female/female_correct_02.mp4",
+    "audioFile": "/media/audio/female_correct.wav",
+    "dialogue": "Good job! Well done!",
+    "durationSec": 4
+  },
+  {
+    "gender": "female",
+    "reaction": "wrong",
+    "videoFile": "/media/avatars/female/female_wrong_01.mp4",
+    "audioFile": "/media/audio/female_wrong.wav",
+    "dialogue": "Oh-oh! Please try again next time!",
+    "durationSec": 5
+  },
+  {
+    "gender": "female",
+    "reaction": "wrong",
+    "videoFile": "/media/avatars/female/female_wrong_02.mp4",
+    "audioFile": "/media/audio/female_wrong.wav",
+    "dialogue": "Oh-oh! Please try again next time!",
+    "durationSec": 5
+  }
+]

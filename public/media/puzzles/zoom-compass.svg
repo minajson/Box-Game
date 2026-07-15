@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="A brass compass pointing north">
+  <defs>
+    <linearGradient id="brass" x1="12%" y1="4%" x2="88%" y2="96%">
+      <stop offset="0%" stop-color="#f7dfa1"/>
+      <stop offset="26%" stop-color="#d4a545"/>
+      <stop offset="52%" stop-color="#a97c22"/>
+      <stop offset="74%" stop-color="#e0bb63"/>
+      <stop offset="100%" stop-color="#8a6416"/>
+    </linearGradient>
+    <radialGradient id="face" cx="38%" cy="30%" r="76%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="62%" stop-color="#f4f1e6"/>
+      <stop offset="100%" stop-color="#ddd7c2"/>
+    </radialGradient>
+    <radialGradient id="glassShine" cx="32%" cy="26%" r="46%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="600" fill="#f2f6f9"/>
+
+  <!-- outer brass case -->
+  <circle cx="300" cy="300" r="252" fill="url(#brass)"/>
+  <circle cx="300" cy="300" r="252" fill="none" stroke="#6d4f10" stroke-width="6"/>
+  <circle cx="300" cy="300" r="222" fill="none" stroke="#7d5c14" stroke-width="4" opacity="0.7"/>
+
+  <!-- knurling on the case rim -->
+  <g stroke="#7a5912" stroke-width="4" opacity="0.55">
+    <g id="knurl">
+      <line x1="300" y1="52" x2="300" y2="72"/>
+    </g>
+    <g transform="rotate(15 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(30 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(45 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(60 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(75 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(90 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(105 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(120 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(135 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(150 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(165 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(180 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(195 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(210 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(225 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(240 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(255 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(270 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(285 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(300 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(315 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(330 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+    <g transform="rotate(345 300 300)"><line x1="300" y1="52" x2="300" y2="72"/></g>
+  </g>
+
+  <!-- dial face -->
+  <circle cx="300" cy="300" r="205" fill="url(#face)" stroke="#b99640" stroke-width="5"/>
+
+  <!-- degree ticks -->
+  <g stroke="#4b5563" stroke-linecap="round">
+    <g stroke-width="6">
+      <line x1="300" y1="108" x2="300" y2="140"/>
+      <line x1="492" y1="300" x2="460" y2="300"/>
+      <line x1="300" y1="492" x2="300" y2="460"/>
+      <line x1="108" y1="300" x2="140" y2="300"/>
+    </g>
+    <g stroke-width="3" opacity="0.7">
+      <g transform="rotate(30 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+      <g transform="rotate(60 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+      <g transform="rotate(120 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+      <g transform="rotate(150 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+      <g transform="rotate(210 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+      <g transform="rotate(240 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+      <g transform="rotate(300 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+      <g transform="rotate(330 300 300)"><line x1="300" y1="112" x2="300" y2="134"/></g>
+    </g>
+  </g>
+
+  <!-- cardinal letters -->
+  <g fill="#1f2937" font-family="Georgia, 'Times New Roman', serif" font-weight="700" text-anchor="middle">
+    <text x="300" y="188" font-size="52">N</text>
+    <text x="412" y="318" font-size="44">E</text>
+    <text x="300" y="440" font-size="44">S</text>
+    <text x="188" y="318" font-size="44">W</text>
+  </g>
+
+  <!-- compass rose star -->
+  <g opacity="0.28">
+    <path d="M300 176 L318 300 L300 424 L282 300 Z" fill="#6b7280"/>
+    <path d="M176 300 L300 282 L424 300 L300 318 Z" fill="#9ca3af"/>
+  </g>
+
+  <!-- needle: north half red, south half steel -->
+  <path d="M300 168 L326 300 L300 300 Z" fill="#e0362c"/>
+  <path d="M300 168 L274 300 L300 300 Z" fill="#f2695f"/>
+  <path d="M300 432 L274 300 L300 300 Z" fill="#5b6675"/>
+  <path d="M300 432 L326 300 L300 300 Z" fill="#8794a3"/>
+
+  <!-- pivot -->
+  <circle cx="300" cy="300" r="22" fill="url(#brass)" stroke="#6d4f10" stroke-width="4"/>
+  <circle cx="293" cy="293" r="7" fill="#fff3d2" opacity="0.9"/>
+
+  <!-- glass shine -->
+  <circle cx="300" cy="300" r="205" fill="url(#glassShine)"/>
+</svg>

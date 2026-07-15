@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="An ornate brass key">
+  <defs>
+    <linearGradient id="keyBrass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8e2a6"/>
+      <stop offset="24%" stop-color="#dcae4d"/>
+      <stop offset="50%" stop-color="#b0821f"/>
+      <stop offset="72%" stop-color="#e6c976"/>
+      <stop offset="100%" stop-color="#8a6416"/>
+    </linearGradient>
+    <linearGradient id="keyShine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.14"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="600" fill="#f4f7fa"/>
+  <ellipse cx="300" cy="470" rx="200" ry="26" fill="#12233b" opacity="0.09"/>
+
+  <g transform="rotate(-24 300 300)">
+    <!-- bow (the round handle) -->
+    <circle cx="152" cy="300" r="96" fill="url(#keyBrass)" stroke="#6d4f10" stroke-width="7"/>
+    <circle cx="152" cy="300" r="46" fill="#f4f7fa" stroke="#6d4f10" stroke-width="7"/>
+    <circle cx="152" cy="300" r="96" fill="url(#keyShine)"/>
+
+    <!-- decorative collar -->
+    <rect x="240" y="272" width="26" height="56" rx="6" fill="url(#keyBrass)" stroke="#6d4f10" stroke-width="6"/>
+
+    <!-- shaft -->
+    <rect x="236" y="284" width="252" height="32" rx="10" fill="url(#keyBrass)" stroke="#6d4f10" stroke-width="6"/>
+    <rect x="236" y="288" width="252" height="9" rx="4" fill="#ffe9b0" opacity="0.6"/>
+
+    <!-- bit (the teeth) -->
+    <path d="M392 316h30v52h-30z" fill="url(#keyBrass)" stroke="#6d4f10" stroke-width="6"/>
+    <path d="M440 316h26v78h-26z" fill="url(#keyBrass)" stroke="#6d4f10" stroke-width="6"/>
+    <path d="M462 316h26v40h-26z" fill="url(#keyBrass)" stroke="#6d4f10" stroke-width="6"/>
+
+    <!-- tip -->
+    <circle cx="488" cy="300" r="16" fill="url(#keyBrass)" stroke="#6d4f10" stroke-width="6"/>
+  </g>
+</svg>

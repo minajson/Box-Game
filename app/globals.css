@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  /* Renaissance green is the anchor accent; everything else is a bright,
+     complementary partner colour so the 20 boxes read as one system. */
+  --color-ren-green: #0fa958;
+  --color-ren-green-deep: #0a7d40;
+  --color-ren-green-soft: #e6f7ee;
+
+  --color-ink: #12233b;
+  --color-ink-soft: #5a6c85;
+
+  /* Box palette — bright, modern, cohesive (all mid-tone, same saturation) */
+  --color-box-emerald: #10b981;
+  --color-box-teal: #14b8a6;
+  --color-box-sky: #3b9df7;
+  --color-box-indigo: #6366f1;
+  --color-box-violet: #a855f7;
+  --color-box-pink: #ec4899;
+  --color-box-coral: #f4623a;
+  --color-box-amber: #f59e0b;
+  --color-box-lime: #84cc16;
+  --color-box-rose: #f43f5e;
+
+  --shadow-panel: 0 18px 44px -20px rgb(18 35 59 / 0.28);
+  --shadow-lift: 0 26px 60px -22px rgb(18 35 59 / 0.42);
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  /* Bright, premium, light — never a dark theme. */
+  background:
+    radial-gradient(
+      1100px 620px at 12% -8%,
+      rgb(15 169 88 / 0.1),
+      transparent 62%
+    ),
+    radial-gradient(
+      1000px 580px at 92% 4%,
+      rgb(59 157 247 / 0.12),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #ffffff 0%, #f6faf8 46%, #eef5f1 100%);
+  background-attachment: fixed;
+  color: var(--color-ink);
+  font-family:
+    "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Gentle idle drift for the closed boxes. Delay is set per box inline so the
+   wall breathes out of sync rather than pulsing as one block. */
+@keyframes box-idle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.5deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(0.5deg);
+  }
+}
+
+.box-idle {
+  animation: box-idle 4.2s ease-in-out infinite;
+}
+
+/* Suspense shake, just before the lid blows off. */
+@keyframes box-shake {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  10% {
+    transform: translate(-7px, 2px) rotate(-2deg);
+  }
+  20% {
+    transform: translate(6px, -3px) rotate(2deg);
+  }
+  30% {
+    transform: translate(-8px, -2px) rotate(-2.4deg);
+  }
+  40% {
+    transform: translate(7px, 3px) rotate(2.2deg);
+  }
+  50% {
+    transform: translate(-6px, 2px) rotate(-1.8deg);
+  }
+  60% {
+    transform: translate(8px, -3px) rotate(2.4deg);
+  }
+  70% {
+    transform: translate(-7px, 3px) rotate(-2deg);
+  }
+  80% {
+    transform: translate(6px, -2px) rotate(1.8deg);
+  }
+  90% {
+    transform: translate(-5px, 1px) rotate(-1.2deg);
+  }
+}
+
+.box-shake {
+  animation: box-shake 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Projector-friendly focus states */
+:focus-visible {
+  outline: 4px solid var(--color-ren-green);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+::selection {
+  background: var(--color-ren-green);
+  color: white;
+}
