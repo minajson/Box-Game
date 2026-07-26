@@ -3,19 +3,19 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MysteryBox from "./MysteryBox";
-import EventTag from "./EventTag";
 import SoundControl from "./SoundControl";
-import { TOTAL_BOXES } from "@/data/puzzles";
+import FullscreenControl from "./FullscreenControl";
+import { GameHeaderFull } from "./GameHeader";
 import type { GameSettings } from "@/lib/types";
 
 /**
- * The 50-box wall. Every box shows only its number — the puzzle type inside
+ * The box wall. Every box shows only its number — the puzzle type inside
  * stays a mystery until the lid comes off.
  *
- * Layout: a compact STICKY header (title, subtitle, live counters, event
- * identifier, sound controls) sits above an independently scrolling grid. The
+ * Layout: a compact STICKY header (partner logos, title, subtitle, live
+ * counters, sound controls) sits above an independently scrolling grid. The
  * app itself never scrolls — only the grid does — so on a projector the header
- * is always in view while the facilitator scrolls down to box 50.
+ * is always in view while the facilitator scrolls to the last box.
  *
  * Scroll position is lifted to the parent: when the facilitator opens a box and
  * later returns, the grid is restored to exactly where they left off (and the
@@ -23,6 +23,7 @@ import type { GameSettings } from "@/lib/types";
  * row one.
  */
 export default function BoxWall({
+  boxes,
   openedBoxes,
   correctCount,
   notQuiteCount,
@@ -32,7 +33,10 @@ export default function BoxWall({
   getInitialScroll,
   onScroll,
   onSelect,
+  onShowResults,
 }: {
+  /** The box numbers to render — one per ACTIVE question, already 1..N. */
+  boxes: number[];
   openedBoxes: number[];
   correctCount: number;
   notQuiteCount: number;
@@ -44,9 +48,12 @@ export default function BoxWall({
   getInitialScroll: () => number;
   onScroll: (scrollTop: number) => void;
   onSelect: (boxNumber: number, rect: DOMRect) => void;
+  /** Jump to the results screen — offered once every box has been opened. */
+  onShowResults: () => void;
 }) {
-  const boxes = Array.from({ length: TOTAL_BOXES }, (_, i) => i + 1);
-  const remaining = TOTAL_BOXES - openedBoxes.length;
+  // Every rendered box comes from the active question list, so a box with no
+  // question behind it is impossible by construction.
+  const remaining = boxes.filter((n) => !openedBoxes.includes(n)).length;
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const lastBoxRef = useRef<HTMLDivElement | null>(null);
@@ -100,50 +107,73 @@ export default function BoxWall({
   return (
     <div className="flex h-full flex-col">
       {/* ---------------- Sticky header ---------------- */}
-      <header className="sticky top-0 z-20 shrink-0 border-b border-ink/5 bg-white/80 px-[clamp(1rem,3vw,3rem)] pb-3 pt-3 backdrop-blur-md">
-        <div className="flex items-center justify-between gap-4">
-          <div className="min-w-0">
-            <h1
-              className="truncate font-black leading-none tracking-tight text-ink"
-              style={{ fontSize: "clamp(1.4rem, 3.4vw, 3rem)" }}
-            >
-              CRACK THE{" "}
-              <span className="relative inline-block text-ren-green">
-                BOX
-                <span
-                  aria-hidden
-                  className="absolute -bottom-1 left-0 h-1.5 w-full rounded-full bg-ren-green/25"
-                />
-              </span>
-            </h1>
-            <p
-              className="mt-1 font-bold uppercase tracking-[0.3em] text-ink-soft"
-              style={{ fontSize: "clamp(0.55rem, 1vw, 0.9rem)" }}
-            >
-              Pick it. Open it. Solve it.
-            </p>
-          </div>
-
-          <div className="flex shrink-0 items-center gap-[clamp(0.75rem,1.5vw,1.5rem)]">
+      <GameHeaderFull
+        className="sticky top-0 z-20 shrink-0 border-b border-ink/5 bg-white/80 px-[clamp(1rem,3vw,3rem)] pb-3 pt-3 backdrop-blur-md"
+        title={
+          <h1
+            className="game-header-title font-black leading-none tracking-tight text-ink"
+            style={{ fontSize: "clamp(1.4rem, 3.4vw, 3rem)" }}
+          >
+            CRACK THE{" "}
+            <span className="relative inline-block text-ren-green">
+              BOX
+              <span
+                aria-hidden
+                className="absolute -bottom-1 left-0 h-1.5 w-full rounded-full bg-ren-green/25"
+              />
+            </span>
+          </h1>
+        }
+        subtitle={
+          <p
+            className="mt-1 font-bold uppercase tracking-[0.3em] text-ink-soft"
+            style={{ fontSize: "clamp(0.55rem, 1vw, 0.9rem)" }}
+          >
+            Pick it. Open it. Solve it.
+          </p>
+        }
+        actions={
+          <>
             <SoundControl settings={settings} onSettingsChange={onSettingsChange} />
-            <EventTag />
+            <FullscreenControl />
+          </>
+        }
+        below={
+          /* Live counters — their own row, so a logo can never overlap them. */
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-2 sm:justify-start sm:gap-3">
+            <Stat label="Opened" value={openedBoxes.length} tone="ink" />
+            <Stat label="Correct" value={correctCount} tone="green" />
+            <Stat label="Not Quite" value={notQuiteCount} tone="amber" />
+            <Stat label="Remaining" value={remaining} tone="ink" />
           </div>
-        </div>
-
-        {/* Live counters */}
-        <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3">
-          <Stat label="Opened" value={openedBoxes.length} tone="ink" />
-          <Stat label="Correct" value={correctCount} tone="green" />
-          <Stat label="Not Quite" value={notQuiteCount} tone="amber" />
-          <Stat label="Remaining" value={remaining} tone="ink" />
-        </div>
-      </header>
+        }
+      />
 
       {/* ---------------- Scrolling grid ---------------- */}
       <div
         ref={scrollRef}
         className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-[clamp(1rem,3vw,3rem)] pb-24 pt-5"
       >
+        {boxes.length === 0 ? (
+          <div className="mx-auto mt-16 max-w-[46ch] text-center">
+            <p className="text-5xl" aria-hidden>
+              📦
+            </p>
+            <p className="mt-4 font-black uppercase tracking-tight text-ink" style={{ fontSize: "clamp(1.1rem, 2.4vw, 1.8rem)" }}>
+              No questions are active
+            </p>
+            <p className="mt-2 font-semibold text-ink-soft">
+              Open{" "}
+              <a
+                href="/admin/questions"
+                className="font-black text-ren-green-deep underline underline-offset-2"
+              >
+                Manage questions
+              </a>{" "}
+              and switch some back on to fill the wall.
+            </p>
+          </div>
+        ) : (
         <div className="mx-auto grid w-full max-w-[1680px] grid-cols-2 gap-[clamp(0.75rem,1.8vw,1.9rem)] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {boxes.map((n, i) => (
             <motion.div
@@ -172,12 +202,26 @@ export default function BoxWall({
             </motion.div>
           ))}
         </div>
+        )}
 
-        <p className="mt-6 text-center text-sm font-semibold text-ink-soft">
-          {remaining > 0
-            ? "Pick a box — nobody knows what is inside."
-            : "Every box is open. Time for the results!"}
-        </p>
+        {boxes.length > 0 && (
+          <div className="mt-6 flex flex-col items-center gap-4">
+            <p className="text-center text-sm font-semibold text-ink-soft">
+              {remaining > 0
+                ? "Pick a box — nobody knows what is inside."
+                : "Every box is open. Time for the results!"}
+            </p>
+            {remaining === 0 && (
+              <button
+                type="button"
+                onClick={onShowResults}
+                className="rounded-full border-b-4 border-ren-green-deep bg-ren-green px-8 py-3 text-base font-black uppercase tracking-wide text-white shadow-lift transition hover:brightness-105 active:translate-y-0.5 active:border-b-2"
+              >
+                See results →
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Transient "scroll for more" nudge */}

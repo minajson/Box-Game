@@ -93,9 +93,9 @@ function Scramble({ puzzle, revealed }: CanvasProps) {
               : "border-ink/15 bg-white text-ink"
           }`}
           style={{
-            width: "clamp(3.6rem, 8vw, 8.5rem)",
-            height: "clamp(4.4rem, 10vw, 10.5rem)",
-            fontSize: "clamp(2rem, 5.4vw, 6rem)",
+            width: "clamp(3.6rem, 8vw, 11rem)",
+            height: "clamp(4.4rem, 10vw, 13.5rem)",
+            fontSize: "clamp(2rem, 5.4vw, 7.5rem)",
           }}
         >
           {tile.ch}
@@ -127,9 +127,9 @@ function MissingLetters({ puzzle, revealed }: CanvasProps) {
                 : "border-ink/15 bg-white text-ink"
             }`}
             style={{
-              width: "clamp(2.9rem, 6.6vw, 7.2rem)",
-              height: "clamp(3.8rem, 8.6vw, 9rem)",
-              fontSize: "clamp(1.7rem, 4.6vw, 5rem)",
+              width: "clamp(2.9rem, 6.6vw, 9.4rem)",
+              height: "clamp(3.8rem, 8.6vw, 11.5rem)",
+              fontSize: "clamp(1.7rem, 4.6vw, 6.5rem)",
             }}
           >
             {blank && !revealed ? (
@@ -171,8 +171,8 @@ function Zoom({ puzzle, revealed, zoomLevel = 0 }: CanvasProps) {
       <div
         className="relative overflow-hidden rounded-[2.5rem] border-[10px] border-white bg-white shadow-lift"
         style={{
-          width: "clamp(18rem, 54vh, 46rem)",
-          height: "clamp(18rem, 54vh, 46rem)",
+          width: "clamp(18rem, 54vh, 56rem)",
+          height: "clamp(18rem, 54vh, 56rem)",
           maxWidth: "80vw",
         }}
       >
@@ -237,12 +237,12 @@ function OddOneOut({ puzzle, revealed }: CanvasProps) {
                 src={asset}
                 alt=""
                 className="w-auto object-contain"
-                style={{ height: "clamp(4rem, 12vh, 9rem)" }}
+                style={{ height: "clamp(4rem, 16vh, 14rem)" }}
               />
             ) : (
               <span
                 aria-hidden
-                style={{ fontSize: "clamp(3rem, 7vh, 6rem)" }}
+                style={{ fontSize: "clamp(3rem, 10vh, 9rem)" }}
               >
                 {choice.emoji}
               </span>
@@ -337,6 +337,7 @@ function Rows({ puzzle, revealed }: CanvasProps) {
                 puzzle={puzzle}
                 index={j}
                 combining={combining}
+                revealed={revealed}
               />
             ))}
           </motion.div>
@@ -352,18 +353,18 @@ function Rows({ puzzle, revealed }: CanvasProps) {
  * and a "BUILDING" picture read from the back of the hall.
  */
 const TEXT_SIZES: Record<NonNullable<PuzzlePart["size"]>, string> = {
-  sm: "clamp(1.3rem, 2.8vw, 2.6rem)",
-  md: "clamp(1.9rem, 4vw, 3.8rem)",
-  lg: "clamp(2.6rem, 5.2vw, 5rem)",
-  xl: "clamp(3.2rem, 7vw, 7.5rem)",
+  sm: "clamp(1.3rem, 2.8vw, 3.2rem)",
+  md: "clamp(1.9rem, 4vw, 4.6rem)",
+  lg: "clamp(2.6rem, 5.2vw, 6.2rem)",
+  xl: "clamp(3.2rem, 7vw, 9rem)",
 };
 
 /** Emoji / picture clues are the focus of the screen, so they run large. */
 const EMOJI_SIZES: Record<NonNullable<PuzzlePart["size"]>, string> = {
-  sm: "clamp(2.4rem, 6vw, 5rem)",
-  md: "clamp(3.6rem, 9vw, 8rem)",
-  lg: "clamp(5rem, 13vw, 12rem)",
-  xl: "clamp(6.5rem, 17vw, 16rem)",
+  sm: "clamp(2.4rem, 6vw, 6rem)",
+  md: "clamp(3.6rem, 9vw, 10rem)",
+  lg: "clamp(5rem, 13vw, 15rem)",
+  xl: "clamp(6.5rem, 17vw, 20rem)",
 };
 
 /** The "+" between two clues — deliberately big and balanced. */
@@ -374,11 +375,13 @@ function Part({
   puzzle,
   index,
   combining,
+  revealed,
 }: {
   part: PuzzlePart;
   puzzle: Puzzle;
   index: number;
   combining: boolean;
+  revealed: boolean;
 }) {
   const size = part.size ?? "lg";
   const isEmoji = Boolean(part.emoji) && !part.text;
@@ -438,11 +441,11 @@ function Part({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={asset}
-            alt={part.caption ?? ""}
+            alt={revealed ? (part.caption ?? "") : "Picture clue"}
             className="object-contain"
             style={{
-              width: "clamp(180px, 18vw, 360px)",
-              height: "clamp(180px, 30vh, 380px)",
+              width: "clamp(180px, 18vw, 520px)",
+              height: "clamp(180px, 30vh, 560px)",
               maxWidth: "40vw",
             }}
           />
@@ -469,13 +472,18 @@ function Part({
         )}
       </span>
 
-      {part.caption && (
-        <span
+      {/* The caption names what the picture stands for — i.e. a piece of the
+          answer — so it must stay hidden until the facilitator reveals. */}
+      {part.caption && revealed && (
+        <motion.span
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 * index }}
           className="mt-2 font-black uppercase tracking-[0.14em] text-ink-soft"
-          style={{ fontSize: "clamp(18px, 1.5vw, 30px)" }}
+          style={{ fontSize: "clamp(18px, 1.5vw, 38px)" }}
         >
           {part.caption}
-        </span>
+        </motion.span>
       )}
     </motion.span>
   );

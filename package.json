@@ -2,15 +2,17 @@
   "name": "crack-the-box",
   "version": "1.0.0",
   "private": true,
-  "description": "CRACK THE BOX — Pick it. Open it. Solve it. A Renaissance People Day audience puzzle game.",
+  "description": "CRACK THE BOX — Pick it. Open it. Solve it. A live audience puzzle game.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "sfx": "node scripts/generate-sfx.mjs",
     "music": "node scripts/generate-music.mjs",
-    "check:puzzles": "node scripts/validate-puzzles.mjs"
+    "check:puzzles": "node scripts/validate-puzzles.mjs",
+    "media:manifest": "node scripts/build-media-manifest.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.23.0",

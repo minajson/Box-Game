@@ -18,7 +18,13 @@ import AdminPanel from "@/components/AdminPanel";
 import MascotStage from "@/components/MascotStage";
 import Confetti from "@/components/Confetti";
 
-import { PUZZLES, TOTAL_BOXES, puzzleForBox } from "@/data/puzzles";
+import {
+  bankSignature,
+  loadBank,
+  puzzleForBox,
+  selectActive,
+  useActivePuzzles,
+} from "@/lib/puzzleStore";
 import { pickClip, otherGender, preloadTargets } from "@/lib/mascots";
 import { sound } from "@/lib/sound";
 import {
@@ -42,6 +48,39 @@ import type {
 /** Never emits — we only want the server/client snapshot split. */
 const subscribeNoop = () => () => {};
 
+/**
+ * Restore the saved session, reconciling it against the current question set.
+ *
+ * `openedBoxes` and `outcomes` are keyed by BOX NUMBER, and box numbers are
+ * derived from the admin's question order. If the bank changed since the
+ * session was saved, box 7 is a different question now — so the restored score
+ * would silently attach to questions nobody played. Start clean and say so.
+ *
+ * Runs inside a `useState` initialiser: on the server it sees no localStorage,
+ * returns a fresh session, and the page paints the splash until hydration.
+ */
+function restoreSession(): { state: GameState; wasReset: boolean } {
+  const settings = loadSettings();
+  const saved = loadState();
+  if (!saved) {
+    return { state: initialGameState(settings.startingMascot), wasReset: false };
+  }
+
+  const signature = bankSignature(
+    selectActive(loadBank(), settings.questionsPerSession),
+  );
+  const stale =
+    saved.openedBoxes.length > 0 &&
+    typeof saved.bankSignature === "string" &&
+    saved.bankSignature !== signature;
+
+  if (stale) {
+    clearState();
+    return { state: initialGameState(settings.startingMascot), wasReset: true };
+  }
+  return { state: saved, wasReset: false };
+}
+
 export default function Game() {
   /**
    * True only after hydration. `useSyncExternalStore` gives us the
@@ -59,9 +98,11 @@ export default function Game() {
   // the hydration render) these fall back to defaults, and we paint the splash
   // rather than the game, so the markup still matches.
   const [settings, setSettings] = useState<GameSettings>(loadSettings);
-  const [game, setGame] = useState<GameState>(
-    () => loadState() ?? initialGameState(loadSettings().startingMascot),
-  );
+  const [restored] = useState(restoreSession);
+  const [game, setGame] = useState<GameState>(restored.state);
+
+  /** Shown once when a saved session was dropped because the questions changed. */
+  const [bankChanged, setBankChanged] = useState(restored.wasReset);
 
   const [screen, setScreen] = useState<Screen>("boxes");
   const [currentBox, setCurrentBox] = useState<number | null>(null);
@@ -89,9 +130,20 @@ export default function Game() {
   // from inside its own effect rather than us touching a ref during render.
   const getBoxScroll = useCallback(() => boxScrollTop.current, []);
 
+  // The playable set: active questions only, in admin order, renumbered 1..N.
+  // This is live — an edit in the admin (this tab or another) re-renders here.
+  const activePuzzles = useActivePuzzles(settings.questionsPerSession);
+  const totalBoxes = activePuzzles.length;
+  const boxNumbers = useMemo(
+    () => activePuzzles.map((p) => p.boxNumber),
+    [activePuzzles],
+  );
+
+  // `activePuzzles` is in the dep list on purpose: without it, editing the
+  // question that is currently on screen would never reach the puzzle screen.
   const puzzle = useMemo(
-    () => (currentBox ? puzzleForBox(currentBox) : undefined),
-    [currentBox],
+    () => (currentBox ? puzzleForBox(activePuzzles, currentBox) : undefined),
+    [currentBox, activePuzzles],
   );
 
   // ---- Warm the mascot videos so the reaction never stutters on stage -----
@@ -103,10 +155,13 @@ export default function Game() {
     });
   }, []);
 
+  /** Stamped onto every save so a later reload can spot a changed bank. */
+  const signature = useMemo(() => bankSignature(activePuzzles), [activePuzzles]);
+
   // ---- Persist ----------------------------------------------------------
   useEffect(() => {
-    if (hydrated) saveState(game);
-  }, [game, hydrated]);
+    if (hydrated) saveState({ ...game, bankSignature: signature });
+  }, [game, hydrated, signature]);
 
   useEffect(() => {
     if (hydrated) saveSettings(settings);
@@ -150,7 +205,7 @@ export default function Game() {
   const selectBox = useCallback(
     (boxNumber: number, rect: DOMRect | null) => {
       if (game.openedBoxes.includes(boxNumber)) return; // Opened boxes are dead.
-      if (!puzzleForBox(boxNumber)) return;
+      if (!puzzleForBox(activePuzzles, boxNumber)) return;
       void sound.play("click");
       sound.startMusic();
       setLastBox(boxNumber); // Keep this box in view when we come back.
@@ -162,7 +217,7 @@ export default function Game() {
       setMascotClip(null);
       setScreen("opening");
     },
-    [game.openedBoxes],
+    [game.openedBoxes, activePuzzles],
   );
 
   const openingComplete = useCallback(() => {
@@ -212,6 +267,7 @@ export default function Game() {
             {
               boxNumber: currentBox,
               puzzleId: puzzle.id,
+              puzzleUid: puzzle.uid,
               categoryLabel: puzzle.categoryLabel,
               judgement,
               at: Date.now(),
@@ -258,9 +314,24 @@ export default function Game() {
     setHintShown(false);
     setZoomLevel(0);
 
-    const opened = game.openedBoxes.length;
-    setScreen(opened >= TOTAL_BOXES ? "results" : "boxes");
-  }, [game.openedBoxes.length]);
+    // A presence check, not a count. `openedBoxes` can hold numbers that no
+    // longer exist after the admin shrinks the bank, so `opened >= total`
+    // would either end the game early or never end it at all.
+    const anyLeft = activePuzzles.some(
+      (p) => !game.openedBoxes.includes(p.boxNumber),
+    );
+    setScreen(anyLeft ? "boxes" : "results");
+  }, [game.openedBoxes, activePuzzles]);
+
+  /**
+   * From the wall once every box is open. `nextPuzzle` normally routes to the
+   * results, but a SKIP on the final box returns to the wall instead — without
+   * this the facilitator could see "Time for the results!" with no way there.
+   */
+  const showResults = useCallback(() => {
+    void sound.play("click");
+    setScreen("results");
+  }, []);
 
   const backToBoxes = useCallback(() => {
     void sound.play("click");
@@ -291,6 +362,25 @@ export default function Game() {
     setScreen("boxes");
   }, [settings.startingMascot]);
 
+  /**
+   * Rescue: the question on screen disappeared underneath us.
+   *
+   * If the admin deletes or deactivates the in-flight question (in this tab or
+   * another) while the box is opening, `BoxOpening` unmounts and its completion
+   * timer is cleared with it — which would leave `screen === "opening"` showing
+   * nothing at all, with no keyboard way out. Deriving the screen rather than
+   * correcting it in an effect means there is never a frame in that state.
+   *
+   * `BoxOpening`'s own unmount cleanup stops its sounds and un-ducks the music,
+   * so the audio recovers on its own. The transient puzzle state (stage, hint,
+   * zoom) is re-initialised by `selectBox` on the next pick, so it can be left.
+   */
+  const lostPuzzle =
+    currentBox !== null &&
+    !puzzle &&
+    (screen === "opening" || screen === "puzzle");
+  const activeScreen: Screen = lostPuzzle ? "boxes" : screen;
+
   const previewMascot = useCallback((gender: MascotGender) => {
     setPreviewClip(pickClip(gender, "correct", 0));
   }, []);
@@ -312,22 +402,22 @@ export default function Game() {
 
       switch (e.key.toLowerCase()) {
         case "h":
-          if (screen === "puzzle") showHint();
+          if (activeScreen === "puzzle") showHint();
           break;
         case "r":
-          if (screen === "puzzle") reveal();
+          if (activeScreen === "puzzle") reveal();
           break;
         case "c":
-          if (screen === "puzzle" && stage === "revealed") judge("correct");
+          if (activeScreen === "puzzle" && stage === "revealed") judge("correct");
           break;
         case "x":
-          if (screen === "puzzle" && stage === "revealed") judge("wrong");
+          if (activeScreen === "puzzle" && stage === "revealed") judge("wrong");
           break;
         case "n":
-          if (screen === "puzzle" && stage === "judged") nextPuzzle();
+          if (activeScreen === "puzzle" && stage === "judged") nextPuzzle();
           break;
         case "z":
-          if (screen === "puzzle" && puzzle?.type === "zoom" && stage === "solving") {
+          if (activeScreen === "puzzle" && puzzle?.type === "zoom" && stage === "solving") {
             zoomOut();
           }
           break;
@@ -337,14 +427,14 @@ export default function Game() {
           break;
         case "escape":
           if (previewClip) setPreviewClip(null);
-          else if (screen === "puzzle") backToBoxes();
+          else if (activeScreen === "puzzle") backToBoxes();
           break;
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [
-    screen,
+    activeScreen,
     stage,
     puzzle,
     previewClip,
@@ -371,7 +461,7 @@ export default function Game() {
   return (
     <main className="relative h-dvh overflow-hidden">
       <AnimatePresence mode="wait">
-        {screen === "boxes" && (
+        {activeScreen === "boxes" && (
           <motion.div
             key="boxes"
             className="h-full"
@@ -381,6 +471,7 @@ export default function Game() {
             transition={{ duration: 0.28 }}
           >
             <BoxWall
+              boxes={boxNumbers}
               openedBoxes={game.openedBoxes}
               correctCount={game.correctCount}
               notQuiteCount={game.notQuiteCount}
@@ -390,13 +481,14 @@ export default function Game() {
               getInitialScroll={getBoxScroll}
               onScroll={handleBoxScroll}
               onSelect={selectBox}
+              onShowResults={showResults}
             />
           </motion.div>
         )}
 
-        {screen === "puzzle" && puzzle && (
+        {activeScreen === "puzzle" && puzzle && (
           <motion.div
-            key={`puzzle-${puzzle.id}`}
+            key={`puzzle-${puzzle.uid}`}
             className="h-full"
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -422,7 +514,7 @@ export default function Game() {
           </motion.div>
         )}
 
-        {screen === "results" && (
+        {activeScreen === "results" && (
           <motion.div
             key="results"
             className="h-full"
@@ -431,6 +523,7 @@ export default function Game() {
             exit={{ opacity: 0 }}
           >
             <ResultsScreen
+              totalBoxes={totalBoxes}
               correctCount={game.correctCount}
               notQuiteCount={game.notQuiteCount}
               openedCount={game.openedBoxes.length}
@@ -443,9 +536,9 @@ export default function Game() {
 
       {/* The box-opening sequence sits above whatever screen is behind it */}
       <AnimatePresence>
-        {screen === "opening" && puzzle && (
+        {activeScreen === "opening" && puzzle && (
           <BoxOpening
-            key={`opening-${puzzle.id}`}
+            key={`opening-${puzzle.uid}`}
             puzzle={puzzle}
             originRect={originRect}
             onComplete={openingComplete}
@@ -487,9 +580,11 @@ export default function Game() {
         onOpenChange={setAdminOpen}
         settings={settings}
         onSettingsChange={patchSettings}
-        screen={screen}
+        screen={activeScreen}
         stage={stage}
+        boxes={boxNumbers}
         openedBoxes={game.openedBoxes}
+        activeCount={totalBoxes}
         onOpenBox={(n) => selectBox(n, null)}
         onShowHint={showHint}
         onReveal={reveal}
@@ -502,12 +597,33 @@ export default function Game() {
         onPreviewMascot={previewMascot}
       />
 
-      {/* Safety net: every box has a puzzle. If the data is ever edited into a
-          bad state, say so loudly here rather than on stage. */}
-      {PUZZLES.length < TOTAL_BOXES && (
-        <p className="fixed bottom-4 right-4 z-[80] rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white">
-          Only {PUZZLES.length}/{TOTAL_BOXES} boxes have puzzles.
+      {/* Safety net: there is nothing to play. Say so here rather than on
+          stage in front of the room. */}
+      {totalBoxes === 0 && (
+        <p
+          role="status"
+          className="fixed bottom-4 right-4 z-[80] rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white"
+        >
+          No active questions — enable some in Manage questions.
         </p>
+      )}
+
+      {/* The saved session was dropped because the question set changed. */}
+      {bankChanged && (
+        <div
+          role="status"
+          className="fixed bottom-4 left-1/2 z-[80] flex -translate-x-1/2 items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-xs font-bold text-amber-800 shadow-panel"
+        >
+          The question set changed — the session was reset.
+          <button
+            type="button"
+            onClick={() => setBankChanged(false)}
+            className="rounded-full px-2 py-0.5 text-sm leading-none text-amber-700 hover:bg-amber-100"
+            aria-label="Dismiss"
+          >
+            ×
+          </button>
+        </div>
       )}
     </main>
   );

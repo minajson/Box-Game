@@ -2,21 +2,23 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import EventTag from "./EventTag";
+import { GameHeaderFull } from "./GameHeader";
 import { sound } from "@/lib/sound";
-import { TOTAL_BOXES } from "@/data/puzzles";
 
 /**
  * The closing celebration. Deliberately simple — four numbers and a well done.
  * The music keeps playing underneath; nothing here restarts it.
  */
 export default function ResultsScreen({
+  totalBoxes,
   correctCount,
   notQuiteCount,
   openedCount,
   onPlayAgain,
   onBackToBoxes,
 }: {
+  /** How many boxes this session had — derived from the active questions. */
+  totalBoxes: number;
   correctCount: number;
   notQuiteCount: number;
   openedCount: number;
@@ -27,10 +29,24 @@ export default function ResultsScreen({
     void sound.play("fanfare");
   }, []);
 
-  const remaining = TOTAL_BOXES - openedCount;
+  // Clamped: the question set can shrink after a session started.
+  const remaining = Math.max(0, totalBoxes - openedCount);
 
   return (
-    <div className="flex h-full flex-col items-center justify-center px-[5vw] py-6 text-center">
+    <div className="flex h-full flex-col">
+      <GameHeaderFull
+        className="shrink-0 border-b border-ink/5 px-[clamp(1rem,3vw,3rem)] pb-3 pt-3"
+        title={
+          <p
+            className="game-header-title font-black uppercase leading-none tracking-tight text-ink"
+            style={{ fontSize: "clamp(1.1rem, 2.6vw, 2.2rem)" }}
+          >
+            CRACK THE <span className="text-ren-green">BOX</span>
+          </p>
+        }
+      />
+
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-[5vw] py-6 text-center">
       <motion.div
         initial={{ scale: 0.7, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -60,7 +76,7 @@ export default function ResultsScreen({
         style={{ fontSize: "clamp(0.9rem, 1.7vw, 1.4rem)" }}
       >
         Great thinking, great listening, great teamwork. That is exactly what
-        People Day is about.
+        today was about.
       </motion.p>
 
       <motion.div
@@ -98,9 +114,6 @@ export default function ResultsScreen({
           Play again
         </button>
       </motion.div>
-
-      <div className="mt-10">
-        <EventTag />
       </div>
     </div>
   );

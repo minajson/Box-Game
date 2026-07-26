@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import PuzzleCanvas from "./PuzzleCanvas";
 import MascotStage from "./MascotStage";
 import Timer from "./Timer";
-import EventTag from "./EventTag";
+import { GameHeaderSlim } from "./GameHeader";
 import type { GameSettings, MascotClip, Puzzle, PuzzleStage } from "@/lib/types";
 
 /**
@@ -57,33 +57,36 @@ export default function PuzzleScreen({
 
   return (
     <div className="flex h-full flex-col px-[2.5vw] py-3">
-      {/* ---------------- Top chrome ---------------- */}
-      <header className="flex shrink-0 items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span className="rounded-full bg-ink px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-white">
-            Box {puzzle.boxNumber}
-          </span>
-          <h2
-            className="font-black uppercase leading-none tracking-tight text-ren-green"
-            style={{ fontSize: "clamp(1rem, 2.4vw, 2.1rem)" }}
-          >
-            {puzzle.categoryLabel}
-          </h2>
-        </div>
-
-        <div className="flex items-center gap-4">
-          {settings.timerEnabled && (
+      {/* ---------------- Top chrome ----------------
+          The slim header: the two partner logos sit at the outer edges, sized
+          UNDER the category heading's own height so this band does not grow.
+          The puzzle keeps every pixel it had before. */}
+      <GameHeaderSlim
+        left={
+          <>
+            <span className="shrink-0 rounded-full bg-ink px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-white">
+              Box {puzzle.boxNumber}
+            </span>
+            <h2
+              className="truncate font-black uppercase leading-none tracking-tight text-ren-green"
+              style={{ fontSize: "clamp(1rem, 2.4vw, 2.1rem)" }}
+            >
+              {puzzle.categoryLabel}
+            </h2>
+          </>
+        }
+        right={
+          settings.timerEnabled ? (
             // Keyed so a new puzzle (or a changed duration) remounts a fresh
             // clock rather than syncing props into state.
             <Timer
-              key={`${puzzle.id}-${settings.timerDuration}`}
+              key={`${puzzle.uid ?? puzzle.id}-${settings.timerDuration}`}
               seconds={settings.timerDuration}
               running={stage === "solving"}
             />
-          )}
-          <EventTag />
-        </div>
-      </header>
+          ) : null
+        }
+      />
 
       {/* ---------------- Body: puzzle + mascot column ---------------- */}
       <div className="flex min-h-0 flex-1 gap-[clamp(0.5rem,2vw,2rem)]">
@@ -91,7 +94,7 @@ export default function PuzzleScreen({
         <div className="flex min-w-0 flex-1 flex-col">
           <p
             className="shrink-0 pt-2 text-center font-bold uppercase tracking-[0.2em] text-ink-soft"
-            style={{ fontSize: "clamp(0.62rem, 1.15vw, 0.95rem)" }}
+            style={{ fontSize: "clamp(0.62rem, 1.15vw, 1.2rem)" }}
           >
             {puzzle.prompt}
           </p>
@@ -114,7 +117,7 @@ export default function PuzzleScreen({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   className="rounded-full border border-amber-300/60 bg-amber-50 px-5 py-1.5 text-center font-semibold text-amber-800"
-                  style={{ fontSize: "clamp(0.75rem, 1.5vw, 1.25rem)" }}
+                  style={{ fontSize: "clamp(0.75rem, 1.5vw, 1.6rem)" }}
                 >
                   <span className="mr-2" aria-hidden>
                     💡
@@ -139,7 +142,7 @@ export default function PuzzleScreen({
                 </p>
                 <p
                   className="font-black uppercase leading-[0.95] tracking-tight text-ren-green"
-                  style={{ fontSize: "clamp(1.8rem, 5.4vw, 5.5rem)" }}
+                  style={{ fontSize: "clamp(1.8rem, 5.4vw, 7rem)" }}
                 >
                   {puzzle.answer}
                 </p>
@@ -157,11 +160,14 @@ export default function PuzzleScreen({
 
           {/* ---------------- Facilitator controls ---------------- */}
           <div className="mt-2 flex shrink-0 flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+            {/* Always present, whatever the stage — the facilitator must never
+                be stranded on a puzzle without a way back to the wall. */}
+            <Button variant="ghost" onClick={onBackToBoxes}>
+              ← Boxes
+            </Button>
+
             {stage === "solving" && (
               <>
-                <Button variant="ghost" onClick={onBackToBoxes}>
-                  ← Boxes
-                </Button>
                 <Button
                   variant="secondary"
                   onClick={onShowHint}

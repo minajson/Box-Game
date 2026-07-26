@@ -4,9 +4,19 @@ import type { GameSettings, GameState, MascotGender } from "./types";
  * localStorage persistence. Opened boxes and the running score survive a
  * browser refresh — if the projector laptop reloads mid-event, the facilitator
  * picks up exactly where they left off rather than replaying solved boxes.
+ *
+ * Three keys are used across the app:
+ *   crackthebox.state.v2     — session progress (here)
+ *   crackthebox.settings.v1  — facilitator settings (here)
+ *   crackthebox.puzzles.v1   — the editable question bank (lib/puzzleStore.ts)
+ *
+ * The state key is v2 because openedBoxes / outcomes are keyed by BOX NUMBER,
+ * and box numbers are now derived from the admin's question order. A v1 payload
+ * from before questions were editable cannot be trusted, so it is ignored
+ * rather than half-migrated.
  */
 
-const STATE_KEY = "crackthebox.state.v1";
+const STATE_KEY = "crackthebox.state.v2";
 const SETTINGS_KEY = "crackthebox.settings.v1";
 
 export const DEFAULT_SETTINGS: GameSettings = {
@@ -20,6 +30,10 @@ export const DEFAULT_SETTINGS: GameSettings = {
   mascotEnabled: true,
   confettiEnabled: true,
   startingMascot: "female",
+  // 0 = play every active question, which is the pre-existing behaviour for
+  // anyone who never opens the question admin.
+  questionsPerSession: 0,
+  adminPin: "1234",
 };
 
 export function initialGameState(startingMascot: MascotGender): GameState {
@@ -81,4 +95,19 @@ export function saveSettings(settings: GameSettings): void {
   } catch {
     /* ignore */
   }
+}
+
+/**
+ * Change SOME settings without owning the rest.
+ *
+ * The game page holds the whole settings object in React state and writes all of
+ * it whenever any part changes. The question admin runs in a separate tab and
+ * only cares about one field (the PIN), so it must read-merge-write — passing a
+ * whole object built from its own stale copy would silently revert whatever the
+ * facilitator changed in the game tab meanwhile.
+ */
+export function patchSettings(patch: Partial<GameSettings>): GameSettings {
+  const next = { ...loadSettings(), ...patch };
+  saveSettings(next);
+  return next;
 }

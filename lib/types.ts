@@ -30,6 +30,15 @@ export const PUZZLE_TYPES: PuzzleType[] = [
   "connect",
 ];
 
+/** Admin-facing difficulty banding. Purely for filtering — the game ignores it. */
+export type PuzzleDifficulty = "easy" | "medium" | "hard";
+
+export const PUZZLE_DIFFICULTIES: PuzzleDifficulty[] = [
+  "easy",
+  "medium",
+  "hard",
+];
+
 export type RevealAnimation =
   | "rearrange" // scrambled letters physically travel into place
   | "fade" // hidden words fade into view
@@ -92,6 +101,22 @@ export interface Puzzle {
   imageAssets: string[];
   revealAnimation: RevealAnimation;
 
+  // --- Admin metadata -------------------------------------------------
+  // All optional so the bundled seed in data/puzzles.ts needs no edits; the
+  // store fills them in on load (see lib/puzzleStore.ts → normalize).
+
+  /** Stable identity that survives id / boxNumber renumbering. */
+  uid?: string;
+  /** Excluded from the playable set when false. Defaults to true. */
+  active?: boolean;
+  /** Position in the admin list. This is what assigns box numbers. */
+  order?: number;
+  /** Free-text grouping for admin filtering. Distinct from `categoryLabel`. */
+  category?: string;
+  difficulty?: PuzzleDifficulty;
+  createdAt?: number;
+  updatedAt?: number;
+
   // --- Type-specific payloads (only the relevant one is set) ---
 
   /** scramble: the jumbled letters. Must be a permutation of `answer`. */
@@ -109,6 +134,25 @@ export interface Puzzle {
   /** connect: the three clues. */
   clues?: string[];
 }
+
+/**
+ * A puzzle after the store has normalised it: every admin field is present.
+ * Because it extends `Puzzle`, every existing `puzzle: Puzzle` prop accepts one
+ * unchanged — no component had to be touched to support editing.
+ */
+export type ManagedPuzzle = Puzzle &
+  Required<
+    Pick<
+      Puzzle,
+      | "uid"
+      | "active"
+      | "order"
+      | "category"
+      | "difficulty"
+      | "createdAt"
+      | "updatedAt"
+    >
+  > & { imageAssets: string[] };
 
 // --- Mascots ------------------------------------------------------------
 
@@ -138,6 +182,8 @@ export type Judgement = "correct" | "wrong" | "skipped";
 export interface BoxOutcome {
   boxNumber: number;
   puzzleId: number;
+  /** Stable puzzle identity — survives a renumber, unlike boxNumber/puzzleId. */
+  puzzleUid?: string;
   categoryLabel: string;
   judgement: Judgement;
   at: number;
@@ -151,6 +197,12 @@ export interface GameState {
   /** Alternates so consecutive reactions swap mascot. */
   nextMascot: MascotGender;
   startedAt: number | null;
+  /**
+   * Fingerprint of the question set this session was played against. If the
+   * admin edits the bank mid-session the saved score would silently attach to
+   * different puzzles, so a mismatch starts a clean session instead.
+   */
+  bankSignature?: string;
 }
 
 export interface GameSettings {
@@ -162,4 +214,15 @@ export interface GameSettings {
   mascotEnabled: boolean;
   confettiEnabled: boolean;
   startingMascot: MascotGender;
+  /**
+   * How many active questions to put on the wall. 0 = all of them.
+   * Capped by the number of active questions.
+   */
+  questionsPerSession: number;
+  /**
+   * Gate for /admin/questions. Empty string = no gate. This is obfuscation for
+   * a shared facilitator laptop, NOT security — it lives in localStorage and is
+   * readable in devtools. Replace with real auth before public deployment.
+   */
+  adminPin: string;
 }

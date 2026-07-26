@@ -7,8 +7,8 @@ import { sound } from "@/lib/sound";
 import type { MascotClip } from "@/lib/types";
 
 /**
- * The approved Renaissance People Day mascot, reacting to the facilitator's
- * call. Reused unchanged from the Pop the Balloon Challenge — same character,
+ * The approved mascot, reacting to the facilitator's call.
+ * Reused unchanged from the Pop the Balloon Challenge — same character,
  * face, hair, skin tone, coverall and proportions.
  *
  * Audio & lip-sync contract (per the brief)
@@ -128,7 +128,7 @@ export default function MascotStage({ clip }: { clip: MascotClip }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={MASTER_IMAGES[clip.gender]}
-            alt={`Renaissance People Day ${clip.gender} mascot`}
+            alt={`${clip.gender === "male" ? "Male" : "Female"} mascot`}
             className="max-h-full w-full object-contain drop-shadow-2xl"
             style={{ objectPosition: "center bottom" }}
           />

@@ -1,0 +1,55 @@
+{
+  "note": "Puzzle artwork available to the question admin. Regenerate with `npm run media:manifest` after adding files to public/media/puzzles/ — label, alt and tags are preserved across runs.",
+  "images": [
+    {
+      "path": "/media/puzzles/zoom-compass.svg",
+      "label": "Compass",
+      "alt": "A compass with its needle pointing north",
+      "tags": [
+        "direction",
+        "leadership",
+        "purpose"
+      ]
+    },
+    {
+      "path": "/media/puzzles/zoom-key.svg",
+      "label": "Key",
+      "alt": "A single key",
+      "tags": [
+        "trust",
+        "access",
+        "unlock"
+      ]
+    },
+    {
+      "path": "/media/puzzles/zoom-lightbulb.svg",
+      "label": "Lightbulb",
+      "alt": "A glowing lightbulb",
+      "tags": [
+        "idea",
+        "creativity",
+        "innovation"
+      ]
+    },
+    {
+      "path": "/media/puzzles/zoom-puzzle-piece.svg",
+      "label": "Puzzle piece",
+      "alt": "A single jigsaw puzzle piece",
+      "tags": [
+        "teamwork",
+        "fit",
+        "collaboration"
+      ]
+    },
+    {
+      "path": "/media/puzzles/zoom-seedling.svg",
+      "label": "Seedling",
+      "alt": "A young seedling with two leaves",
+      "tags": [
+        "growth",
+        "potential",
+        "learning"
+      ]
+    }
+  ]
+}

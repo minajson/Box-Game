@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Crack the Box — Renaissance People Day",
+  title: "Crack the Box",
   description:
-    "Pick it. Open it. Solve it. A live audience puzzle game for Renaissance People Day.",
+    "Pick it. Open it. Solve it. A live audience puzzle game.",
 };
 
 export const viewport: Viewport = {

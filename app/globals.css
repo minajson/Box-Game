@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  /* Renaissance green is the anchor accent; everything else is a bright,
-     complementary partner colour so the 20 boxes read as one system. */
+  /* The brand green is the anchor accent; everything else is a bright,
+     complementary partner colour so the boxes read as one system. */
   --color-ren-green: #0fa958;
   --color-ren-green-deep: #0a7d40;
   --color-ren-green-soft: #e6f7ee;
@@ -127,6 +127,18 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Short screens (1366×768 laptops, the tightest common projector) get a
+   slightly smaller header so the box wall keeps its rows. Height-based, so it
+   never fires on a tall tablet that happens to be narrow. */
+@media (max-height: 800px) {
+  .game-header-logo {
+    height: clamp(40px, 4.4vw, 56px) !important;
+  }
+  .game-header-title {
+    font-size: clamp(1.3rem, 3vw, 2.4rem) !important;
   }
 }
 

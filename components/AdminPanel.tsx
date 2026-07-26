@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { GameSettings, MascotGender, PuzzleStage, Screen } from "@/lib/types";
-import { TOTAL_BOXES } from "@/data/puzzles";
 
 /**
  * Facilitator controls. Lives behind a small gear in the corner so it never
@@ -11,7 +10,13 @@ import { TOTAL_BOXES } from "@/data/puzzles";
  *
  * The game-flow buttons here mirror the on-screen controls — handy when the
  * facilitator is driving from a laptop while the audience watches the wall.
+ *
+ * Question editing deliberately does NOT live here: this drawer can be opened
+ * on the projected game, so it only ever links out to /admin/questions.
  */
+
+/** Offered session lengths. Anything above the active count is capped anyway. */
+const SESSION_LENGTHS = [5, 10, 15, 20, 25, 30, 40, 50];
 
 export default function AdminPanel({
   open,
@@ -20,7 +25,9 @@ export default function AdminPanel({
   onSettingsChange,
   screen,
   stage,
+  boxes,
   openedBoxes,
+  activeCount,
   onOpenBox,
   onShowHint,
   onReveal,
@@ -38,7 +45,11 @@ export default function AdminPanel({
   onSettingsChange: (patch: Partial<GameSettings>) => void;
   screen: Screen;
   stage: PuzzleStage;
+  /** Box numbers currently on the wall (one per active question). */
+  boxes: number[];
   openedBoxes: number[];
+  /** How many questions are active — same as boxes.length, named for clarity. */
+  activeCount: number;
   onOpenBox: (n: number) => void;
   onShowHint: () => void;
   onReveal: () => void;
@@ -65,9 +76,7 @@ export default function AdminPanel({
     else void document.documentElement.requestFullscreen().catch(() => {});
   };
 
-  const available = Array.from({ length: TOTAL_BOXES }, (_, i) => i + 1).filter(
-    (n) => !openedBoxes.includes(n),
-  );
+  const available = boxes.filter((n) => !openedBoxes.includes(n));
 
   const onPuzzle = screen === "puzzle";
 
@@ -214,6 +223,55 @@ export default function AdminPanel({
                   )}
                 </Section>
 
+                {/* Questions — a link out, never editing controls in here.
+                    Add / edit / delete lives behind the admin route so it can
+                    never appear on the projected game. */}
+                <Section title="Questions">
+                  <a
+                    href="/admin/questions"
+                    target="_blank"
+                    rel="noopener"
+                    className="block rounded-xl border border-ink/12 bg-white px-3 py-2 text-center text-xs font-bold text-ink transition hover:bg-ink/[0.04]"
+                  >
+                    Manage questions ↗
+                  </a>
+
+                  <label className="mt-3 flex items-center justify-between gap-3 text-xs font-semibold text-ink-soft">
+                    Questions per session
+                    <select
+                      value={settings.questionsPerSession}
+                      onChange={(e) =>
+                        onSettingsChange({
+                          questionsPerSession: Number(e.target.value),
+                        })
+                      }
+                      className="rounded-lg border border-ink/15 bg-white px-2 py-1 text-sm font-bold text-ink"
+                    >
+                      <option value={0}>All active</option>
+                      {SESSION_LENGTHS.map((n) => (
+                        <option key={n} value={n}>
+                          {n}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <p className="mt-1.5 text-xs text-ink-soft">
+                    {activeCount} question{activeCount === 1 ? "" : "s"} active.
+                  </p>
+
+                  {settings.questionsPerSession > activeCount && (
+                    <p
+                      role="status"
+                      className="mt-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700"
+                    >
+                      Session length is {settings.questionsPerSession} but only{" "}
+                      {activeCount} question{activeCount === 1 ? " is" : "s are"}{" "}
+                      active — the wall will show {activeCount}.
+                    </p>
+                  )}
+                </Section>
+
                 {/* Toggles */}
                 <Section title="Settings">
                   <Toggle
@@ -320,7 +378,7 @@ export default function AdminPanel({
                     </Action>
                   )}
                   <p className="mt-1.5 text-xs text-ink-soft">
-                    Closes all 20 boxes and clears the score.
+                    Closes every box and clears the score.
                   </p>
                 </Section>
 

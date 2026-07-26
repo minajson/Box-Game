@@ -2,8 +2,8 @@ import manifest from "@/data/mascot-manifest.json";
 import type { MascotClip, MascotGender, MascotReaction } from "./types";
 
 /**
- * The approved Renaissance People Day mascots, reused unchanged from the
- * Pop the Balloon Challenge. Same characters, same coveralls, same voices.
+ * The approved mascots, reused unchanged from the Pop the Balloon Challenge.
+ * Same characters, same coveralls, same voices.
  *
  * The ElevenLabs recordings in /media/audio are the source of truth for what
  * the mascot says. The MP4s are played MUTED and the recording is played

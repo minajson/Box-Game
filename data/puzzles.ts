@@ -1,7 +1,16 @@
 import type { Puzzle } from "@/lib/types";
 
 /**
- * The 50 CRACK THE BOX puzzles — one per box, no repeats within a game.
+ * The bundled CRACK THE BOX question bank — the SEED, 50 puzzles.
+ *
+ * This file is the starting point, not the live set. The playable questions
+ * come from `lib/puzzleStore.ts`, which loads the admin's saved bank from
+ * localStorage and falls back to this array when there isn't one. Add, edit,
+ * delete and reorder questions at the `/admin/questions` route, not here.
+ *
+ * Box numbers are assigned at runtime: the store takes the ACTIVE questions in
+ * admin order and numbers them 1..N, so `boxNumber` below is only a seed
+ * ordering hint.
  *
  * Distribution across the nine supported types (Wild Card was removed):
  *   scramble 7 · rebus 6 · picture-word 6 · picture-combo 6 · emoji 5
@@ -12,7 +21,7 @@ import type { Puzzle } from "@/lib/types";
  *
  * Editing guide
  * -------------
- * - `boxNumber` maps a puzzle to a box (1–50). Keep them unique.
+ * - `boxNumber` orders the seed. Keep them unique.
  * - `answer` is what the facilitator reveals; keep it UPPERCASE and short.
  * - Image-based puzzles list their files in `imageAssets`; components read
  *   images through `assetIndex`, so no path is ever hard-coded in the UI.
@@ -35,7 +44,7 @@ export const PUZZLES: Puzzle[] = [
     prompt: "Unscramble this word",
     scrambledValue: "WROGHT",
     answer: "GROWTH",
-    hint: "What People Day is all about.",
+    hint: "The whole point of stepping outside your comfort zone.",
     insight: "Nobody ever grew inside their comfort zone.",
     imageAssets: [],
     revealAnimation: "rearrange",
@@ -877,8 +886,6 @@ export const PUZZLES: Puzzle[] = [
   },
 ];
 
-export const TOTAL_BOXES = 50;
-
-export function puzzleForBox(boxNumber: number): Puzzle | undefined {
-  return PUZZLES.find((p) => p.boxNumber === boxNumber);
-}
+// ---- END OF PUZZLES ----
+// scripts/validate-puzzles.mjs reads the array above by evaluating everything
+// before this sentinel. Keep it here, directly after the closing bracket.
