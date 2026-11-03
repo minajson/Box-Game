@@ -8,7 +8,7 @@ import type { GameSettings, GameState, MascotGender } from "./types";
  * Three keys are used across the app:
  *   crackthebox.state.v2     — session progress (here)
  *   crackthebox.settings.v1  — facilitator settings (here)
- *   crackthebox.puzzles.v2   — the editable question bank (lib/puzzleStore.ts)
+ *   crackthebox.puzzles.v4   — the editable question bank (lib/puzzleStore.ts)
  *
  * The state key is v2 because openedBoxes / outcomes are keyed by BOX NUMBER,
  * and box numbers are now derived from the admin's question order. A v1 payload

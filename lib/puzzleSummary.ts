@@ -61,6 +61,12 @@ export function shortPreview(p: ManagedPuzzle): string {
       return clip((p.clues ?? []).join(" · ") || p.answer);
     case "myth-fact":
       return clip(p.clues?.[0] || p.answer);
+    case "clickable":
+      return clip(
+        p.interaction === "hotspot"
+          ? (p.hotspots ?? []).map((h) => h.label).join(" · ") || p.answer
+          : (p.options ?? []).map((o) => o.label).join(" · ") || p.answer,
+      );
     case "odd-one-out":
       return clip((p.choices ?? []).map((c) => c.label).join(" · ") || p.answer);
     case "zoom":
@@ -90,6 +96,9 @@ export function searchBlob(p: ManagedPuzzle): string {
     p.maskedValue,
     ...(p.clues ?? []),
     ...(p.choices ?? []).map((c) => c.label),
+    p.scenario,
+    ...(p.options ?? []).map((o) => o.label),
+    ...(p.hotspots ?? []).map((h) => h.label),
     rowText(p),
     ...p.imageAssets,
   ]

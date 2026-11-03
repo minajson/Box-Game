@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Regenerate data/media-manifest.json from the files in public/media/puzzles/.
+ * Regenerate data/media-manifest.json from the files in public/media/puzzles/
+ * and its subfolders (e.g. security/).
  *
  * The manifest is what the admin's media picker offers, and it also tells the
  * question validator which image paths exist — a static export has no way to
@@ -15,7 +16,7 @@
  */
 
 import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join, dirname, extname, basename } from "node:path";
+import { join, dirname, extname, basename, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -41,7 +42,9 @@ const previous = existsSync(manifestPath)
   : { images: [] };
 const byPath = new Map((previous.images ?? []).map((img) => [img.path, img]));
 
-const files = readdirSync(mediaDir)
+// Paths relative to mediaDir, subfolders included, always with "/" separators.
+const files = readdirSync(mediaDir, { recursive: true })
+  .map((f) => String(f).split(sep).join("/"))
   .filter((f) => IMAGE_EXT.has(extname(f).toLowerCase()))
   .sort();
 

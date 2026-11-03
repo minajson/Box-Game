@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import PuzzleCanvas, { MythFactExplanation } from "@/components/PuzzleCanvas";
-import type { ManagedPuzzle } from "@/lib/types";
+import ClickableCanvas, { ClickableExplanation } from "@/components/ClickableCanvas";
+import { EMPTY_RESPONSE } from "@/lib/clickable";
+import type { ClickResponse, ManagedPuzzle } from "@/lib/types";
 import type { ValidationResult } from "@/lib/puzzleValidation";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import { Btn, Callout, IconBtn } from "./ui";
@@ -52,6 +54,8 @@ function Stage({
   zoomLevel: number;
   hintShown: boolean;
 }) {
+  // Clickable challenges can be tried out here; the clicks are not saved.
+  const [response, setResponse] = useState<ClickResponse>(EMPTY_RESPONSE);
   return (
     <div className="flex h-full flex-col px-[2.5vw] py-3">
       <div className="flex shrink-0 items-center gap-3">
@@ -75,7 +79,17 @@ function Stage({
         </p>
 
         <div className="flex min-h-0 flex-1 items-center justify-center py-[clamp(0.5rem,2vh,2rem)]">
-          <PuzzleCanvas puzzle={puzzle} revealed={revealed} zoomLevel={zoomLevel} />
+          {puzzle.type === "clickable" ? (
+            <ClickableCanvas
+              puzzle={puzzle}
+              response={response}
+              onChange={setResponse}
+              phase={revealed ? "revealed" : "solving"}
+              zoomLevel={zoomLevel}
+            />
+          ) : (
+            <PuzzleCanvas puzzle={puzzle} revealed={revealed} zoomLevel={zoomLevel} />
+          )}
         </div>
 
         <div className="flex h-[clamp(1.8rem,4.5vh,3rem)] shrink-0 items-center justify-center">
@@ -96,6 +110,8 @@ function Stage({
           <div className="shrink-0 pb-1 text-center">
             {puzzle.type === "myth-fact" ? (
               <MythFactExplanation puzzle={puzzle} />
+            ) : puzzle.type === "clickable" ? (
+              <ClickableExplanation puzzle={puzzle} />
             ) : (
               <>
                 <p className="mb-1 text-[11px] font-black uppercase tracking-[0.3em] text-ink-soft">
@@ -189,7 +205,7 @@ export default function PreviewStage({
         Hint
       </Btn>
 
-      {puzzle.type === "zoom" && (
+      {(puzzle.type === "zoom" || (puzzle.type === "clickable" && puzzle.sceneZoom)) && (
         <span className="inline-flex items-center gap-1 rounded-xl border border-ink/12 bg-white px-2 py-1">
           <span className="text-[10px] font-black uppercase tracking-[0.12em] text-ink-soft">
             Zoom {zoomLevel}

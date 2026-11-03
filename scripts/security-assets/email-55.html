@@ -1,0 +1,72 @@
+<!doctype html>
+<!--
+  Source for public/media/puzzles/security/s55-urgent-email.webp (box 55, "The
+  Urgent Message"). Rendered at 1920x1080 with Playwright (screenshot of the
+  viewport), then converted with cwebp. The hotspot areas in data/puzzles.ts
+  were measured from the elements marked data-area below, so re-measure them if
+  the layout changes.
+
+  Only the open message is shown, laid out at 889x500 and zoomed 2.16x, so the
+  text is as large as the 16:9 frame allows. Nothing gives the answer away: no
+  mouse pointer, no link preview, no status-bar address. The room has to spot
+  the sender's domain and the pressure in the wording for itself.
+
+  The short lines (subject, button, sign-off) leave empty space to their right
+  on purpose: the reveal labels sit there (labelSide "right") instead of on top
+  of the text they explain.
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { zoom: 2.16; }
+  html, body { width: 889px; height: 500px; overflow: hidden; }
+  body { font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif; background: #fff; color: #1f2937; }
+  .top { height: 44px; background: #0f5f9e; color: #fff; display: flex; align-items: center; padding: 0 20px; gap: 18px; }
+  .top .app { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 9px; }
+  .top .app i { width: 22px; height: 16px; border: 2px solid #fff; border-radius: 3px; display: inline-block; }
+  .top .search { margin-left: 60px; width: 420px; height: 28px; border-radius: 5px; background: #ffffff26; display: flex; align-items: center; padding: 0 12px; font-size: 13px; color: #e5edf6; }
+  .top .me { margin-left: auto; width: 30px; height: 30px; border-radius: 50%; background: #e8b04a; color: #4a3200; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .pane { padding: 18px 36px 0; }
+  .subject { font-size: 29px; font-weight: 600; color: #111827; display: inline-block; line-height: 1.25; }
+  .meta { display: flex; align-items: center; gap: 14px; margin-top: 12px; padding-bottom: 12px; border-bottom: 1px solid #e5e7eb; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; background: #c2410c; color: #fff; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .from { font-size: 17px; display: inline-block; }
+  .from b { font-weight: 600; }
+  .from .addr { color: #374151; }
+  .to { font-size: 14px; color: #6b7280; margin-top: 2px; }
+  .when { margin-left: auto; color: #6b7280; font-size: 14px; align-self: flex-start; padding-top: 4px; }
+  .body { font-size: 19px; line-height: 1.48; color: #1f2937; padding-top: 12px; }
+  .body p { margin-bottom: 10px; }
+  .warn { font-weight: 700; }
+  .btn { display: inline-block; background: #0f5f9e; color: #fff; font-weight: 700; font-size: 18px; letter-spacing: .4px; padding: 12px 30px; border-radius: 6px; margin: 4px 0 12px; box-shadow: 0 3px 0 #0a426e; }
+  .sig { color: #4b5563; font-size: 17px; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="app"><i></i>Mail</div>
+    <div class="search">Search mail</div>
+    <div class="me">AO</div>
+  </div>
+  <div class="pane">
+    <div class="subject" data-area="subject">URGENT: Password expires in 30 minutes</div>
+    <div class="meta">
+      <div class="avatar">IT</div>
+      <div>
+        <div class="from" data-area="sender"><b>Renaissance IT Service Desk</b> <span class="addr">&lt;it.servicedesk@renaissance-staff-support.net&gt;</span></div>
+        <div class="to">To: Adaeze Okafor</div>
+      </div>
+      <div class="when">Mon 03/11/2026 08:47</div>
+    </div>
+    <div class="body">
+      <p>Dear Staff,</p>
+      <p>Our system has detected that your network password will expire today. To avoid losing access to email, SAP and the plant reporting systems, <span data-area="request">please confirm your password</span> using the secure link below.</p>
+      <p><span class="warn" data-area="urgency">Failure to verify within 30 minutes will result in your account being permanently locked.</span> Do not contact the help desk, as this verification cannot be completed by phone.</p>
+      <span class="btn" data-area="link">VERIFY MY PASSWORD</span>
+      <div class="sig">Thank you, IT Service Desk</div>
+    </div>
+  </div>
+</body>
+</html>

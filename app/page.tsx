@@ -27,6 +27,7 @@ import {
   selectActive,
   useActivePuzzles,
 } from "@/lib/puzzleStore";
+import { EMPTY_RESPONSE, isComplete, isCorrect } from "@/lib/clickable";
 import { pickClip, otherGender, preloadTargets } from "@/lib/mascots";
 import { sound } from "@/lib/sound";
 import {
@@ -38,6 +39,7 @@ import {
   clearState,
 } from "@/lib/storage";
 import type {
+  ClickResponse,
   GameSettings,
   GameState,
   Judgement,
@@ -117,6 +119,16 @@ export default function Game() {
   const [hintShown, setHintShown] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(0);
   const [mascotClip, setMascotClip] = useState<MascotClip | null>(null);
+
+  /** Clickable challenges: what the facilitator has clicked on this box. */
+  const [response, setResponse] = useState<ClickResponse>(EMPTY_RESPONSE);
+  /** The suspense beat between Submit and the verdict. Cancelled on leaving. */
+  const checkTimer = useRef<number | null>(null);
+  const cancelCheck = useCallback(() => {
+    if (checkTimer.current !== null) window.clearTimeout(checkTimer.current);
+    checkTimer.current = null;
+  }, []);
+  useEffect(() => cancelCheck, [cancelCheck]);
 
   const [confetti, setConfetti] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
@@ -216,13 +228,15 @@ export default function Game() {
       setLastBox(boxNumber); // Keep this box in view when we come back.
       setCurrentBox(boxNumber);
       setOriginRect(rect);
+      cancelCheck();
       setStage("solving");
       setHintShown(false);
       setZoomLevel(0);
+      setResponse(EMPTY_RESPONSE);
       setMascotClip(null);
       setScreen("opening");
     },
-    [game.openedBoxes, activePuzzles],
+    [game.openedBoxes, activePuzzles, cancelCheck],
   );
 
   const openingComplete = useCallback(() => {
@@ -252,6 +266,9 @@ export default function Game() {
   const judge = useCallback(
     (judgement: Judgement) => {
       if (!puzzle || !currentBox) return;
+      // A Skip from the facilitator panel during the Submit suspense beat must
+      // win: the pending verdict would otherwise land on the wall afterwards.
+      cancelCheck();
 
       const clip =
         judgement === "skipped"
@@ -306,18 +323,40 @@ export default function Game() {
       setMascotClip(clip);
       setStage("judged"); // The mascot now stays until NEXT PUZZLE.
     },
-    [puzzle, currentBox, game.nextMascot, game.outcomes.length, settings.confettiEnabled],
+    [puzzle, currentBox, game.nextMascot, game.outcomes.length, settings.confettiEnabled, cancelCheck],
   );
+
+  /**
+   * Clickable challenges: lock the clicks in, hold a short suspense beat, then
+   * hand the verdict to the same judge() the Correct / Not Quite buttons use —
+   * so the sound, confetti, mascot and score all behave exactly as they do for
+   * every other box.
+   */
+  const submit = useCallback(() => {
+    if (stage !== "solving" || puzzle?.type !== "clickable") return;
+    if (!isComplete(puzzle, response)) return;
+    const verdict = isCorrect(puzzle, response) ? "correct" : "wrong";
+    void sound.play("suspense");
+    setStage("checking");
+    cancelCheck();
+    checkTimer.current = window.setTimeout(() => {
+      checkTimer.current = null;
+      sound.stopAll();
+      judge(verdict);
+    }, 1700);
+  }, [stage, puzzle, response, judge, cancelCheck]);
 
   /** The ONLY thing that dismisses the mascot. */
   const nextPuzzle = useCallback(() => {
     void sound.play("click");
+    cancelCheck();
     setConfetti(false);
     setMascotClip(null);
     setCurrentBox(null);
     setStage("solving");
     setHintShown(false);
     setZoomLevel(0);
+    setResponse(EMPTY_RESPONSE);
 
     // A presence check, not a count. `openedBoxes` can hold numbers that no
     // longer exist after the admin shrinks the bank, so `opened >= total`
@@ -326,7 +365,7 @@ export default function Game() {
       (p) => !game.openedBoxes.includes(p.boxNumber),
     );
     setScreen(anyLeft ? "boxes" : "results");
-  }, [game.openedBoxes, activePuzzles]);
+  }, [game.openedBoxes, activePuzzles, cancelCheck]);
 
   /**
    * From the wall once every box is open. `nextPuzzle` normally routes to the
@@ -340,6 +379,7 @@ export default function Game() {
 
   const backToBoxes = useCallback(() => {
     void sound.play("click");
+    cancelCheck();
     sound.stopAll();
     sound.clearDucking();
     setConfetti(false);
@@ -348,11 +388,14 @@ export default function Game() {
     setStage("solving");
     setHintShown(false);
     setZoomLevel(0);
+    setResponse(EMPTY_RESPONSE);
     setScreen("boxes");
-  }, []);
+  }, [cancelCheck]);
 
   const resetGame = useCallback(() => {
     clearState();
+    cancelCheck();
+    setResponse(EMPTY_RESPONSE);
     sound.stopAll();
     sound.clearDucking();
     setGame(initialGameState(settings.startingMascot));
@@ -365,7 +408,10 @@ export default function Game() {
     setHintShown(false);
     setZoomLevel(0);
     setScreen("boxes");
-  }, [settings.startingMascot]);
+  }, [settings.startingMascot, cancelCheck]);
+
+  /** Reveal for spoken types, Submit for clickable ones — one key, one button. */
+  const revealOrSubmit = puzzle?.type === "clickable" ? submit : reveal;
 
   /**
    * Rescue: the question on screen disappeared underneath us.
@@ -410,7 +456,7 @@ export default function Game() {
           if (activeScreen === "puzzle") showHint();
           break;
         case "r":
-          if (activeScreen === "puzzle") reveal();
+          if (activeScreen === "puzzle") revealOrSubmit();
           break;
         case "c":
           if (activeScreen === "puzzle" && stage === "revealed") judge("correct");
@@ -422,7 +468,11 @@ export default function Game() {
           if (activeScreen === "puzzle" && stage === "judged") nextPuzzle();
           break;
         case "z":
-          if (activeScreen === "puzzle" && puzzle?.type === "zoom" && stage === "solving") {
+          if (
+            activeScreen === "puzzle" &&
+            stage === "solving" &&
+            (puzzle?.type === "zoom" || (puzzle?.type === "clickable" && puzzle.sceneZoom))
+          ) {
             zoomOut();
           }
           break;
@@ -444,7 +494,7 @@ export default function Game() {
     puzzle,
     previewClip,
     showHint,
-    reveal,
+    revealOrSubmit,
     judge,
     nextPuzzle,
     zoomOut,
@@ -507,6 +557,12 @@ export default function Game() {
               hintShown={hintShown}
               zoomLevel={zoomLevel}
               mascotClip={mascotClip}
+              response={response}
+              onResponseChange={(next) => {
+                void sound.play("pop");
+                setResponse(next);
+              }}
+              onSubmit={submit}
               onShowHint={showHint}
               onZoomOut={zoomOut}
               onReveal={reveal}
@@ -592,7 +648,7 @@ export default function Game() {
         activeCount={totalBoxes}
         onOpenBox={(n) => selectBox(n, null)}
         onShowHint={showHint}
-        onReveal={reveal}
+        onReveal={revealOrSubmit}
         onCorrect={() => judge("correct")}
         onNotQuite={() => judge("wrong")}
         onNext={nextPuzzle}
@@ -613,8 +669,10 @@ export default function Game() {
         </p>
       )}
 
-      {/* The saved session was dropped because the question set changed. */}
-      {bankChanged && (
+      {/* The saved session was dropped because the question set changed. This
+          and the notice below are for the facilitator, so they show on the wall
+          only — on a puzzle they would sit over the controls and the answer. */}
+      {bankChanged && activeScreen === "boxes" && (
         <div
           role="status"
           className="fixed bottom-4 left-1/2 z-[80] flex -translate-x-1/2 items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-xs font-bold text-amber-800 shadow-panel"
@@ -632,7 +690,7 @@ export default function Game() {
       )}
 
       {/* A bank saved before the update was kept but is no longer in play. */}
-      {legacyNotice && (
+      {legacyNotice && activeScreen === "boxes" && (
         <div
           role="status"
           className={`fixed left-1/2 z-[80] flex -translate-x-1/2 items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-xs font-bold text-amber-800 shadow-panel ${

@@ -2,6 +2,185 @@
   "note": "Puzzle artwork available to the question admin. Regenerate with `npm run media:manifest` after adding files to public/media/puzzles/ — label, alt and tags are preserved across runs.",
   "images": [
     {
+      "path": "/media/puzzles/security/s51-entrance.webp",
+      "label": "Staff entrance — tailgating",
+      "alt": "Staff entering a secure lobby door; a man without a badge follows closely behind a colleague who badges in",
+      "tags": [
+        "security",
+        "access",
+        "tailgating"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s52-access-card.webp",
+      "label": "Employee access card",
+      "alt": "An employee photo access card on a green lanyard lying on a desk",
+      "tags": [
+        "security",
+        "access",
+        "credential"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s53-person-1.webp",
+      "label": "Senior manager",
+      "alt": "A senior manager in a navy suit holding a leather folder",
+      "tags": [
+        "security",
+        "person",
+        "access"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s53-person-2.webp",
+      "label": "Technician",
+      "alt": "A field technician in orange coveralls and a hard hat with an ID badge",
+      "tags": [
+        "security",
+        "person",
+        "access"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s53-person-3.webp",
+      "label": "Employee",
+      "alt": "A young employee in a navy dress wearing a green lanyard and ID card",
+      "tags": [
+        "security",
+        "person",
+        "access"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s53-person-4.webp",
+      "label": "Visitor",
+      "alt": "A visitor in business clothes with a handbag and no badge",
+      "tags": [
+        "security",
+        "person",
+        "visitor"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s54-workstation.webp",
+      "label": "Unattended workstation",
+      "alt": "An empty desk with an unlocked computer, documents spread out and an access badge left beside a mug",
+      "tags": [
+        "security",
+        "clear desk"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s55-urgent-email.webp",
+      "label": "Urgent password email",
+      "alt": "An email client showing an urgent password-verification message with a link preview",
+      "tags": [
+        "security",
+        "phishing",
+        "email"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s56-access-record.webp",
+      "label": "Access authorisation record",
+      "alt": "A clipboard holding an approved access authorisation record with a green APPROVED stamp",
+      "tags": [
+        "security",
+        "authorisation"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s56-cctv.webp",
+      "label": "CCTV camera",
+      "alt": "A white CCTV camera mounted on a corridor wall",
+      "tags": [
+        "security",
+        "surveillance"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s56-id-badge.webp",
+      "label": "Employee ID badge",
+      "alt": "An employee photo ID badge on a green lanyard",
+      "tags": [
+        "security",
+        "identification"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s56-locked-door.webp",
+      "label": "Locked security door",
+      "alt": "A grey steel door with a magnetic lock and an access card reader showing a red light",
+      "tags": [
+        "security",
+        "physical"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s57-step-authorisation.webp",
+      "label": "Confirming authorisation",
+      "alt": "A security officer on the phone checks an approved visitor list on screen",
+      "tags": [
+        "security",
+        "visitor"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s57-step-escort.webp",
+      "label": "Escorting a visitor",
+      "alt": "A host with a staff badge escorts a visitor wearing a red visitor lanyard through a secure door",
+      "tags": [
+        "security",
+        "visitor"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s57-step-identity.webp",
+      "label": "Verifying identity",
+      "alt": "A receptionist checks a visitor's identity card at the front desk",
+      "tags": [
+        "security",
+        "visitor"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s57-step-registration.webp",
+      "label": "Visitor registration",
+      "alt": "A visitor signs the register while being handed a visitor badge",
+      "tags": [
+        "security",
+        "visitor"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s58-badge-floor.webp",
+      "label": "Badge on the floor",
+      "alt": "An access badge dropped on a corridor floor near a restricted control-room door",
+      "tags": [
+        "security",
+        "lost credential"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s59-old-card.webp",
+      "label": "Old card still works",
+      "alt": "An employee carrying a box of belongings taps his card on a server-room reader showing a green light",
+      "tags": [
+        "security",
+        "access review"
+      ]
+    },
+    {
+      "path": "/media/puzzles/security/s60-qr-poster.webp",
+      "label": "QR benefit poster",
+      "alt": "A noticeboard poster offering a staff bonus via a QR code that asks for a staff email and password",
+      "tags": [
+        "security",
+        "qr",
+        "phishing"
+      ]
+    },
+    {
       "path": "/media/puzzles/zoom-compass.svg",
       "label": "Compass",
       "alt": "A compass with its needle pointing north",

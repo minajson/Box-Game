@@ -1,6 +1,12 @@
+import { needsScene } from "./clickable";
 import {
+  CLICK_INTERACTIONS,
+  HOTSPOT_LABEL_SIDES,
   PUZZLE_DIFFICULTIES,
   PUZZLE_TYPES,
+  type ClickOption,
+  type Hotspot,
+  type HotspotArea,
   type ManagedPuzzle,
   type PuzzleChoice,
   type PuzzleDifficulty,
@@ -115,6 +121,7 @@ export const DEFAULT_REVEAL: Record<PuzzleType, RevealAnimation> = {
   "odd-one-out": "highlight",
   connect: "fade",
   "myth-fact": "highlight",
+  clickable: "highlight",
 };
 
 /**
@@ -138,6 +145,7 @@ const ALLOWED_REVEALS: Record<PuzzleType, readonly RevealAnimation[]> = {
   "odd-one-out": ["highlight"],
   connect: ["fade"],
   "myth-fact": ["highlight"],
+  clickable: ["highlight"],
 };
 
 /** The on-stage banner shown as the box bursts open. */
@@ -152,6 +160,7 @@ export const DEFAULT_CATEGORY_LABEL: Record<PuzzleType, string> = {
   "odd-one-out": "ODD ONE OUT!",
   connect: "WHAT CONNECTS THEM?",
   "myth-fact": "MYTH OR FACT?",
+  clickable: "YOUR CALL!",
 };
 
 export const DEFAULT_PROMPT: Record<PuzzleType, string> = {
@@ -165,6 +174,7 @@ export const DEFAULT_PROMPT: Record<PuzzleType, string> = {
   "odd-one-out": "Which one does not belong?",
   connect: "What connects these three?",
   "myth-fact": "Is this statement a myth or a fact?",
+  clickable: "Choose the right answer",
 };
 
 export const TYPE_LABELS: Record<PuzzleType, string> = {
@@ -178,6 +188,7 @@ export const TYPE_LABELS: Record<PuzzleType, string> = {
   "odd-one-out": "Odd One Out",
   connect: "What Connects Them",
   "myth-fact": "Myth or Fact",
+  clickable: "Clickable Challenge",
 };
 
 /** The only two answers a Myth or Fact question can have. */
@@ -320,12 +331,24 @@ export function removeAsset(p: ManagedPuzzle, index: number): ManagedPuzzle {
       : { ...choice, assetIndex: next };
   });
 
+  const options = p.options?.map((option) => {
+    if (option.assetIndex === undefined) return option;
+    const next = shift(option.assetIndex);
+    return next === undefined
+      ? omit(option, "assetIndex")
+      : { ...option, assetIndex: next };
+  });
+
+  const scene = p.sceneAsset === undefined ? undefined : shift(p.sceneAsset);
+  const base = scene === undefined ? omit(p, "sceneAsset") : { ...p, sceneAsset: scene };
+
   return {
-    ...p,
+    ...base,
     imageAssets,
     ...(rows ? { rows } : {}),
     ...(choices ? { choices } : {}),
-  };
+    ...(options ? { options } : {}),
+  } as ManagedPuzzle;
 }
 
 /* ------------------------------------------------------------- validate -- */
@@ -595,6 +618,109 @@ export function validatePuzzle(
       break;
     }
 
+    case "clickable": {
+      const interaction = draft.interaction;
+      if (!interaction || !CLICK_INTERACTIONS.includes(interaction)) {
+        err("interaction", "Choose how the room answers: cards, clicks on the photo, or an order.", true);
+        break;
+      }
+      if (!nonEmpty(draft.insight)) {
+        err("insight", "An explanation is required — it is what the room learns after submitting.");
+      }
+
+      // The scene photo.
+      const scene = draft.sceneAsset;
+      if (scene !== undefined && !assetInRange(scene)) {
+        err("sceneAsset", "The scene photo points at an image that does not exist.", true);
+      } else if (needsScene(draft as ManagedPuzzle) && !assetInRange(scene ?? 0)) {
+        err(
+          "sceneAsset",
+          interaction === "hotspot"
+            ? "Choose the photo the room will click on."
+            : "Choose the photo to zoom into.",
+          true,
+        );
+      }
+      if (draft.sceneFocus) {
+        const { x, y } = draft.sceneFocus;
+        if (![x, y].every((v) => Number.isFinite(v) && v >= 0 && v <= 100)) {
+          err("sceneFocus", "The zoom point must be between 0 and 100% across and down.");
+        }
+      }
+
+      const selectCount = draft.selectCount;
+      const checkCount = (max: number) => {
+        if (selectCount === undefined) return;
+        if (!Number.isInteger(selectCount) || selectCount < 1 || selectCount > max) {
+          err("selectCount", `The number of picks must be a whole number from 1 to ${max}.`, true);
+        }
+      };
+
+      if (interaction === "hotspot") {
+        const spots: Hotspot[] = Array.isArray(draft.hotspots) ? draft.hotspots : [];
+        if (spots.length === 0) err("hotspots", "Mark at least one thing to find on the photo.", true);
+        const seenSpot = new Set<string>();
+        spots.forEach((h, i) => {
+          if (!nonEmpty(h?.id)) err(`hotspots.${i}.id`, "Missing internal id.", true);
+          else if (seenSpot.has(h.id)) err(`hotspots.${i}.id`, "Two hotspots share the same internal id.", true);
+          else seenSpot.add(h.id);
+          if (!nonEmpty(h?.label)) err(`hotspots.${i}.label`, "Every hotspot needs a label — it is shown after submitting.");
+          const areas: HotspotArea[] = Array.isArray(h?.areas) ? h.areas : [];
+          if (areas.length === 0) err(`hotspots.${i}.areas`, "Draw at least one area for this hotspot.", true);
+          if (h?.labelArea !== undefined && !(Number.isInteger(h.labelArea) && h.labelArea >= 0 && h.labelArea < areas.length)) {
+            warn(`hotspots.${i}.labelArea`, "The label points at an area that no longer exists — it shows on the first area instead.");
+          }
+          if (h?.labelSide !== undefined && !HOTSPOT_LABEL_SIDES.includes(h.labelSide)) {
+            warn(`hotspots.${i}.labelSide`, "Unknown label position — the label shows below its area instead.");
+          }
+          areas.forEach((a, j) => {
+            const nums = [a?.x, a?.y, a?.w, a?.h];
+            if (
+              !nums.every((v) => typeof v === "number" && Number.isFinite(v)) ||
+              a.x < 0 || a.y < 0 || a.w <= 0 || a.h <= 0 ||
+              a.x + a.w > 100.5 || a.y + a.h > 100.5
+            ) {
+              err(`hotspots.${i}.areas.${j}`, "Areas must sit inside the photo (0–100%) with a width and height.", true);
+            }
+          });
+        });
+        checkCount(Math.max(1, spots.length));
+        break;
+      }
+
+      // choice / sequence: the cards.
+      const options: ClickOption[] = Array.isArray(draft.options) ? draft.options : [];
+      if (options.length < 2 || options.length > 6) {
+        err("options", `Give 2 to 6 answer cards — there ${options.length === 1 ? "is" : "are"} ${options.length}.`, true);
+      }
+      const seenOpt = new Set<string>();
+      options.forEach((o, i) => {
+        if (!nonEmpty(o?.id)) err(`options.${i}.id`, "Missing internal option id.", true);
+        else if (seenOpt.has(o.id)) err(`options.${i}.id`, "Two cards share the same internal id.", true);
+        else seenOpt.add(o.id);
+        if (!nonEmpty(o?.label)) err(`options.${i}.label`, "Every card needs a label.");
+        if (o?.assetIndex !== undefined && !assetInRange(o.assetIndex)) {
+          err(`options.${i}.assetIndex`, "This card points at an image that does not exist.", true);
+        }
+      });
+
+      if (interaction === "choice") {
+        const correct = options.filter((o) => o.correct).length;
+        const need = selectCount ?? 1;
+        checkCount(Math.max(1, options.length));
+        if (correct === 0) err("options", "Mark at least one card as correct.");
+        else if (correct < need) {
+          err("options", `The room must pick ${need} cards but only ${correct} ${correct === 1 ? "is" : "are"} marked correct.`);
+        } else if (need === 1 && correct > 1) {
+          warn("options", "More than one card is correct, so any of them wins. Check that is intended.");
+        }
+      }
+      if (interaction === "sequence" && options.some((o) => o.correct)) {
+        warn("options", "A sequence's right answer is the card order — the Correct ticks are ignored.");
+      }
+      break;
+    }
+
     case "zoom": {
       // PuzzleCanvas.tsx:166 reads imageAssets[0] with no guard.
       if (assets.length === 0) err("imageAssets", "Choose an image to zoom into.", true);
@@ -696,6 +822,9 @@ export function validatePuzzle(
     ["oddOneOutId", ["odd-one-out"]],
     ["clues", ["connect", "myth-fact"]],
     ["rows", [...ROWS_TYPES]],
+    ["options", ["clickable"]],
+    ["hotspots", ["clickable"]],
+    ["scenario", ["clickable"]],
   ];
   for (const [field, owners] of strays) {
     const value = draft[field];

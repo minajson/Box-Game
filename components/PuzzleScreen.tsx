@@ -2,10 +2,18 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import PuzzleCanvas, { MythFactExplanation } from "./PuzzleCanvas";
+import ClickableCanvas, { ClickableExplanation } from "./ClickableCanvas";
 import MascotStage from "./MascotStage";
 import Timer from "./Timer";
 import { GameHeaderSlim } from "./GameHeader";
-import type { GameSettings, MascotClip, Puzzle, PuzzleStage } from "@/lib/types";
+import { isComplete, pickCount, requiredPicks } from "@/lib/clickable";
+import type {
+  ClickResponse,
+  GameSettings,
+  MascotClip,
+  Puzzle,
+  PuzzleStage,
+} from "@/lib/types";
 
 /**
  * The puzzle screen. The puzzle itself dominates; everything else is a thin
@@ -16,9 +24,10 @@ import type { GameSettings, MascotClip, Puzzle, PuzzleStage } from "@/lib/types"
  * cover the revealed answer or the NEXT PUZZLE button — the content simply
  * narrows to make room.
  *
- * The audience answers out loud and the facilitator judges. Myth or Fact is the
- * only type with on-screen options, and those are for the room to call out, not
- * to click.
+ * Most types are answered out loud and the facilitator judges. Myth or Fact
+ * shows options for the room to call out, not to click. Clickable challenges
+ * are the exception: the facilitator clicks the room's choice, presses Submit
+ * Answer, and the clicks decide Correct or Not Quite — there is no Reveal step.
  */
 
 export default function PuzzleScreen({
@@ -28,6 +37,9 @@ export default function PuzzleScreen({
   hintShown,
   zoomLevel,
   mascotClip,
+  response,
+  onResponseChange,
+  onSubmit,
   onShowHint,
   onZoomOut,
   onReveal,
@@ -43,6 +55,10 @@ export default function PuzzleScreen({
   hintShown: boolean;
   zoomLevel: number;
   mascotClip: MascotClip | null;
+  /** Clickable challenges only: what has been clicked so far. */
+  response: ClickResponse;
+  onResponseChange: (next: ClickResponse) => void;
+  onSubmit: () => void;
   onShowHint: () => void;
   onZoomOut: () => void;
   onReveal: () => void;
@@ -52,9 +68,17 @@ export default function PuzzleScreen({
   onSkip: () => void;
   onBackToBoxes: () => void;
 }) {
-  const revealed = stage !== "solving";
+  const clickable = puzzle.type === "clickable";
+  const checking = stage === "checking";
+  const revealed = stage === "revealed" || stage === "judged";
   const showMascot = stage === "judged" && settings.mascotEnabled && mascotClip;
-  const canZoomOut = puzzle.type === "zoom" && !revealed && zoomLevel < 3;
+  const zooms = puzzle.type === "zoom" || (clickable && puzzle.sceneZoom === true);
+  const canZoomOut = zooms && stage === "solving" && zoomLevel < 3;
+  const picked = clickable ? pickCount(puzzle, response) : 0;
+  const needed = clickable ? requiredPicks(puzzle) : 0;
+  const ready = clickable && isComplete(puzzle, response);
+  // A zoomed choice keeps its cards hidden until the last Zoom Out.
+  const awaitingZoom = clickable && puzzle.sceneZoom === true && zoomLevel < 3;
 
   return (
     <div className="flex h-full flex-col px-[2.5vw] py-3">
@@ -93,26 +117,53 @@ export default function PuzzleScreen({
       <div className="flex min-h-0 flex-1 gap-[clamp(0.5rem,2vw,2rem)]">
         {/* Content column — narrows when the mascot is on stage */}
         <div className="flex min-w-0 flex-1 flex-col">
-          <p
-            className="shrink-0 pt-2 text-center font-bold uppercase tracking-[0.2em] text-ink-soft"
-            style={{ fontSize: "clamp(0.62rem, 1.15vw, 1.2rem)" }}
-          >
-            {puzzle.prompt}
-          </p>
+          {clickable ? (
+            // The challenge question is what the room argues about, so it reads
+            // as a headline rather than a caption.
+            <p
+              className="shrink-0 text-balance pt-2 text-center font-black leading-tight tracking-tight text-ink"
+              style={{ fontSize: "clamp(1.1rem, min(2.4vw, 4.2vh), 4.4rem)" }}
+            >
+              {puzzle.prompt}
+            </p>
+          ) : (
+            <p
+              className="shrink-0 pt-2 text-center font-bold uppercase tracking-[0.2em] text-ink-soft"
+              style={{ fontSize: "clamp(0.62rem, 1.15vw, 1.2rem)" }}
+            >
+              {puzzle.prompt}
+            </p>
+          )}
 
           {/* The puzzle — the largest thing on the screen */}
           <div className="flex min-h-0 flex-1 items-center justify-center py-[clamp(0.5rem,2vh,2rem)]">
-            <PuzzleCanvas
-              puzzle={puzzle}
-              revealed={revealed}
-              zoomLevel={zoomLevel}
-            />
+            {clickable ? (
+              <ClickableCanvas
+                puzzle={puzzle}
+                response={response}
+                onChange={onResponseChange}
+                phase={revealed ? "revealed" : checking ? "checking" : "solving"}
+                zoomLevel={zoomLevel}
+              />
+            ) : (
+              <PuzzleCanvas
+                puzzle={puzzle}
+                revealed={revealed}
+                zoomLevel={zoomLevel}
+              />
+            )}
           </div>
 
-          {/* Hint */}
-          <div className="flex h-[clamp(1.8rem,4.5vh,3rem)] shrink-0 items-center justify-center">
+          {/* Hint. Its row is reserved so showing it does not shift the puzzle,
+              but a revealed clickable challenge hands that height to the photo
+              or cards, which have to stay readable beside the explanation. */}
+          <div
+            className={`flex shrink-0 items-center justify-center ${
+              clickable && revealed ? "h-0" : "h-[clamp(1.8rem,4.5vh,3rem)]"
+            }`}
+          >
             <AnimatePresence>
-              {hintShown && !revealed && (
+              {hintShown && stage === "solving" && (
                 <motion.p
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -141,6 +192,8 @@ export default function PuzzleScreen({
                 {puzzle.type === "myth-fact" ? (
                   // The highlighted card already shows the answer.
                   <MythFactExplanation puzzle={puzzle} />
+                ) : clickable ? (
+                  <ClickableExplanation puzzle={puzzle} />
                 ) : (
                   <>
                     <p className="mb-1 text-[11px] font-black uppercase tracking-[0.3em] text-ink-soft">
@@ -184,17 +237,46 @@ export default function PuzzleScreen({
                   💡 Hint
                 </Button>
                 {canZoomOut && (
-                  <Button variant="secondary" onClick={onZoomOut}>
+                  <Button variant={awaitingZoom ? "primary" : "secondary"} onClick={onZoomOut}>
                     🔍 Zoom Out ({3 - zoomLevel} left)
                   </Button>
                 )}
-                <Button variant="primary" onClick={onReveal}>
-                  Reveal Answer
-                </Button>
+                {clickable ? (
+                  <>
+                    {picked > 0 && (
+                      <Button variant="ghost" onClick={() => onResponseChange({ picks: [], marks: [] })}>
+                        ↺ Clear
+                      </Button>
+                    )}
+                    {!awaitingZoom && (
+                      <Button variant="primary" onClick={onSubmit} disabled={!ready}>
+                        {ready
+                          ? "Submit Answer ✓"
+                          : `Submit Answer (${picked}/${needed})`}
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <Button variant="primary" onClick={onReveal}>
+                    Reveal Answer
+                  </Button>
+                )}
                 <Button variant="ghost" onClick={onSkip}>
                   Skip ▸
                 </Button>
               </>
+            )}
+
+            {checking && (
+              <motion.p
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: [1, 1.06, 1] }}
+                transition={{ scale: { duration: 0.6, repeat: Infinity } }}
+                className="rounded-full bg-ink px-[clamp(1rem,2.4vw,2.4rem)] py-[clamp(0.5rem,1.3vh,0.9rem)] font-black uppercase tracking-[0.2em] text-white shadow-lift"
+                style={{ fontSize: "clamp(0.7rem, 1.25vw, 1.05rem)" }}
+              >
+                Locking it in…
+              </motion.p>
             )}
 
             {stage === "revealed" && (
@@ -210,7 +292,7 @@ export default function PuzzleScreen({
 
             {stage === "judged" && (
               <Button variant="primary" onClick={onNext} autoFocus>
-                Next Puzzle →
+                {clickable ? "Next Box →" : "Next Puzzle →"}
               </Button>
             )}
           </div>

@@ -1,7 +1,7 @@
 import type { Puzzle } from "@/lib/types";
 
 /**
- * The bundled CRACK THE BOX question bank — the SEED, 50 puzzles.
+ * The bundled CRACK THE BOX question bank — the SEED, 60 puzzles.
  *
  * This file is the starting point, not the live set. The playable questions
  * come from `lib/puzzleStore.ts`, which loads the admin's saved bank from
@@ -12,14 +12,24 @@ import type { Puzzle } from "@/lib/types";
  * admin order and numbers them 1..N, so `boxNumber` below is only a seed
  * ordering hint.
  *
- * Distribution across the ten supported types (Wild Card was removed):
+ * Distribution across the eleven supported types (Wild Card was removed):
  *   scramble 6 · rebus 5 · picture-word 5 · picture-combo 4 · emoji 5
- *   missing-letters 3 · zoom 5 · odd-one-out 3 · connect 4 · myth-fact 10  =  50
+ *   missing-letters 3 · zoom 5 · odd-one-out 3 · connect 4 · myth-fact 10
+ *   clickable 10  =  60
  *
- * Boxes 13, 17, 24, 29, 33, 36, 40, 42, 45 and 47 hold the Mental Wellbeing
- * Myth or Fact questions, with new ids (51-60) so a session saved against the
- * questions they replaced is not carried across. The original 50 are kept in
- * `data/backups/`.
+ * The Mental Wellbeing Myth or Fact questions have ids 51-60, new ids so a
+ * session saved against the questions they replaced is not carried across. They
+ * sit at boxes 15, 20, 29, 35, 40, 43, 48, 50, 54 and 56. The original 50 are
+ * kept in `data/backups/`.
+ *
+ * The Security Awareness clickable challenges (ids 61-70), answered by clicking
+ * rather than out loud, are spread one about every sixth box — 5, 11, 16, 22,
+ * 28, 34, 39, 46, 52 and 58 — so a shorter session (which plays the FIRST N
+ * questions) still gets some. Each is marked with a "Security Awareness"
+ * comment. The other 50 keep their relative order; the 50 as they were before
+ * this addition are in `data/backups/` too. Photos live in
+ * public/media/puzzles/security/; hotspot areas are percentages of the scene
+ * photo, measured against that exact file.
  *
  * Types are interleaved by box number, so consecutive picks feel varied
  * rather than marching through one category at a time.
@@ -34,6 +44,9 @@ import type { Puzzle } from "@/lib/types";
  * - `maskedValue` uses `_` for each blank and must otherwise match `answer`.
  * - Myth or Fact: `clues[0]` is the statement, `answer` is MYTH or FACT, and
  *   `insight` is the explanation shown large on the reveal.
+ * - Clickable: `interaction` is choice, hotspot or sequence. Choice cards mark
+ *   `correct`; a sequence lists its cards in the right order; hotspot areas are
+ *   percentages of the scene photo. `insight` is the required explanation.
  * - Run `npm run check:puzzles` after editing — it verifies all of the above.
  *
  * Themes: growth, feedback, teamwork, collaboration, communication,
@@ -114,9 +127,35 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "combine",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 61,
+    boxNumber: 5,
+    type: "clickable",
+    interaction: "hotspot",
+    categoryLabel: "THE DOOR THAT STAYED OPEN",
+    category: "Security Awareness",
+    prompt: "Can you identify the security breach?",
+    scenario: "Staff are entering a restricted facility. Tap the person breaching security.",
+    sceneAsset: 0,
+    hotspots: [
+      {
+        id: "tailgater",
+        label: "Tailgating — no badge used",
+        areas: [{ x: 51.8, y: 24, w: 9, h: 68 }],
+      },
+    ],
+    selectCount: 1,
+    answer: "TAILGATING",
+    hint: "Watch who actually uses a badge at the door.",
+    insight:
+      "Tailgating is unauthorised entry by following an authorised person through a controlled door. Everyone badges in — and it is fine to politely stop someone following you.",
+    imageAssets: ["/media/puzzles/security/s51-entrance.webp"],
+    revealAnimation: "highlight",
+  },
   {
     id: 5,
-    boxNumber: 5,
+    boxNumber: 6,
     type: "emoji",
     categoryLabel: "EMOJI DECODE!",
     prompt: "Decode the emojis into one word",
@@ -137,7 +176,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 6,
-    boxNumber: 6,
+    boxNumber: 7,
     type: "missing-letters",
     categoryLabel: "FILL THE GAPS!",
     prompt: "Complete the word",
@@ -150,7 +189,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 7,
-    boxNumber: 7,
+    boxNumber: 8,
     type: "zoom",
     categoryLabel: "ZOOM IN!",
     prompt: "What is this? Zoom out for more clues",
@@ -162,7 +201,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 8,
-    boxNumber: 8,
+    boxNumber: 9,
     type: "odd-one-out",
     categoryLabel: "ODD ONE OUT!",
     prompt: "Which one does NOT belong?",
@@ -181,7 +220,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 9,
-    boxNumber: 9,
+    boxNumber: 10,
     type: "connect",
     categoryLabel: "WHAT CONNECTS THEM?",
     prompt: "What do these three have in common?",
@@ -192,11 +231,38 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "fade",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 62,
+    boxNumber: 11,
+    type: "clickable",
+    interaction: "choice",
+    categoryLabel: "ZOOM INTO TROUBLE",
+    category: "Security Awareness",
+    prompt: "What security-sensitive item is hidden in this image?",
+    sceneAsset: 0,
+    sceneZoom: true,
+    // Right of the chip, so the first two stages show only chip, plastic and
+    // green stripe — any of the four cards — and the face appears at stage 3.
+    sceneFocus: { x: 56, y: 42 },
+    options: [
+      { id: "bank", label: "Bank debit card" },
+      { id: "national-id", label: "National ID card" },
+      { id: "access", label: "Employee access card", correct: true },
+      { id: "visitor", label: "Visitor day pass" },
+    ],
+    answer: "EMPLOYEE ACCESS CARD",
+    hint: "You carry it every working day — and the gate knows it is you.",
+    insight:
+      "Access credentials are personal and must never be shared or lent. Your card is your identity at every controlled door.",
+    imageAssets: ["/media/puzzles/security/s52-access-card.webp"],
+    revealAnimation: "highlight",
+  },
 
   // ================================================================ ROUND 2
   {
     id: 10,
-    boxNumber: 10,
+    boxNumber: 12,
     type: "scramble",
     categoryLabel: "SCRAMBLE IT!",
     prompt: "Unscramble this word",
@@ -209,7 +275,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 11,
-    boxNumber: 11,
+    boxNumber: 13,
     type: "rebus",
     categoryLabel: "REBUS!",
     prompt: "What phrase is hiding here?",
@@ -229,7 +295,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 12,
-    boxNumber: 12,
+    boxNumber: 14,
     type: "picture-word",
     categoryLabel: "PICTURE THIS!",
     prompt: "Say the picture out loud, then add the word",
@@ -250,7 +316,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 51,
-    boxNumber: 13,
+    boxNumber: 15,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -262,9 +328,39 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "highlight",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 63,
+    boxNumber: 16,
+    type: "clickable",
+    interaction: "choice",
+    categoryLabel: "WHO GETS THROUGH?",
+    category: "Security Awareness",
+    prompt: "Who should be granted access?",
+    scenario: "Four people ask to enter a restricted facility.",
+    // Every caption is a reason someone might wave them through. Only one is a
+    // check against an approved record; the rest are rank, familiarity or haste.
+    options: [
+      { id: "manager", label: "Senior manager", detail: "Says the MD asked them to inspect the site today", assetIndex: 0 },
+      { id: "technician", label: "Technician", detail: "Name and ID match today's work order at the gate", assetIndex: 1, correct: true },
+      { id: "employee", label: "Employee", detail: "Works here daily — left her badge at home; a colleague vouches for her", assetIndex: 2 },
+      { id: "visitor", label: "Visitor", detail: "Shows a meeting invite on her phone; her host is running late", assetIndex: 3 },
+    ],
+    answer: "B — THE TECHNICIAN ON TODAY'S WORK ORDER",
+    hint: "Ignore the job titles. Which one has been checked against a record?",
+    insight:
+      "Access is determined by verified authorisation — not seniority, familiarity or urgency. Only the technician has been matched to an approved record; the others need checking first.",
+    imageAssets: [
+      "/media/puzzles/security/s53-person-1.webp",
+      "/media/puzzles/security/s53-person-2.webp",
+      "/media/puzzles/security/s53-person-3.webp",
+      "/media/puzzles/security/s53-person-4.webp",
+    ],
+    revealAnimation: "highlight",
+  },
   {
     id: 14,
-    boxNumber: 14,
+    boxNumber: 17,
     type: "emoji",
     categoryLabel: "EMOJI DECODE!",
     prompt: "Decode the emojis into a familiar phrase",
@@ -285,7 +381,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 15,
-    boxNumber: 15,
+    boxNumber: 18,
     type: "missing-letters",
     categoryLabel: "FILL THE GAPS!",
     prompt: "Complete the word",
@@ -298,7 +394,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 16,
-    boxNumber: 16,
+    boxNumber: 19,
     type: "zoom",
     categoryLabel: "ZOOM IN!",
     prompt: "What is this? Zoom out for more clues",
@@ -310,7 +406,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 52,
-    boxNumber: 17,
+    boxNumber: 20,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -324,7 +420,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 18,
-    boxNumber: 18,
+    boxNumber: 21,
     type: "connect",
     categoryLabel: "WHAT CONNECTS THEM?",
     prompt: "What do these three have in common?",
@@ -335,11 +431,53 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "fade",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 64,
+    boxNumber: 22,
+    type: "clickable",
+    interaction: "hotspot",
+    categoryLabel: "THE 10-SECOND MISTAKE",
+    category: "Security Awareness",
+    prompt: "Find the three security risks at this empty desk.",
+    scenario: "The owner stepped away “for just ten seconds”. Tap all three risks.",
+    sceneAsset: 0,
+    hotspots: [
+      {
+        id: "screen",
+        label: "Unlocked computer",
+        areas: [{ x: 32, y: 15, w: 38.5, h: 41 }],
+      },
+      {
+        id: "documents",
+        label: "Confidential documents",
+        areas: [
+          { x: 2, y: 60, w: 20.5, h: 20 },
+          { x: 16, y: 68, w: 20, h: 20 },
+        ],
+      },
+      {
+        id: "badge",
+        label: "Unattended badge",
+        areas: [
+          { x: 70.5, y: 72, w: 8, h: 9.5 },
+          { x: 76, y: 66, w: 13.5, h: 8.5 },
+        ],
+      },
+    ],
+    selectCount: 3,
+    answer: "UNLOCKED PC, PAPERS AND BADGE",
+    hint: "Think screen, paper and plastic.",
+    insight:
+      "Lock your screen (Windows + L), put confidential papers away and keep your badge on you — every time you leave your desk.",
+    imageAssets: ["/media/puzzles/security/s54-workstation.webp"],
+    revealAnimation: "highlight",
+  },
 
   // ================================================================ ROUND 3
   {
     id: 19,
-    boxNumber: 19,
+    boxNumber: 23,
     type: "scramble",
     categoryLabel: "SCRAMBLE IT!",
     prompt: "Unscramble this word",
@@ -352,7 +490,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 20,
-    boxNumber: 20,
+    boxNumber: 24,
     type: "rebus",
     categoryLabel: "REBUS!",
     prompt: "What phrase is hiding here?",
@@ -372,7 +510,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 21,
-    boxNumber: 21,
+    boxNumber: 25,
     type: "picture-word",
     categoryLabel: "PICTURE THIS!",
     prompt: "Say the picture out loud, then add the letters",
@@ -393,7 +531,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 22,
-    boxNumber: 22,
+    boxNumber: 26,
     type: "picture-combo",
     categoryLabel: "PUT IT TOGETHER!",
     prompt: "Combine the pictures into one word",
@@ -414,7 +552,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 23,
-    boxNumber: 23,
+    boxNumber: 27,
     type: "emoji",
     categoryLabel: "EMOJI DECODE!",
     prompt: "Decode the emojis into a familiar phrase",
@@ -432,9 +570,56 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "fade",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 65,
+    boxNumber: 28,
+    type: "clickable",
+    interaction: "hotspot",
+    categoryLabel: "THE URGENT MESSAGE",
+    category: "Security Awareness",
+    prompt: "Which two details suggest this message may be fraudulent?",
+    scenario: "This email has just arrived. Tap the two warning signs.",
+    sceneAsset: 0,
+    // Measured from scripts/security-assets/email-55.html. The labels sit to
+    // the right of the subject line and the button, in space left empty for
+    // them, so they never cover the words the room is reading.
+    hotspots: [
+      {
+        id: "sender-link",
+        label: "Fake sender & password link",
+        labelArea: 1,
+        labelSide: "right",
+        areas: [
+          { x: 2.5, y: 21.5, w: 76.5, h: 10.5 },
+          { x: 2.5, y: 75.5, w: 33, h: 11.5 },
+          // "please confirm your password" — the request is the same warning
+          // sign as the button, so a click on either finds this hotspot once.
+          { x: 48, y: 49, w: 31, h: 6 },
+        ],
+      },
+      {
+        id: "pressure",
+        label: "Pressure to act now",
+        labelArea: 0,
+        labelSide: "right",
+        areas: [
+          { x: 2.5, y: 11.5, w: 66.5, h: 9 },
+          { x: 2.5, y: 61.5, w: 94.5, h: 13 },
+        ],
+      },
+    ],
+    selectCount: 2,
+    answer: "SUSPICIOUS SENDER/LINK + PRESSURE TO ACT",
+    hint: "Check who really sent it, what it asks you to do — and how it makes you feel.",
+    insight:
+      "The sender's domain is not ours, IT never asks for a password through an email link, and the 30-minute threat is there to rush you. Don't click — report it to IT.",
+    imageAssets: ["/media/puzzles/security/s55-urgent-email.webp"],
+    revealAnimation: "highlight",
+  },
   {
     id: 53,
-    boxNumber: 24,
+    boxNumber: 29,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -448,7 +633,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 25,
-    boxNumber: 25,
+    boxNumber: 30,
     type: "zoom",
     categoryLabel: "ZOOM IN!",
     prompt: "What is this? Zoom out for more clues",
@@ -460,7 +645,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 26,
-    boxNumber: 26,
+    boxNumber: 31,
     type: "odd-one-out",
     categoryLabel: "ODD ONE OUT!",
     prompt: "Which one does NOT belong?",
@@ -479,7 +664,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 27,
-    boxNumber: 27,
+    boxNumber: 32,
     type: "connect",
     categoryLabel: "WHAT CONNECTS THEM?",
     prompt: "What do these three have in common?",
@@ -494,7 +679,7 @@ export const PUZZLES: Puzzle[] = [
   // ================================================================ ROUND 4
   {
     id: 28,
-    boxNumber: 28,
+    boxNumber: 33,
     type: "scramble",
     categoryLabel: "SCRAMBLE IT!",
     prompt: "Unscramble this word",
@@ -505,9 +690,36 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "rearrange",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 66,
+    boxNumber: 34,
+    type: "clickable",
+    interaction: "choice",
+    categoryLabel: "EYES EVERYWHERE",
+    category: "Security Awareness",
+    prompt: "Which one establishes whether someone is permitted to enter a restricted area?",
+    options: [
+      { id: "cctv", label: "CCTV camera", assetIndex: 0 },
+      { id: "badge", label: "Employee ID badge", assetIndex: 1 },
+      { id: "door", label: "Locked security door", assetIndex: 2 },
+      { id: "record", label: "Access record", assetIndex: 3, correct: true },
+    ],
+    answer: "D — THE ACCESS AUTHORISATION RECORD",
+    hint: "Which one is a decision, not a device?",
+    insight:
+      "Authorisation determines permission. The badge says who you are, the camera watches and the door enforces — but only the approved record decides who may enter.",
+    imageAssets: [
+      "/media/puzzles/security/s56-cctv.webp",
+      "/media/puzzles/security/s56-id-badge.webp",
+      "/media/puzzles/security/s56-locked-door.webp",
+      "/media/puzzles/security/s56-access-record.webp",
+    ],
+    revealAnimation: "highlight",
+  },
   {
     id: 54,
-    boxNumber: 29,
+    boxNumber: 35,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -521,7 +733,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 30,
-    boxNumber: 30,
+    boxNumber: 36,
     type: "picture-word",
     categoryLabel: "PICTURE THIS!",
     prompt: "Say the picture out loud, then add the word",
@@ -542,7 +754,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 31,
-    boxNumber: 31,
+    boxNumber: 37,
     type: "picture-combo",
     categoryLabel: "PUT IT TOGETHER!",
     prompt: "Combine the pictures into one phrase",
@@ -563,7 +775,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 32,
-    boxNumber: 32,
+    boxNumber: 38,
     type: "emoji",
     categoryLabel: "EMOJI DECODE!",
     prompt: "Decode this into a familiar saying",
@@ -584,9 +796,42 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "fade",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 67,
+    boxNumber: 39,
+    type: "clickable",
+    interaction: "sequence",
+    categoryLabel: "THE VISITOR'S SHORTCUT",
+    category: "Security Awareness",
+    prompt: "Put this site's visitor check-in steps in order.",
+    scenario:
+      "A visitor nobody at reception recognises arrives for a meeting. Each step needs the one before it. Tap the cards in order, 1 to 4.",
+    // Listed in the RIGHT order; the game shows them shuffled. Each step is
+    // worded so it depends on the one before — the authorisation check matches
+    // the ID to an approved visit, so it cannot come first — which makes this
+    // order the only defensible one even though sites differ in the detail.
+    options: [
+      { id: "identity", label: "Check their photo ID", assetIndex: 0 },
+      { id: "authorisation", label: "Confirm that ID matches an approved visit", assetIndex: 1 },
+      { id: "registration", label: "Sign them in and issue a visitor badge", assetIndex: 2 },
+      { id: "escort", label: "Hand them to their escort", assetIndex: 3 },
+    ],
+    answer: "IDENTITY → AUTHORISATION → REGISTRATION → ESCORT",
+    hint: "What does each step need to be done already?",
+    insight:
+      "You can only match someone to an approved visit once you have seen their ID, you only sign in and badge an approved visitor, and only a badged visitor is escorted through. Sites differ in the detail — follow yours — but none lets an unchecked person in.",
+    imageAssets: [
+      "/media/puzzles/security/s57-step-identity.webp",
+      "/media/puzzles/security/s57-step-authorisation.webp",
+      "/media/puzzles/security/s57-step-registration.webp",
+      "/media/puzzles/security/s57-step-escort.webp",
+    ],
+    revealAnimation: "highlight",
+  },
   {
     id: 55,
-    boxNumber: 33,
+    boxNumber: 40,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -600,7 +845,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 34,
-    boxNumber: 34,
+    boxNumber: 41,
     type: "zoom",
     categoryLabel: "ZOOM IN!",
     prompt: "What is this? Zoom out for more clues",
@@ -612,7 +857,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 35,
-    boxNumber: 35,
+    boxNumber: 42,
     type: "odd-one-out",
     categoryLabel: "ODD ONE OUT!",
     prompt: "Which behaviour does NOT build trust?",
@@ -631,7 +876,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 56,
-    boxNumber: 36,
+    boxNumber: 43,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -647,7 +892,7 @@ export const PUZZLES: Puzzle[] = [
   // ================================================================ ROUND 5
   {
     id: 37,
-    boxNumber: 37,
+    boxNumber: 44,
     type: "scramble",
     categoryLabel: "SCRAMBLE IT!",
     prompt: "Unscramble this word",
@@ -660,7 +905,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 38,
-    boxNumber: 38,
+    boxNumber: 45,
     type: "rebus",
     categoryLabel: "REBUS!",
     prompt: "What phrase is hiding here?",
@@ -675,9 +920,35 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "fade",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 68,
+    boxNumber: 46,
+    type: "clickable",
+    interaction: "choice",
+    categoryLabel: "THE BADGE ON THE FLOOR",
+    category: "Security Awareness",
+    prompt: "What should you do?",
+    scenario: "You find an unfamiliar employee access badge near a restricted facility.",
+    sceneAsset: 0,
+    // Every wrong answer is something a helpful colleague might do. None of them
+    // gets the card switched off.
+    options: [
+      { id: "leave", label: "Leave it where it is so the owner can retrace their steps" },
+      { id: "colleague", label: "Give it to someone who works inside to return it" },
+      { id: "chat", label: "Ask in the team chat whether anyone has lost a badge" },
+      { id: "report", label: "Hand it to security or report it as found straight away", correct: true },
+    ],
+    answer: "HAND IT IN OR REPORT IT PROMPTLY",
+    hint: "Who can switch a lost card off?",
+    insight:
+      "Lost credentials must be secured and reported promptly so access can be disabled where necessary. Leaving it, passing it on or asking around all keep a working card in circulation.",
+    imageAssets: ["/media/puzzles/security/s58-badge-floor.webp"],
+    revealAnimation: "highlight",
+  },
   {
     id: 39,
-    boxNumber: 39,
+    boxNumber: 47,
     type: "picture-word",
     categoryLabel: "PICTURE THIS!",
     prompt: "Say the picture out loud, then add the letters",
@@ -698,7 +969,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 57,
-    boxNumber: 40,
+    boxNumber: 48,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -712,7 +983,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 41,
-    boxNumber: 41,
+    boxNumber: 49,
     type: "emoji",
     categoryLabel: "EMOJI DECODE!",
     prompt: "Decode the emojis into a familiar phrase",
@@ -732,7 +1003,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 58,
-    boxNumber: 42,
+    boxNumber: 50,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -746,7 +1017,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 43,
-    boxNumber: 43,
+    boxNumber: 51,
     type: "zoom",
     categoryLabel: "ZOOM IN!",
     prompt: "What is this? Zoom out for more clues",
@@ -756,9 +1027,36 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: ["/media/puzzles/zoom-seedling.svg"],
     revealAnimation: "zoom-out",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 69,
+    boxNumber: 52,
+    type: "clickable",
+    interaction: "choice",
+    categoryLabel: "ACCESS GRANTED… OR NOT?",
+    category: "Security Awareness",
+    prompt: "What does this mean?",
+    scenario:
+      "An employee moved to another department, but their old access card still opens a restricted door.",
+    sceneAsset: 0,
+    // Common beliefs: the system must be right, HR will catch it, someone must
+    // have agreed. The correct card is no longer the only long, careful one.
+    options: [
+      { id: "system", label: "If the card still opens it, they are still allowed in" },
+      { id: "hr", label: "It is fine until HR finishes processing the move" },
+      { id: "manager", label: "Their old manager must have agreed to keep it active" },
+      { id: "technical", label: "The card works, but they may no longer be authorised", correct: true },
+    ],
+    answer: "ACCESS IS NOT THE SAME AS AUTHORISATION",
+    hint: "Just because a door opens…",
+    insight:
+      "Access rights must reflect current job responsibilities and approved permissions. A door that opens proves only that nobody removed the access — if your card opens a door it should not, report it.",
+    imageAssets: ["/media/puzzles/security/s59-old-card.webp"],
+    revealAnimation: "highlight",
+  },
   {
     id: 44,
-    boxNumber: 44,
+    boxNumber: 53,
     type: "connect",
     categoryLabel: "WHAT CONNECTS THEM?",
     prompt: "What do these three have in common?",
@@ -773,7 +1071,7 @@ export const PUZZLES: Puzzle[] = [
   // ================================================================ ROUND 6
   {
     id: 59,
-    boxNumber: 45,
+    boxNumber: 54,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -787,7 +1085,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 46,
-    boxNumber: 46,
+    boxNumber: 55,
     type: "rebus",
     categoryLabel: "REBUS!",
     prompt: "What phrase is hiding here?",
@@ -808,7 +1106,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 60,
-    boxNumber: 47,
+    boxNumber: 56,
     type: "myth-fact",
     categoryLabel: "MYTH OR FACT?",
     category: "Mental Wellbeing",
@@ -822,7 +1120,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 48,
-    boxNumber: 48,
+    boxNumber: 57,
     type: "picture-combo",
     categoryLabel: "PUT IT TOGETHER!",
     prompt: "Combine the pictures into one phrase",
@@ -841,9 +1139,37 @@ export const PUZZLES: Puzzle[] = [
     imageAssets: [],
     revealAnimation: "combine",
   },
+  // Security Awareness (clickable) — see the note at the top of this file.
+  {
+    id: 70,
+    boxNumber: 58,
+    type: "clickable",
+    interaction: "choice",
+    categoryLabel: "THE QR CODE TRAP",
+    category: "Security Awareness",
+    prompt: "What is the safest action before entering personal or company information?",
+    scenario: "This poster has appeared near the lifts.",
+    sceneAsset: 0,
+    sceneZoom: true,
+    sceneFocus: { x: 50, y: 54 },
+    // Each wrong answer is a precaution people really take, and none of them
+    // checks whether the offer is genuine.
+    options: [
+      { id: "url-check", label: "Scan it, and only continue if the web page looks official" },
+      { id: "email-only", label: "Scan it, but enter only your staff email, not your password" },
+      { id: "verify", label: "Confirm it is genuine with HR or IT through a known channel first", correct: true },
+      { id: "personal", label: "Scan it on your personal phone rather than a work device" },
+    ],
+    answer: "VERIFY THROUGH A TRUSTED CHANNEL",
+    hint: "Who could confirm this offer is real?",
+    insight:
+      "QR codes can lead to fraudulent websites, and a fake page can look official on any phone. Verify legitimacy through an approved channel before entering sensitive information.",
+    imageAssets: ["/media/puzzles/security/s60-qr-poster.webp"],
+    revealAnimation: "highlight",
+  },
   {
     id: 49,
-    boxNumber: 49,
+    boxNumber: 59,
     type: "missing-letters",
     categoryLabel: "FILL THE GAPS!",
     prompt: "Complete the word",
@@ -856,7 +1182,7 @@ export const PUZZLES: Puzzle[] = [
   },
   {
     id: 50,
-    boxNumber: 50,
+    boxNumber: 60,
     type: "scramble",
     categoryLabel: "SCRAMBLE IT!",
     prompt: "Unscramble this word",

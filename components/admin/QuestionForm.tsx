@@ -18,6 +18,7 @@ import {
   type PuzzleType,
 } from "@/lib/types";
 
+import ClickableEditor, { seedInteraction } from "./editors/ClickableEditor";
 import ConnectEditor from "./editors/ConnectEditor";
 import MissingLettersEditor from "./editors/MissingLettersEditor";
 import MythFactEditor from "./editors/MythFactEditor";
@@ -84,6 +85,8 @@ function SubEditor({ draft, issues, onChange }: SubEditorProps) {
       return <MythFactEditor draft={draft} issues={issues} onChange={onChange} />;
     case "zoom":
       return <ZoomEditor draft={draft} issues={issues} onChange={onChange} />;
+    case "clickable":
+      return <ClickableEditor draft={draft} issues={issues} onChange={onChange} />;
     default:
       return <RowsEditor draft={draft} issues={issues} onChange={onChange} />;
   }
@@ -107,6 +110,8 @@ export default function QuestionForm({
     common.find((i) => i.field === field && i.severity === "error")?.message;
   const warnOn = (field: string) =>
     common.find((i) => i.field === field && i.severity === "warning")?.message;
+  /** Types whose explanation is part of the reveal, so it is required. */
+  const explained = draft.type === "myth-fact" || draft.type === "clickable";
 
   /**
    * Swap the type: drop the payload that belonged to the old one, and seed the
@@ -129,6 +134,14 @@ export default function QuestionForm({
       oddOneOutId: undefined,
       clues: undefined,
       rows: undefined,
+      interaction: undefined,
+      scenario: undefined,
+      sceneAsset: undefined,
+      sceneZoom: undefined,
+      sceneFocus: undefined,
+      options: undefined,
+      hotspots: undefined,
+      selectCount: undefined,
     };
 
     if (wasDefaultLabel) patch.categoryLabel = DEFAULT_CATEGORY_LABEL[next];
@@ -144,6 +157,7 @@ export default function QuestionForm({
       patch.answer = "";
     }
     if (usesRows(next)) patch.rows = [{ parts: [{ text: "", size: "xl" }] }];
+    if (next === "clickable") Object.assign(patch, seedInteraction("choice"));
 
     onChange(patch);
   };
@@ -238,14 +252,16 @@ export default function QuestionForm({
           </Field>
 
           <Field
-            label={draft.type === "myth-fact" ? "Explanation" : "Insight (optional)"}
-            required={draft.type === "myth-fact"}
+            label={explained ? "Explanation" : "Insight (optional)"}
+            required={explained}
             error={err("insight")}
             hint={
               warnOn("insight") ??
               (draft.type === "myth-fact"
                 ? "Shown in large text beneath the cards on the reveal."
-                : "A line the facilitator can read out after the reveal.")
+                : draft.type === "clickable"
+                  ? "Shown in large text with the answer after Submit."
+                  : "A line the facilitator can read out after the reveal.")
             }
           >
             {(props) => (

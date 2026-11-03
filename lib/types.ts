@@ -6,7 +6,7 @@
  * paths only ever come from `imageAssets`, never from a component.
  */
 
-/** The ten supported puzzle types. (Wild Card was removed by request.) */
+/** The eleven supported puzzle types. (Wild Card was removed by request.) */
 export type PuzzleType =
   | "rebus"
   | "scramble"
@@ -17,7 +17,8 @@ export type PuzzleType =
   | "zoom"
   | "odd-one-out"
   | "connect"
-  | "myth-fact";
+  | "myth-fact"
+  | "clickable";
 
 export const PUZZLE_TYPES: PuzzleType[] = [
   "rebus",
@@ -30,7 +31,69 @@ export const PUZZLE_TYPES: PuzzleType[] = [
   "odd-one-out",
   "connect",
   "myth-fact",
+  "clickable",
 ];
+
+/**
+ * How a clickable challenge is answered. Every other type is answered out loud;
+ * these are answered by the facilitator clicking what the room chooses.
+ *
+ *   choice    pick option card(s), optionally after a three-stage zoom
+ *   hotspot   click places on the scene image (a person, an object, a detail)
+ *   sequence  click the option cards in the right order
+ */
+export type ClickInteraction = "choice" | "hotspot" | "sequence";
+
+export const CLICK_INTERACTIONS: ClickInteraction[] = ["choice", "hotspot", "sequence"];
+
+/** An answer card for a choice or sequence challenge. */
+export interface ClickOption {
+  id: string;
+  label: string;
+  /** A smaller supporting line under the label. */
+  detail?: string;
+  /** Index into the puzzle's `imageAssets` array for a photo on the card. */
+  assetIndex?: number;
+  /** choice only: this option is (one of) the right answers. */
+  correct?: boolean;
+}
+
+/** A rectangle on the scene image, in percent of its width and height. */
+export interface HotspotArea {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/**
+ * Something to find on a hotspot challenge's scene. A click anywhere inside any
+ * of its areas finds it. Its label is shown only after the answer is submitted.
+ */
+export interface Hotspot {
+  id: string;
+  label: string;
+  areas: HotspotArea[];
+  /** Which area carries the label after submission. Defaults to the first. */
+  labelArea?: number;
+  /**
+   * Which side of that area the label sits on. Defaults to below (above near
+   * the bottom edge); set it to keep the label off text the room must read.
+   */
+  labelSide?: HotspotLabelSide;
+}
+
+export type HotspotLabelSide = "below" | "above" | "left" | "right";
+
+export const HOTSPOT_LABEL_SIDES: HotspotLabelSide[] = ["below", "above", "left", "right"];
+
+/** What the facilitator has clicked so far on a clickable challenge. */
+export interface ClickResponse {
+  /** choice: the selected option ids. sequence: the ids in the order clicked. */
+  picks: string[];
+  /** hotspot: the click positions, in percent of the scene image. */
+  marks: { x: number; y: number }[];
+}
 
 /** Admin-facing difficulty banding. Purely for filtering — the game ignores it. */
 export type PuzzleDifficulty = "easy" | "medium" | "hard";
@@ -139,6 +202,36 @@ export interface Puzzle {
    * `insight` is the required explanation.
    */
   clues?: string[];
+
+  /**
+   * clickable: how the room answers. `answer` is the short answer shown after
+   * submission and `insight` the required explanation.
+   */
+  interaction?: ClickInteraction;
+  /** clickable: a line of context shown above the challenge, e.g. the situation to judge. */
+  scenario?: string;
+  /**
+   * clickable: index into `imageAssets` of the scene photo. Hotspot and zoomed
+   * challenges need one; choice and sequence cards may instead carry their own
+   * photos through `assetIndex`.
+   */
+  sceneAsset?: number;
+  /** clickable choice / sequence: the cards. A sequence lists them in the right order. */
+  options?: ClickOption[];
+  /** clickable hotspot: the things to find on the scene. */
+  hotspots?: Hotspot[];
+  /**
+   * clickable: how many picks make a complete answer. choice defaults to 1;
+   * hotspot defaults to one click per hotspot.
+   */
+  selectCount?: number;
+  /**
+   * clickable choice: the scene starts zoomed in and the facilitator zooms out
+   * in three stages; the option cards appear after the last one.
+   */
+  sceneZoom?: boolean;
+  /** clickable: the point the scene zooms in on, in percent. Defaults to the centre. */
+  sceneFocus?: { x: number; y: number };
 }
 
 /**
@@ -180,8 +273,12 @@ export interface MascotClip {
 
 export type Screen = "boxes" | "opening" | "puzzle" | "results";
 
-/** Where the puzzle screen is in its facilitator-driven flow. */
-export type PuzzleStage = "solving" | "revealed" | "judged";
+/**
+ * Where the puzzle screen is in its facilitator-driven flow. A clickable
+ * challenge goes from solving to "checking" (a short suspense beat after Submit)
+ * and then straight to judged, because the clicks already decide the outcome.
+ */
+export type PuzzleStage = "solving" | "checking" | "revealed" | "judged";
 
 export type Judgement = "correct" | "wrong" | "skipped";
 

@@ -8,6 +8,7 @@
  *    rearrange animation would be impossible)
  *  - a masked value that does not line up with its answer
  *  - duplicate/missing box numbers, missing hints, unreferenced image files
+ *  - a clickable challenge that cannot be answered correctly
  */
 import { readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -24,7 +25,7 @@ const body = src
   .concat("\nreturn PUZZLES;");
 const puzzles = new Function(body)();
 
-const TOTAL_BOXES = 50;
+const TOTAL_BOXES = 60;
 
 // Wild Card was removed by request — it must not come back in through data.
 const TYPES = [
@@ -38,6 +39,7 @@ const TYPES = [
   "odd-one-out",
   "connect",
   "myth-fact",
+  "clickable",
 ];
 
 const errors = [];
@@ -143,6 +145,8 @@ for (const p of puzzles) {
     if (!p.insight?.trim()) errors.push(`${tag}: myth-fact needs an explanation in insight`);
   }
 
+  if (p.type === "clickable") checkClickable(p, tag);
+
   if (p.challenge !== undefined)
     errors.push(`${tag}: "challenge" is a removed Wild Card field`);
 
@@ -168,6 +172,64 @@ for (const p of puzzles) {
         errors.push(`${tag}: assetIndex ${part.assetIndex} has no imageAsset`);
       }
     }
+  }
+}
+
+/**
+ * Clickable challenges: the clicks decide the score, so the data must make a
+ * right answer possible. Mirrors the clickable rules in lib/puzzleValidation.ts.
+ */
+function checkClickable(p, tag) {
+  const assets = p.imageAssets ?? [];
+  const inRange = (i) => Number.isInteger(i) && i >= 0 && i < assets.length;
+  if (!["choice", "hotspot", "sequence"].includes(p.interaction)) {
+    errors.push(`${tag}: interaction must be choice, hotspot or sequence`);
+    return;
+  }
+  if (!p.insight?.trim()) errors.push(`${tag}: clickable needs an explanation in insight`);
+  const needsScene = p.interaction === "hotspot" || (p.interaction === "choice" && p.sceneZoom);
+  if (p.sceneAsset !== undefined && !inRange(p.sceneAsset))
+    errors.push(`${tag}: sceneAsset ${p.sceneAsset} has no imageAsset`);
+  if (needsScene && !inRange(p.sceneAsset ?? 0)) errors.push(`${tag}: needs a scene photo`);
+
+  if (p.interaction === "hotspot") {
+    const spots = p.hotspots ?? [];
+    if (!spots.length) errors.push(`${tag}: hotspot challenge has no hotspots`);
+    const ids = new Set();
+    for (const h of spots) {
+      if (!h.id || ids.has(h.id)) errors.push(`${tag}: hotspot ids must be unique and non-empty`);
+      ids.add(h.id);
+      if (!h.label?.trim()) errors.push(`${tag}: hotspot "${h.id}" has no label`);
+      if (!h.areas?.length) errors.push(`${tag}: hotspot "${h.id}" has no areas`);
+      if (h.labelArea !== undefined && !(h.labelArea >= 0 && h.labelArea < (h.areas?.length ?? 0)))
+        errors.push(`${tag}: hotspot "${h.id}" labelArea ${h.labelArea} has no area`);
+      if (h.labelSide !== undefined && !["below", "above", "left", "right"].includes(h.labelSide))
+        errors.push(`${tag}: hotspot "${h.id}" labelSide must be below, above, left or right`);
+      for (const a of h.areas ?? []) {
+        if (!(a.x >= 0 && a.y >= 0 && a.w > 0 && a.h > 0 && a.x + a.w <= 100.5 && a.y + a.h <= 100.5))
+          errors.push(`${tag}: hotspot "${h.id}" has an area outside the photo`);
+      }
+    }
+    const need = p.selectCount ?? spots.length;
+    if (!(need >= 1 && need <= spots.length))
+      errors.push(`${tag}: selectCount ${need} must be between 1 and ${spots.length}`);
+    return;
+  }
+
+  const options = p.options ?? [];
+  if (options.length < 2 || options.length > 6) errors.push(`${tag}: needs 2 to 6 options`);
+  const ids = new Set();
+  for (const o of options) {
+    if (!o.id || ids.has(o.id)) errors.push(`${tag}: option ids must be unique and non-empty`);
+    ids.add(o.id);
+    if (!o.label?.trim()) errors.push(`${tag}: option "${o.id}" has no label`);
+    if (o.assetIndex !== undefined && !inRange(o.assetIndex))
+      errors.push(`${tag}: option "${o.id}" assetIndex ${o.assetIndex} has no imageAsset`);
+  }
+  if (p.interaction === "choice") {
+    const correct = options.filter((o) => o.correct).length;
+    const need = p.selectCount ?? 1;
+    if (correct < need) errors.push(`${tag}: ${need} pick(s) needed but ${correct} option(s) marked correct`);
   }
 }
 

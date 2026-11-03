@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import ClickableCanvas from "./ClickableCanvas";
+import { EMPTY_RESPONSE } from "@/lib/clickable";
 import type { Puzzle, PuzzlePart, PuzzleRow } from "@/lib/types";
 
 /**
@@ -18,6 +20,7 @@ import type { Puzzle, PuzzlePart, PuzzleRow } from "@/lib/types";
  *   odd-one-out      the odd one is highlighted, the rest dim away
  *   rebus / connect  the hidden reading fades into view
  *   myth-fact        the right card turns green and the other dims away
+ *   clickable        see ClickableCanvas.tsx — answered by clicking, not aloud
  *
  * Images are only ever read from `puzzle.imageAssets` via `assetIndex` — no
  * component in this file knows a file path.
@@ -44,6 +47,17 @@ export default function PuzzleCanvas(props: CanvasProps) {
       return <Connect {...props} />;
     case "myth-fact":
       return <MythFact {...props} />;
+    case "clickable":
+      // Interactive callers render ClickableCanvas themselves, with a response
+      // to draw. Here it is the read-only view.
+      return (
+        <ClickableCanvas
+          puzzle={props.puzzle}
+          response={EMPTY_RESPONSE}
+          phase={props.revealed ? "revealed" : "solving"}
+          zoomLevel={props.zoomLevel}
+        />
+      );
     case "rebus":
     case "picture-word":
     case "picture-combo":

@@ -1,0 +1,1451 @@
+{
+  "format": "crack-the-box/questions",
+  "version": 1,
+  "exportedAt": "2026-01-01T00:00:00.000Z",
+  "count": 50,
+  "questions": [
+    {
+      "id": 1,
+      "boxNumber": 1,
+      "type": "scramble",
+      "categoryLabel": "SCRAMBLE IT!",
+      "prompt": "Unscramble this word",
+      "scrambledValue": "WROGHT",
+      "answer": "GROWTH",
+      "hint": "The whole point of stepping outside your comfort zone.",
+      "insight": "Nobody ever grew inside their comfort zone.",
+      "imageAssets": [],
+      "revealAnimation": "rearrange",
+      "uid": "seed-1",
+      "active": true,
+      "order": 0,
+      "category": "Scramble It",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 2,
+      "boxNumber": 2,
+      "type": "rebus",
+      "categoryLabel": "REBUS!",
+      "prompt": "What word or phrase is hiding here?",
+      "rows": [
+        {
+          "parts": [
+            {
+              "text": "STAND",
+              "size": "xl"
+            }
+          ]
+        },
+        {
+          "divider": true
+        },
+        {
+          "parts": [
+            {
+              "text": "I",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "I UNDERSTAND",
+      "hint": "One word is sitting UNDER the other one.",
+      "insight": "Listening to reply is easy. Listening to understand is the work.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-2",
+      "active": true,
+      "order": 1,
+      "category": "Rebus",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 3,
+      "boxNumber": 3,
+      "type": "picture-word",
+      "categoryLabel": "PICTURE THIS!",
+      "prompt": "Read the picture, then the word",
+      "rows": [
+        {
+          "parts": [
+            {
+              "text": "FEED",
+              "size": "xl"
+            },
+            {
+              "emoji": "⬅️",
+              "size": "xl",
+              "caption": "BACK"
+            }
+          ]
+        }
+      ],
+      "answer": "FEEDBACK",
+      "hint": "A gift — when it is given well.",
+      "insight": "Wrap it with care. Open it with courage.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-3",
+      "active": true,
+      "order": 2,
+      "category": "Picture This",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 4,
+      "boxNumber": 4,
+      "type": "picture-combo",
+      "categoryLabel": "PUT IT TOGETHER!",
+      "prompt": "Combine the pictures into one word",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "👥",
+              "size": "xl",
+              "caption": "TEAM"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "emoji": "🛠️",
+              "size": "xl",
+              "caption": "WORK"
+            }
+          ]
+        }
+      ],
+      "answer": "TEAMWORK",
+      "hint": "It makes the dream work.",
+      "insight": "None of us is as smart as all of us.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-4",
+      "active": true,
+      "order": 3,
+      "category": "Put It Together",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 5,
+      "boxNumber": 5,
+      "type": "emoji",
+      "categoryLabel": "EMOJI DECODE!",
+      "prompt": "Decode the emojis into one word",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🧠",
+              "size": "xl"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "emoji": "⛈️",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "BRAINSTORM",
+      "hint": "How a room full of ideas gets started.",
+      "insight": "The best idea in the room rarely arrives first.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-5",
+      "active": true,
+      "order": 4,
+      "category": "Emoji Decode",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 6,
+      "boxNumber": 6,
+      "type": "missing-letters",
+      "categoryLabel": "FILL THE GAPS!",
+      "prompt": "Complete the word",
+      "maskedValue": "L E _ D E _ S H _ P",
+      "answer": "LEADERSHIP",
+      "hint": "Not a title. A behaviour.",
+      "insight": "It is not the chair you sit in — it is what you do when nobody asked.",
+      "imageAssets": [],
+      "revealAnimation": "fill-letters",
+      "uid": "seed-6",
+      "active": true,
+      "order": 5,
+      "category": "Fill The Gaps",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 7,
+      "boxNumber": 7,
+      "type": "zoom",
+      "categoryLabel": "ZOOM IN!",
+      "prompt": "What is this? Zoom out for more clues",
+      "answer": "A LIGHT BULB",
+      "hint": "It switches on the moment inspiration strikes.",
+      "insight": "Innovation is curiosity that refused to sit still.",
+      "imageAssets": [
+        "/media/puzzles/zoom-lightbulb.svg"
+      ],
+      "revealAnimation": "zoom-out",
+      "uid": "seed-7",
+      "active": true,
+      "order": 6,
+      "category": "Zoom In",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 8,
+      "boxNumber": 8,
+      "type": "odd-one-out",
+      "categoryLabel": "ODD ONE OUT!",
+      "prompt": "Which one does NOT belong?",
+      "choices": [
+        {
+          "id": "a",
+          "label": "LISTENING",
+          "emoji": "👂"
+        },
+        {
+          "id": "b",
+          "label": "ASKING",
+          "emoji": "❓"
+        },
+        {
+          "id": "c",
+          "label": "INTERRUPTING",
+          "emoji": "✋"
+        },
+        {
+          "id": "d",
+          "label": "SUMMARISING",
+          "emoji": "📝"
+        }
+      ],
+      "oddOneOutId": "c",
+      "answer": "INTERRUPTING",
+      "hint": "Three of them open a conversation. One shuts it down.",
+      "insight": "The other three are listening skills. This one is the opposite.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-8",
+      "active": true,
+      "order": 7,
+      "category": "Odd One Out",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 9,
+      "boxNumber": 9,
+      "type": "connect",
+      "categoryLabel": "WHAT CONNECTS THEM?",
+      "prompt": "What do these three have in common?",
+      "clues": [
+        "A TELESCOPE",
+        "A MOUNTAIN TOP",
+        "SOMEONE ELSE'S CHAIR"
+      ],
+      "answer": "PERSPECTIVE",
+      "hint": "Each one changes what you are able to see.",
+      "insight": "Same room. Different chair. Completely different view.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-9",
+      "active": true,
+      "order": 8,
+      "category": "What Connects Them",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 10,
+      "boxNumber": 10,
+      "type": "scramble",
+      "categoryLabel": "SCRAMBLE IT!",
+      "prompt": "Unscramble this word",
+      "scrambledValue": "YITSUCRIO",
+      "answer": "CURIOSITY",
+      "hint": "The spark behind every great question.",
+      "insight": "The people who learn fastest are the ones still asking why.",
+      "imageAssets": [],
+      "revealAnimation": "rearrange",
+      "uid": "seed-10",
+      "active": true,
+      "order": 9,
+      "category": "Scramble It",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 11,
+      "boxNumber": 11,
+      "type": "rebus",
+      "categoryLabel": "REBUS!",
+      "prompt": "What phrase is hiding here?",
+      "rows": [
+        {
+          "parts": [
+            {
+              "text": "THINK",
+              "size": "xl"
+            },
+            {
+              "boxed": true,
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "THINK OUTSIDE THE BOX",
+      "hint": "Look at exactly where the word is sitting.",
+      "insight": "You are playing a game about boxes. Now think outside one.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-11",
+      "active": true,
+      "order": 10,
+      "category": "Rebus",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 12,
+      "boxNumber": 12,
+      "type": "picture-word",
+      "categoryLabel": "PICTURE THIS!",
+      "prompt": "Say the picture out loud, then add the word",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🐝",
+              "size": "xl",
+              "caption": "BEE"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "text": "LEAF",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "BELIEF",
+      "hint": "Say the two sounds together — quickly.",
+      "insight": "Teams do not run on strategy alone. They run on belief in each other.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-12",
+      "active": true,
+      "order": 11,
+      "category": "Picture This",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 51,
+      "boxNumber": 13,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "Mental health problems are a sign of personal weakness."
+      ],
+      "answer": "MYTH",
+      "hint": "Think about what really causes them.",
+      "insight": "They have nothing to do with being weak or lazy. Biological, psychological and social factors all play a part.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-51",
+      "active": true,
+      "order": 12,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 14,
+      "boxNumber": 14,
+      "type": "emoji",
+      "categoryLabel": "EMOJI DECODE!",
+      "prompt": "Decode the emojis into a familiar phrase",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🚶",
+              "size": "xl"
+            },
+            {
+              "emoji": "👟",
+              "size": "xl"
+            },
+            {
+              "emoji": "🧑",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "WALK IN SOMEONE ELSE'S SHOES",
+      "hint": "Five words. It is the definition of empathy.",
+      "insight": "You cannot lead people you have never tried to understand.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-14",
+      "active": true,
+      "order": 13,
+      "category": "Emoji Decode",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 15,
+      "boxNumber": 15,
+      "type": "missing-letters",
+      "categoryLabel": "FILL THE GAPS!",
+      "prompt": "Complete the word",
+      "maskedValue": "C O _ _ A B O R A _ I O N",
+      "answer": "COLLABORATION",
+      "hint": "Thirteen letters. Always better than working alone.",
+      "insight": "Alone we go faster. Together we go further.",
+      "imageAssets": [],
+      "revealAnimation": "fill-letters",
+      "uid": "seed-15",
+      "active": true,
+      "order": 14,
+      "category": "Fill The Gaps",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 16,
+      "boxNumber": 16,
+      "type": "zoom",
+      "categoryLabel": "ZOOM IN!",
+      "prompt": "What is this? Zoom out for more clues",
+      "answer": "A COMPASS",
+      "hint": "It never tells you the distance — only the direction.",
+      "insight": "A team without direction just moves. A team with one travels.",
+      "imageAssets": [
+        "/media/puzzles/zoom-compass.svg"
+      ],
+      "revealAnimation": "zoom-out",
+      "uid": "seed-16",
+      "active": true,
+      "order": 15,
+      "category": "Zoom In",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 52,
+      "boxNumber": 17,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "A little stress can help you focus and get things done."
+      ],
+      "answer": "FACT",
+      "hint": "Think about a deadline.",
+      "insight": "Some stress can motivate us. If it's constant or affecting daily life, it's time to seek support.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-52",
+      "active": true,
+      "order": 16,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 18,
+      "boxNumber": 18,
+      "type": "connect",
+      "categoryLabel": "WHAT CONNECTS THEM?",
+      "prompt": "What do these three have in common?",
+      "clues": [
+        "A RUBBER BAND",
+        "BAMBOO IN A STORM",
+        "A BOXER GETTING BACK UP"
+      ],
+      "answer": "RESILIENCE",
+      "hint": "Each one bends — and none of them break.",
+      "insight": "Bamboo survives the storm precisely because it bends.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-18",
+      "active": true,
+      "order": 17,
+      "category": "What Connects Them",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 19,
+      "boxNumber": 19,
+      "type": "scramble",
+      "categoryLabel": "SCRAMBLE IT!",
+      "prompt": "Unscramble this word",
+      "scrambledValue": "SILENT",
+      "answer": "LISTEN",
+      "hint": "The scrambled word is a clue in itself. Same six letters.",
+      "insight": "LISTEN and SILENT use the very same letters. That is not a coincidence.",
+      "imageAssets": [],
+      "revealAnimation": "rearrange",
+      "uid": "seed-19",
+      "active": true,
+      "order": 18,
+      "category": "Scramble It",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 20,
+      "boxNumber": 20,
+      "type": "rebus",
+      "categoryLabel": "REBUS!",
+      "prompt": "What phrase is hiding here?",
+      "rows": [
+        {
+          "parts": [
+            {
+              "text": "TEAM",
+              "size": "xl"
+            },
+            {
+              "text": "I",
+              "size": "xl",
+              "strike": true
+            }
+          ]
+        }
+      ],
+      "answer": "THERE IS NO I IN TEAM",
+      "hint": "One letter has been crossed out for a reason.",
+      "insight": "There is no I in TEAM — but there is one in WIN. Both matter.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-20",
+      "active": true,
+      "order": 19,
+      "category": "Rebus",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 21,
+      "boxNumber": 21,
+      "type": "picture-word",
+      "categoryLabel": "PICTURE THIS!",
+      "prompt": "Say the picture out loud, then add the letters",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "👁️",
+              "size": "xl",
+              "caption": "EYE"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "text": "DEA",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "IDEA",
+      "hint": "The picture is a letter, not a word.",
+      "insight": "Every innovation on earth started as somebody's half-formed idea.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-21",
+      "active": true,
+      "order": 20,
+      "category": "Picture This",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 22,
+      "boxNumber": 22,
+      "type": "picture-combo",
+      "categoryLabel": "PUT IT TOGETHER!",
+      "prompt": "Combine the pictures into one word",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🧊",
+              "size": "xl",
+              "caption": "ICE"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "emoji": "🔨",
+              "size": "xl",
+              "caption": "BREAKER"
+            }
+          ]
+        }
+      ],
+      "answer": "ICEBREAKER",
+      "hint": "Every good workshop starts with one.",
+      "insight": "The fastest way into a room is to break the ice, not the silence.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-22",
+      "active": true,
+      "order": 21,
+      "category": "Put It Together",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 23,
+      "boxNumber": 23,
+      "type": "emoji",
+      "categoryLabel": "EMOJI DECODE!",
+      "prompt": "Decode the emojis into a familiar phrase",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🐘",
+              "size": "xl"
+            },
+            {
+              "emoji": "🏠",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "THE ELEPHANT IN THE ROOM",
+      "hint": "The thing everybody can see, and nobody will name.",
+      "insight": "Every team has one. The best teams say it out loud.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-23",
+      "active": true,
+      "order": 22,
+      "category": "Emoji Decode",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 53,
+      "boxNumber": 24,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "People with mental health conditions can't handle demanding jobs."
+      ],
+      "answer": "MYTH",
+      "hint": "Look at the word \"can't\".",
+      "insight": "Many people can be just as productive as their colleagues, especially when their condition is well managed.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-53",
+      "active": true,
+      "order": 23,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 25,
+      "boxNumber": 25,
+      "type": "zoom",
+      "categoryLabel": "ZOOM IN!",
+      "prompt": "What is this? Zoom out for more clues",
+      "answer": "A KEY",
+      "hint": "Small, ordinary — and completely useless until it meets the right lock.",
+      "insight": "Potential is a key. Opportunity is the lock.",
+      "imageAssets": [
+        "/media/puzzles/zoom-key.svg"
+      ],
+      "revealAnimation": "zoom-out",
+      "uid": "seed-25",
+      "active": true,
+      "order": 24,
+      "category": "Zoom In",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 26,
+      "boxNumber": 26,
+      "type": "odd-one-out",
+      "categoryLabel": "ODD ONE OUT!",
+      "prompt": "Which one does NOT belong?",
+      "choices": [
+        {
+          "id": "a",
+          "label": "COACHING",
+          "emoji": "🧭"
+        },
+        {
+          "id": "b",
+          "label": "DELEGATING",
+          "emoji": "🙌"
+        },
+        {
+          "id": "c",
+          "label": "MICROMANAGING",
+          "emoji": "🔬"
+        },
+        {
+          "id": "d",
+          "label": "SETTING DIRECTION",
+          "emoji": "🗺️"
+        }
+      ],
+      "oddOneOutId": "c",
+      "answer": "MICROMANAGING",
+      "hint": "Three of them grow people. One of them shrinks them.",
+      "insight": "Trust is the only one of these you cannot fake.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-26",
+      "active": true,
+      "order": 25,
+      "category": "Odd One Out",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 27,
+      "boxNumber": 27,
+      "type": "connect",
+      "categoryLabel": "WHAT CONNECTS THEM?",
+      "prompt": "What do these three have in common?",
+      "clues": [
+        "A PIANIST",
+        "A SURGEON",
+        "AN OLYMPIAN"
+      ],
+      "answer": "PRACTICE",
+      "hint": "None of them were born able to do it.",
+      "insight": "Nobody is a natural. They were all a beginner who kept going.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-27",
+      "active": true,
+      "order": 26,
+      "category": "What Connects Them",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 28,
+      "boxNumber": 28,
+      "type": "scramble",
+      "categoryLabel": "SCRAMBLE IT!",
+      "prompt": "Unscramble this word",
+      "scrambledValue": "SPECTRE",
+      "answer": "RESPECT",
+      "hint": "Everyone wants it. It is only ever earned.",
+      "insight": "It costs nothing to give, and everything to lose.",
+      "imageAssets": [],
+      "revealAnimation": "rearrange",
+      "uid": "seed-28",
+      "active": true,
+      "order": 27,
+      "category": "Scramble It",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 54,
+      "boxNumber": 29,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "Regular physical activity can lift your mood."
+      ],
+      "answer": "FACT",
+      "hint": "Think about how you feel after a walk.",
+      "insight": "Being active can boost mood, self-esteem, sleep and energy. You don't need a gym to start.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-54",
+      "active": true,
+      "order": 28,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 30,
+      "boxNumber": 30,
+      "type": "picture-word",
+      "categoryLabel": "PICTURE THIS!",
+      "prompt": "Say the picture out loud, then add the word",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🧢",
+              "size": "xl",
+              "caption": "CAP"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "text": "ABLE",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "CAPABLE",
+      "hint": "Say the two parts together. It describes everyone in this room.",
+      "insight": "People rise to the level of what you believe they are capable of.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-30",
+      "active": true,
+      "order": 29,
+      "category": "Picture This",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 31,
+      "boxNumber": 31,
+      "type": "picture-combo",
+      "categoryLabel": "PUT IT TOGETHER!",
+      "prompt": "Combine the pictures into one phrase",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🌱",
+              "size": "xl",
+              "caption": "GROWTH"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "emoji": "🧠",
+              "size": "xl",
+              "caption": "MINDSET"
+            }
+          ]
+        }
+      ],
+      "answer": "GROWTH MINDSET",
+      "hint": "Two words. It is the belief that ability can be built.",
+      "insight": "\"I cannot do this\" — add one word: \"yet\".",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-31",
+      "active": true,
+      "order": 30,
+      "category": "Put It Together",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 32,
+      "boxNumber": 32,
+      "type": "emoji",
+      "categoryLabel": "EMOJI DECODE!",
+      "prompt": "Decode this into a familiar saying",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "2️⃣",
+              "size": "xl"
+            },
+            {
+              "emoji": "🧠",
+              "size": "xl"
+            },
+            {
+              "text": ">",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "emoji": "1️⃣",
+              "size": "xl"
+            },
+            {
+              "emoji": "🧠",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "TWO HEADS ARE BETTER THAN ONE",
+      "hint": "Read the maths out loud.",
+      "insight": "The point of a meeting is the second head. Use it.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-32",
+      "active": true,
+      "order": 31,
+      "category": "Emoji Decode",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 55,
+      "boxNumber": 33,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "People with mental health conditions are usually violent."
+      ],
+      "answer": "MYTH",
+      "hint": "Look at the word \"usually\".",
+      "insight": "Most are no more likely to be violent than anyone else. People with severe mental illness are far more likely to be victims of violent crime.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-55",
+      "active": true,
+      "order": 32,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 34,
+      "boxNumber": 34,
+      "type": "zoom",
+      "categoryLabel": "ZOOM IN!",
+      "prompt": "What is this? Zoom out for more clues",
+      "answer": "A JIGSAW PUZZLE PIECE",
+      "hint": "On its own it means nothing. It only makes sense next to the others.",
+      "insight": "Every single person here is one of these. So is the person beside you.",
+      "imageAssets": [
+        "/media/puzzles/zoom-puzzle-piece.svg"
+      ],
+      "revealAnimation": "zoom-out",
+      "uid": "seed-34",
+      "active": true,
+      "order": 33,
+      "category": "Zoom In",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 35,
+      "boxNumber": 35,
+      "type": "odd-one-out",
+      "categoryLabel": "ODD ONE OUT!",
+      "prompt": "Which behaviour does NOT build trust?",
+      "choices": [
+        {
+          "id": "a",
+          "label": "KEEPING PROMISES",
+          "emoji": "🤝"
+        },
+        {
+          "id": "b",
+          "label": "OWNING MISTAKES",
+          "emoji": "🛡️"
+        },
+        {
+          "id": "c",
+          "label": "SAYING WHAT THEY WANT TO HEAR",
+          "emoji": "🎭"
+        },
+        {
+          "id": "d",
+          "label": "BEING TRANSPARENT",
+          "emoji": "🔍"
+        }
+      ],
+      "oddOneOutId": "c",
+      "answer": "SAYING WHAT THEY WANT TO HEAR",
+      "hint": "Three are honest. One is merely comfortable.",
+      "insight": "Comfortable lies feel kind today and cost you everything tomorrow.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-35",
+      "active": true,
+      "order": 34,
+      "category": "Odd One Out",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 56,
+      "boxNumber": 36,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "Once you have a mental health condition, you can never recover."
+      ],
+      "answer": "MYTH",
+      "hint": "Look at the word \"never\".",
+      "insight": "Effective support exists. Many people recover fully or manage their symptoms and live full lives.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-56",
+      "active": true,
+      "order": 35,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 37,
+      "boxNumber": 37,
+      "type": "scramble",
+      "categoryLabel": "SCRAMBLE IT!",
+      "prompt": "Unscramble this word",
+      "scrambledValue": "STRUT",
+      "answer": "TRUST",
+      "hint": "Slow to build. Quick to lose. Five letters.",
+      "insight": "It arrives on foot and leaves on horseback.",
+      "imageAssets": [],
+      "revealAnimation": "rearrange",
+      "uid": "seed-37",
+      "active": true,
+      "order": 36,
+      "category": "Scramble It",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 38,
+      "boxNumber": 38,
+      "type": "rebus",
+      "categoryLabel": "REBUS!",
+      "prompt": "What phrase is hiding here?",
+      "rows": [
+        {
+          "divider": true
+        },
+        {
+          "parts": [
+            {
+              "text": "READING",
+              "size": "xl"
+            }
+          ]
+        },
+        {
+          "divider": true
+        }
+      ],
+      "answer": "READING BETWEEN THE LINES",
+      "hint": "Look at where the word has been placed.",
+      "insight": "Half of what a colleague tells you is in what they did not say.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-38",
+      "active": true,
+      "order": 37,
+      "category": "Rebus",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 39,
+      "boxNumber": 39,
+      "type": "picture-word",
+      "categoryLabel": "PICTURE THIS!",
+      "prompt": "Say the picture out loud, then add the letters",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🥧",
+              "size": "xl",
+              "caption": "PIE"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "text": "ONEER",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "PIONEER",
+      "hint": "Someone who goes first, so others can follow.",
+      "insight": "Somebody had to be the first to try it. It might as well be you.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-39",
+      "active": true,
+      "order": 38,
+      "category": "Picture This",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 57,
+      "boxNumber": 40,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "Poor sleep can make stress worse."
+      ],
+      "answer": "FACT",
+      "hint": "Think about the day after a bad night.",
+      "insight": "Poor sleep and stress can feed each other, so protecting your sleep is a real wellbeing habit.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-57",
+      "active": true,
+      "order": 39,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 41,
+      "boxNumber": 41,
+      "type": "emoji",
+      "categoryLabel": "EMOJI DECODE!",
+      "prompt": "Decode the emojis into a familiar phrase",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "🧊",
+              "size": "xl"
+            },
+            {
+              "emoji": "🗻",
+              "size": "xl"
+            }
+          ]
+        }
+      ],
+      "answer": "THE TIP OF THE ICEBERG",
+      "hint": "What you can see is the small part.",
+      "insight": "The problem you can see is rarely the problem you have.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-41",
+      "active": true,
+      "order": 40,
+      "category": "Emoji Decode",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 58,
+      "boxNumber": 42,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "Mental health only matters if you have a diagnosis."
+      ],
+      "answer": "MYTH",
+      "hint": "Compare it with physical health.",
+      "insight": "Everyone has mental health, just as everyone has physical health. It shifts over time and deserves care at every stage.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-58",
+      "active": true,
+      "order": 41,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 43,
+      "boxNumber": 43,
+      "type": "zoom",
+      "categoryLabel": "ZOOM IN!",
+      "prompt": "What is this? Zoom out for more clues",
+      "answer": "A SEEDLING",
+      "hint": "Give it time, light and a little patience.",
+      "insight": "Nobody ever pulled a plant up to make it grow faster.",
+      "imageAssets": [
+        "/media/puzzles/zoom-seedling.svg"
+      ],
+      "revealAnimation": "zoom-out",
+      "uid": "seed-43",
+      "active": true,
+      "order": 42,
+      "category": "Zoom In",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 44,
+      "boxNumber": 44,
+      "type": "connect",
+      "categoryLabel": "WHAT CONNECTS THEM?",
+      "prompt": "What do these three have in common?",
+      "clues": [
+        "A TOOLBOX",
+        "A GARDEN",
+        "AN ORCHESTRA"
+      ],
+      "answer": "DIVERSITY",
+      "hint": "Each one works BECAUSE the parts are not the same.",
+      "insight": "A toolbox of identical spanners cannot fix very much.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-44",
+      "active": true,
+      "order": 43,
+      "category": "What Connects Them",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 59,
+      "boxNumber": 45,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "Depression and anxiety cost the world about 12 billion working days a year."
+      ],
+      "answer": "FACT",
+      "hint": "The number is meant to surprise you.",
+      "insight": "That's a World Health Organization estimate, costing about US$1 trillion a year. Supportive workplaces matter.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-59",
+      "active": true,
+      "order": 44,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 46,
+      "boxNumber": 46,
+      "type": "rebus",
+      "categoryLabel": "REBUS!",
+      "prompt": "What phrase is hiding here?",
+      "rows": [
+        {
+          "parts": [
+            {
+              "text": "YOU",
+              "size": "lg"
+            },
+            {
+              "text": "JUST",
+              "size": "xl"
+            },
+            {
+              "text": "ME",
+              "size": "lg"
+            }
+          ]
+        }
+      ],
+      "answer": "JUST BETWEEN YOU AND ME",
+      "hint": "Look carefully at WHERE the word JUST is sitting.",
+      "insight": "The most honest conversations happen in the smallest rooms.",
+      "imageAssets": [],
+      "revealAnimation": "fade",
+      "uid": "seed-46",
+      "active": true,
+      "order": 45,
+      "category": "Rebus",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 60,
+      "boxNumber": 47,
+      "type": "myth-fact",
+      "categoryLabel": "MYTH OR FACT?",
+      "category": "Mental Wellbeing",
+      "prompt": "Is this statement a myth or a fact?",
+      "clues": [
+        "If someone seems to be struggling, it's better not to ask."
+      ],
+      "answer": "MYTH",
+      "hint": "What would you want a friend to do?",
+      "insight": "A caring question and real listening can help someone feel less alone. You don't need to have all the answers.",
+      "imageAssets": [],
+      "revealAnimation": "highlight",
+      "uid": "seed-60",
+      "active": true,
+      "order": 46,
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 48,
+      "boxNumber": 48,
+      "type": "picture-combo",
+      "categoryLabel": "PUT IT TOGETHER!",
+      "prompt": "Combine the pictures into one phrase",
+      "rows": [
+        {
+          "parts": [
+            {
+              "emoji": "💬",
+              "size": "xl",
+              "caption": "WORD"
+            },
+            {
+              "text": "+",
+              "size": "lg",
+              "muted": true
+            },
+            {
+              "emoji": "👄",
+              "size": "xl",
+              "caption": "MOUTH"
+            }
+          ]
+        }
+      ],
+      "answer": "WORD OF MOUTH",
+      "hint": "Three words. It is how a reputation actually travels.",
+      "insight": "Your reputation is what people say when you have left the room.",
+      "imageAssets": [],
+      "revealAnimation": "combine",
+      "uid": "seed-48",
+      "active": true,
+      "order": 47,
+      "category": "Put It Together",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 49,
+      "boxNumber": 49,
+      "type": "missing-letters",
+      "categoryLabel": "FILL THE GAPS!",
+      "prompt": "Complete the word",
+      "maskedValue": "A D _ P T A _ I L I _ Y",
+      "answer": "ADAPTABILITY",
+      "hint": "Not the strongest. Not the smartest. The one that adjusts.",
+      "insight": "The plan is not the point. Responding when it breaks is the point.",
+      "imageAssets": [],
+      "revealAnimation": "fill-letters",
+      "uid": "seed-49",
+      "active": true,
+      "order": 48,
+      "category": "Fill The Gaps",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    },
+    {
+      "id": 50,
+      "boxNumber": 50,
+      "type": "scramble",
+      "categoryLabel": "SCRAMBLE IT!",
+      "prompt": "Unscramble this word",
+      "scrambledValue": "OILSUNCIN",
+      "answer": "INCLUSION",
+      "hint": "Diversity is being invited. This is being asked to dance.",
+      "insight": "Do not just make room at the table. Ask the person to speak.",
+      "imageAssets": [],
+      "revealAnimation": "rearrange",
+      "uid": "seed-50",
+      "active": true,
+      "order": 49,
+      "category": "Scramble It",
+      "difficulty": "medium",
+      "createdAt": 1767225600000,
+      "updatedAt": 1767225600000
+    }
+  ]
+}

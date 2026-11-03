@@ -6,8 +6,9 @@ Numbered mystery boxes each hide one visual puzzle. The audience picks a
 box, it flies to the centre, shakes, counts down and bursts open to reveal a
 puzzle category. The room shouts out answers; the facilitator reveals the
 answer with an animation, marks it **Correct** or **Not Quite**, and an
-approved animated mascot reacts. Nothing auto-advances — the facilitator drives
-every step.
+approved animated mascot reacts. Clickable challenges work the other way round:
+the facilitator clicks the room's choice and presses **Submit Answer**, and the
+game marks it. Nothing auto-advances — the facilitator drives every step.
 
 ## Stack
 
@@ -36,16 +37,52 @@ npm run music          # regenerate background loop → public/media/audio
 
 ## Puzzle types
 
-Ten types: **Scramble**, **Rebus**,
+Eleven types: **Scramble**, **Rebus**,
 **Picture + Word**, **Picture Combination**, **Emoji Decode**, **Missing
-Letters**, **Zoom In**, **Odd One Out**, **What Connects Them?** and **Myth or
-Fact**.
+Letters**, **Zoom In**, **Odd One Out**, **What Connects Them?**, **Myth or
+Fact** and **Clickable Challenge**.
 
 Myth or Fact shows a statement above large MYTH and FACT cards. On the reveal the
 correct card turns green and the explanation appears in large text. In the data,
 `clues[0]` is the statement, `answer` is `MYTH` or `FACT`, and `insight` is the
-required explanation. Boxes 13, 17, 24, 29, 33, 36, 40, 42, 45 and 47 hold the
+required explanation. Boxes 15, 20, 29, 35, 40, 43, 48, 50, 54 and 56 hold the
 ten Mental Wellbeing questions.
+
+### Clickable challenges
+
+Ten Security Awareness challenges are spread across the wall, about one every
+sixth box: 5, 11, 16, 22, 28, 34, 39, 46, 52 and 58. A shorter session plays the
+first N questions, so spreading them means every session length includes some.
+They are answered by clicking, not out loud, in one of three ways
+(`interaction`):
+
+| Interaction | What the facilitator clicks | Right when… | Boxes |
+| --- | --- | --- | --- |
+| `choice` | 2–6 answer cards (photo cards in a row, or text cards beside a scene photo) | every pick is a card marked `correct` | 11, 16, 34, 46, 52, 58 |
+| `hotspot` | places on the scene photo — each click drops a numbered marker; clicking a marker lifts it | every marker lands on a different hotspot area | 5, 22, 28 |
+| `sequence` | the cards, in order — each gets a step number | the order matches the order the cards are listed in | 39 |
+
+Submit Answer unlocks only when the required number of picks is made (the
+button shows `2/3` until then). Pressing it locks the picks, plays a short
+suspense beat ("Locking it in…"), then reveals: the right cards or areas turn
+green, wrong picks turn red, missed hotspots pulse amber with their label (a
+hotspot's `labelSide` can move its label off text the room needs to read), a
+revealed sequence stands in the right order with each card tagged with the step
+the room gave it, and
+the answer and explanation appear in large text. The same judge step as
+Correct / Not Quite then runs — sound, confetti, mascot and score — and **Next
+Box** returns to the wall. **R** submits from the keyboard, and **Reveal
+answer** in the facilitator panel does the same.
+
+`sceneZoom` starts the scene photo as an extreme close-up at `sceneFocus`; the
+cards slide in after the third Zoom Out (boxes 11 and 58). Nothing on screen,
+in the DOM or in alt text identifies the right answer before Submit.
+
+The photos are in [`public/media/puzzles/security/`](public/media/puzzles/security).
+The box 55 email and the box 60 poster are drawn by
+[`scripts/security-assets/`](scripts/security-assets) so their text is exact;
+the QR code on the poster is real but only encodes a plain-text security
+reminder, not a link.
 
 Images are referenced only through each puzzle's `imageAssets` array (never
 hard-coded in a component) and live in
@@ -56,7 +93,7 @@ hard-coded in a component) and live in
 **Edit questions in the app, at [`/admin/questions`](#managing-questions) — not
 in a source file.**
 
-[`data/puzzles.ts`](data/puzzles.ts) is the bundled **seed**: the 50 questions a
+[`data/puzzles.ts`](data/puzzles.ts) is the bundled **seed**: the 60 questions a
 fresh browser starts with, and the set that **Restore defaults** returns to. Keep
 it valid (`npm run check:puzzles`) but treat it as the factory default rather than
 the live content.
@@ -64,18 +101,21 @@ the live content.
 The 50 questions from before the Mental Wellbeing update are kept in
 [`data/backups/`](data/backups): `puzzles-original-50.ts` is a verbatim copy of
 the old seed, and `crack-the-box-original-50.json` can be imported in the admin
-with **Replace everything** to restore them.
+with **Replace everything** to restore them. The 50 as they stood just before
+the Security Awareness challenges were added are kept the same way, as
+`puzzles-50-before-security.ts` and `crack-the-box-50-before-security.json`.
 
 ### Where questions are stored
 
-`localStorage`, key **`crackthebox.puzzles.v2`**, in the browser running the
+`localStorage`, key **`crackthebox.puzzles.v4`**, in the browser running the
 game. The app is a static export with no server, so this is the only durable
 store available.
 
-A saved bank takes priority over the seed, so the key was bumped from `v1` when
-the seed gained the Myth or Fact questions; otherwise an older bank would have
-hidden them. An older bank is never deleted. It stays under the `v1` key, and the
-game and admin both say so until it is dismissed. The admin can download it for
+A saved bank takes priority over the seed, so the key is bumped whenever the seed
+gains questions that must reach every browser: `v1` → `v2` for the Myth or Fact
+questions, `v2` → `v3` for the Security Awareness challenges. Otherwise an older
+bank would hide them. An older bank is never deleted. It stays under its old key,
+and the game and admin both say so until it is dismissed. The admin can download it for
 re-import. Bump the key again for any future seed update that must reach browsers
 with a saved bank.
 
@@ -137,8 +177,8 @@ with no image) cannot be made active at all.
 
 It reproduces every rule in
 [`scripts/validate-puzzles.mjs`](scripts/validate-puzzles.mjs) except three that
-are true of the seed only — exactly 50 questions, every box 1..50 filled, all ten
-types present — which would otherwise make a twelve-question bank unsavable.
+are true of the seed only — exactly 60 questions, every box 1..60 filled, all
+eleven types present — which would otherwise make a twelve-question bank unsavable.
 
 ### CSV and JSON
 
@@ -146,8 +186,9 @@ types present — which would otherwise make a twelve-question bank unsavable.
 between machines losslessly. **Download CSV template** gives the header plus
 three worked examples.
 
-CSV has 22 columns matched **by name**, so reordering columns in a spreadsheet is
-safe. The nested payloads — `imageAssets`, `rows`, `choices`, `clues` — hold
+CSV has 23 columns matched **by name**, so reordering columns in a spreadsheet is
+safe. The nested payloads — `imageAssets`, `rows`, `choices`, `clues`,
+`clickable` — hold
 **JSON inside a single column**, because a rebus row can contain any number of
 clues and flattening it would either cap the shape or invent a second escaping
 grammar. `imageAssets` also accepts plain or `|`-separated paths for hand-typing.
@@ -165,7 +206,7 @@ change questions you already have.
 
 The media picker offers the images listed in
 [`data/media-manifest.json`](data/media-manifest.json). To add artwork, drop the
-file into `public/media/puzzles/` and run `npm run media:manifest` — that file is
+file into `public/media/puzzles/` (subfolders are included) and run `npm run media:manifest` — that file is
 also what tells the validator which paths exist, since a static export cannot list
 a directory at runtime.
 
@@ -189,7 +230,7 @@ boxes, reset, set questions per session, toggle timer / music / sound / mascot /
 confetti, preview each mascot, full-screen, and a link out to
 **Manage questions**. Keyboard: **H** hint · **R** reveal · **C** correct ·
 **X** not quite · **N** next · **Z** zoom out · **F** full-screen · **Esc**
-back to boxes.
+back to boxes. On a clickable challenge **R** submits the answer.
 
 ## Mascots & audio
 
@@ -209,7 +250,7 @@ Three `localStorage` keys:
 | --- | --- |
 | `crackthebox.state.v2` | opened boxes, outcomes, running score |
 | `crackthebox.settings.v1` | facilitator settings, including `adminPin` |
-| `crackthebox.puzzles.v2` | the editable question bank (see [Questions](#questions)) |
+| `crackthebox.puzzles.v4` | the editable question bank (see [Questions](#questions)) |
 
 A browser refresh mid-event resumes exactly where it left off. Opened boxes stay
 in place on the wall (faded, with a check mark) and cannot be reselected.

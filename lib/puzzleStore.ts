@@ -15,7 +15,7 @@ import type { ManagedPuzzle, Puzzle, PuzzleDifficulty } from "./types";
  *
  * WHERE QUESTIONS ARE STORED
  * --------------------------
- * localStorage, key `crackthebox.puzzles.v2`, on the machine running the game.
+ * localStorage, key `crackthebox.puzzles.v4`, on the machine running the game.
  * The app is a static export with no server, so this is the only durable store
  * available. Absent that key, the bundled seed plays — which is why a fresh
  * browser behaves exactly like it always did. Use the admin's JSON export to
@@ -25,8 +25,9 @@ import type { ManagedPuzzle, Puzzle, PuzzleDifficulty } from "./types";
  * ------------------------
  * A saved bank always wins over the seed, so one saved before a seed update
  * would silently hide the new questions. Bumping the key makes the updated seed
- * play instead. The old bank is never deleted: it stays under `LEGACY_KEY`, and
- * the game and admin both say so until a facilitator dismisses the notice.
+ * play instead. The old bank is never deleted: it stays under its old key (see
+ * `LEGACY_KEYS`), and the game and admin both say so until a facilitator
+ * dismisses the notice.
  *
  * BOX NUMBERS ARE DERIVED
  * -----------------------
@@ -35,11 +36,28 @@ import type { ManagedPuzzle, Puzzle, PuzzleDifficulty } from "./types";
  * can never leave a dead box behind on the wall.
  */
 
-const KEY = "crackthebox.puzzles.v2";
+const KEY = "crackthebox.puzzles.v4";
 
-/** Banks saved before the Myth or Fact update. Read-only from here on. */
-const LEGACY_KEY = "crackthebox.puzzles.v1";
-const LEGACY_NOTICE_KEY = "crackthebox.puzzles.v1.noticeDismissed";
+/**
+ * Banks saved before a seed update, newest first: v3 predates the Security
+ * Awareness challenges being spread across the wall (and their reworked
+ * content), v2 their arrival, v1 the Myth or Fact questions. Read-only from
+ * here on.
+ */
+const LEGACY_KEYS = ["crackthebox.puzzles.v3", "crackthebox.puzzles.v2", "crackthebox.puzzles.v1"];
+
+/** The newest set-aside bank's key, if this browser has one. */
+function legacyKey(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return LEGACY_KEYS.find((k) => localStorage.getItem(k) !== null) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** Per legacy key, so a bank set aside by a later update is announced again. */
+const noticeKey = (key: string) => `${key}.noticeDismissed`;
 
 /** Fixed so the seed's timestamps are deterministic across reloads. */
 const SEED_STAMP = Date.UTC(2026, 0, 1);
@@ -150,11 +168,12 @@ export function hasCustomBank(): boolean {
   }
 }
 
-/** The bank saved before the update, exactly as it was stored, if there is one. */
+/** The newest bank saved before an update, exactly as it was stored, if any. */
 export function legacyBankJson(): string | null {
-  if (typeof window === "undefined") return null;
+  const key = legacyKey();
+  if (key === null) return null;
   try {
-    return localStorage.getItem(LEGACY_KEY);
+    return localStorage.getItem(key);
   } catch {
     return null;
   }
@@ -162,9 +181,10 @@ export function legacyBankJson(): string | null {
 
 /** True until a facilitator has acknowledged that an old bank was set aside. */
 export function legacyBankNoticePending(): boolean {
-  if (legacyBankJson() === null) return false;
+  const key = legacyKey();
+  if (key === null) return false;
   try {
-    return localStorage.getItem(LEGACY_NOTICE_KEY) === null;
+    return localStorage.getItem(noticeKey(key)) === null;
   } catch {
     return false;
   }
@@ -172,9 +192,10 @@ export function legacyBankNoticePending(): boolean {
 
 /** Hides the notice only. The old bank itself stays in storage. */
 export function dismissLegacyBankNotice(): void {
-  if (typeof window === "undefined") return;
+  const key = legacyKey();
+  if (key === null) return;
   try {
-    localStorage.setItem(LEGACY_NOTICE_KEY, "1");
+    localStorage.setItem(noticeKey(key), "1");
   } catch {
     /* ignore */
   }

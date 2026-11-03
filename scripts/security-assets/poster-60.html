@@ -1,0 +1,100 @@
+<!doctype html>
+<!--
+  Source for public/media/puzzles/security/s60-qr-poster.webp (box 60, "The QR
+  Code Trap"). Composites a poster drawn here onto a generated photo of a
+  noticeboard with a blank sheet (s60-board.png), multiplying so the paper's
+  lighting and drawing pins show through. Serve this folder over HTTP, open the
+  page at 4096x2304, and screenshot the canvas.
+
+  The QR code is real but harmless: it encodes plain text, not a link —
+  "SECURITY AWARENESS CHECK: You scanned an unverified QR code. Before entering
+  any details, confirm the offer through an approved company channel."
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c" width="4096" height="2304"></canvas>
+<script>
+  const load = (src) =>
+    new Promise((res, rej) => {
+      const i = new Image();
+      i.onload = () => res(i);
+      i.onerror = rej;
+      i.src = src;
+    });
+
+  /** The poster, drawn flat at a 0.68 aspect to match the sheet in the photo. */
+  function drawPoster(qr) {
+    const W = 1400, H = 2060;
+    const p = document.createElement("canvas");
+    p.width = W; p.height = H;
+    const g = p.getContext("2d");
+    const font = (weight, size) => `${weight} ${size}px "Helvetica Neue", Arial, sans-serif`;
+    const centre = (text, y, size, weight = 800, colour = "#14301f") => {
+      g.font = font(weight, size);
+      g.fillStyle = colour;
+      g.textAlign = "center";
+      g.fillText(text, W / 2, y);
+    };
+
+    g.fillStyle = "#ffffff";
+    g.fillRect(0, 0, W, H);
+
+    // Top band, inset so the corner pins stay visible through the multiply.
+    g.fillStyle = "#0f8a4b";
+    g.fillRect(90, 110, W - 180, 300);
+    g.font = font(800, 86);
+    g.fillStyle = "#ffffff";
+    g.textAlign = "center";
+    g.fillText("STAFF WELFARE", W / 2, 245);
+    g.font = font(500, 52);
+    g.fillText("Employee Benefits Programme", W / 2, 325);
+
+    centre("CLAIM YOUR", 560, 96);
+    centre("₦75,000 BONUS", 690, 150, 900, "#0f8a4b");
+    centre("Fuel & data allowance for all staff", 790, 62, 600, "#33463b");
+
+    // The QR code, on a white tile.
+    const q = 760, qx = (W - q) / 2, qy = 860;
+    g.fillStyle = "#ffffff";
+    g.fillRect(qx - 30, qy - 30, q + 60, q + 60);
+    g.imageSmoothingEnabled = false;
+    g.drawImage(qr, qx, qy, q, q);
+
+    centre("Scan now and sign in with your", 1760, 60, 600, "#22322a");
+    centre("staff email and password to claim.", 1835, 60, 600, "#22322a");
+
+    g.fillStyle = "#d7262e";
+    g.fillRect(90, 1880, W - 180, 110);
+    centre("OFFER CLOSES TODAY · 5PM", 1958, 72, 900, "#ffffff");
+
+    g.font = font(500, 40);
+    g.fillStyle = "#6b7a71";
+    g.textAlign = "right";
+    g.fillText("HR Benefits Team", W - 110, 2040);
+    return p;
+  }
+
+  (async () => {
+    const [board, qr] = await Promise.all([load("s60-board.png"), load("qr.svg")]);
+    const c = document.getElementById("c");
+    const g = c.getContext("2d");
+    g.drawImage(board, 0, 0, c.width, c.height);
+
+    // The blank sheet's corners, measured on the 2048x1152 board photo.
+    const s = c.width / 2048;
+    const sheet = { x: 827 * s, y: 285 * s, w: 391 * s, h: 565 * s };
+    g.globalCompositeOperation = "multiply";
+    g.drawImage(drawPoster(qr), sheet.x, sheet.y, sheet.w, sheet.h);
+    g.globalCompositeOperation = "source-over";
+    document.title = "ready";
+  })();
+</script>
+</body>
+</html>

@@ -16,7 +16,7 @@ import type { GameSettings, MascotGender, PuzzleStage, Screen } from "@/lib/type
  */
 
 /** Offered session lengths. Anything above the active count is capped anyway. */
-const SESSION_LENGTHS = [5, 10, 15, 20, 25, 30, 40, 50];
+const SESSION_LENGTHS = [5, 10, 15, 20, 25, 30, 40, 50, 60];
 
 export default function AdminPanel({
   open,

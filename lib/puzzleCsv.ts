@@ -17,7 +17,7 @@ import {
  *
  * WHY THE NESTED COLUMNS HOLD JSON
  * --------------------------------
- * `rows`, `choices` and `clues` are arbitrarily deep: a rebus row holds any
+ * `rows`, `choices`, `clues` and `clickable` are arbitrarily deep: a rebus row holds any
  * number of parts, and a part has ten optional keys. Flattening that into
  * `row1_part1_text`-style columns either caps the shape (a four-part row breaks a
  * three-column layout) or invents a second escaping grammar for the separators —
@@ -56,6 +56,7 @@ export const CSV_COLUMNS = [
   "rows",
   "choices",
   "clues",
+  "clickable",
   "createdAt",
   "updatedAt",
 ] as const;
@@ -84,7 +85,7 @@ export const CSV_COLUMN_HELP: Record<CsvColumn, string> = {
   prompt: "The instruction shown above the puzzle.",
   answer: "What the facilitator reveals. Must be unique across the bank, except Myth or Fact, where it is MYTH or FACT.",
   hint: "Shown when the facilitator asks for a hint.",
-  insight: "Optional line to read out after the reveal. Required for Myth or Fact, where it is the explanation.",
+  insight: "Optional line to read out after the reveal. Required for Myth or Fact and Clickable Challenge, where it is the explanation.",
   revealAnimation:
     "rearrange, fade, combine, fill-letters, zoom-out or highlight. Blank picks the one for the type.",
   scrambledValue: "Word Scramble only: the jumbled letters of the answer.",
@@ -94,6 +95,8 @@ export const CSV_COLUMN_HELP: Record<CsvColumn, string> = {
   rows: 'Rebus / Picture / Emoji only: JSON, e.g. [{"parts":[{"text":"STAND","size":"xl"}]},{"divider":true}]',
   choices: 'Odd One Out only: JSON, e.g. [{"id":"a","label":"LISTENING","emoji":"👂"}]',
   clues: 'What Connects Them: JSON array of 3 strings. Myth or Fact: JSON array holding the 1 statement.',
+  clickable:
+    'Clickable Challenge only: JSON with "interaction" (choice, hotspot or sequence) plus "options" or "hotspots", and optionally "scenario", "sceneAsset", "sceneZoom", "sceneFocus", "selectCount".',
   createdAt: "ISO date. Blank means now.",
   updatedAt: "ISO date. Rewritten on every save.",
 };
@@ -133,10 +136,29 @@ export function puzzleToCsvRow(p: ManagedPuzzle): string[] {
     rows: p.rows?.length ? stableJson(p.rows) : "",
     choices: p.choices?.length ? stableJson(p.choices) : "",
     clues: p.clues?.length ? stableJson(p.clues) : "",
+    clickable: p.type === "clickable" ? stableJson(clickablePayload(p)) : "",
     createdAt: isoOrBlank(p.createdAt),
     updatedAt: isoOrBlank(p.updatedAt),
   };
   return CSV_COLUMNS.map((c) => cell[c]);
+}
+
+/** The clickable-only fields, gathered into the one `clickable` column. */
+const CLICKABLE_KEYS = [
+  "interaction",
+  "scenario",
+  "sceneAsset",
+  "sceneZoom",
+  "sceneFocus",
+  "options",
+  "hotspots",
+  "selectCount",
+] as const satisfies readonly (keyof ManagedPuzzle)[];
+
+function clickablePayload(p: ManagedPuzzle): Partial<ManagedPuzzle> {
+  const out: Partial<Record<(typeof CLICKABLE_KEYS)[number], unknown>> = {};
+  for (const k of CLICKABLE_KEYS) if (p[k] !== undefined) out[k] = p[k];
+  return out as Partial<ManagedPuzzle>;
 }
 
 export function exportPuzzlesCsv(list: ManagedPuzzle[]): string {
@@ -442,6 +464,16 @@ export function importPuzzlesCsv(
     if (clues !== undefined) {
       if (Array.isArray(clues)) draft.clues = clues.map((c) => String(c));
       else issues.push({ field: "clues", message: "Must be a JSON array of clues.", severity: "error" });
+    }
+    const clickable = parseJsonCell<Record<string, unknown>>(get(row, "clickable"), "clickable", issues);
+    if (clickable !== undefined) {
+      if (clickable && typeof clickable === "object" && !Array.isArray(clickable)) {
+        for (const k of CLICKABLE_KEYS) {
+          if (clickable[k] !== undefined) (draft as unknown as Record<string, unknown>)[k] = clickable[k];
+        }
+      } else {
+        issues.push({ field: "clickable", message: "Must be a JSON object.", severity: "error" });
+      }
     }
 
     // The same validator the form uses — one rulebook, not two.

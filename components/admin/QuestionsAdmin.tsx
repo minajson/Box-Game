@@ -53,7 +53,7 @@ import { Btn, Callout } from "./ui";
  *
  * WHERE QUESTIONS ARE STORED
  * --------------------------
- * localStorage, key `crackthebox.puzzles.v2`, in THIS browser. There is no
+ * localStorage, key `crackthebox.puzzles.v4`, in THIS browser. There is no
  * server (static export), so that is the only durable store available. The
  * bundled 50 in `data/puzzles.ts` are the seed and the fallback. Moving a bank
  * to another machine means exporting CSV or JSON — see ImportExportPanel.
@@ -558,9 +558,9 @@ export default function QuestionsAdmin() {
 
       {legacyNotice && (
         <Callout tone="warn" title="Older saved questions were set aside">
-          This browser had questions saved before the Myth or Fact update. They
-          are no longer in play, so the updated questions show correctly, but
-          they have not been deleted. To use them again, download them here and
+          This browser had questions saved before the latest question update.
+          They are no longer in play, so the updated questions show correctly,
+          but they have not been deleted. To use them again, download them here and
           load the file with Import / export.
           <span className="mt-2 flex flex-wrap gap-2">
             <Btn
