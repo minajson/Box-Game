@@ -221,37 +221,24 @@ save while a game is in progress.
 
 ## Branding
 
-Two partner logos sit at the outer edges of the header — Renaissance on the
-left, SPE International on the right — configured in
+The Renaissance logo sits at the left edge of the header, configured in
 [`lib/branding.ts`](lib/branding.ts) and loaded from
-[`public/branding/`](public/branding). Both are local files: nothing is fetched
-from the network during gameplay.
+[`public/branding/`](public/branding) (`renaissance-logo.png`, 391 × 391). It is
+a local file: nothing is fetched from the network during gameplay.
 
-The supplied filenames are used exactly as provided:
+The right-hand logo slot is empty (`right: null`), so the header leaves it blank.
+Adding a logo there, or swapping the left one, is a one-line change in
+`lib/branding.ts` (`src`, plus `width`/`height`, which only reserve layout
+space). Nothing else in the app writes a `/branding/...` path.
 
-| Side | File |
-| --- | --- |
-| left | `public/branding/renaissance-logo.png` (391 × 391) |
-| right | `public/branding/spe_logo.png` (1536 × 1024) |
-
-Swapping either one is a one-line change to `src` (and its `width`/`height`, which
-only reserve layout space) in `lib/branding.ts`. Nothing else in the app writes a
-`/branding/...` path.
-
-> **Known limitation.** The supplied SPE file is a promotional graphic with a dark
-> navy background baked in, not a transparent logo mark, so it reads as a dark
-> rectangle against the light header. Dropping a transparent PNG or SVG into
-> `public/branding/` and pointing `right.src` at it is the whole fix — the artwork
-> is never recoloured, cropped or masked in code.
-
-They render with `object-fit: contain` at a maximum height of
-`clamp(44px, 5vw, 76px)`, so each keeps its own aspect ratio and its own width —
-never stretched, cropped or recoloured, and never forced to match each other's
-width. The game title stays centred on the true viewport midline because the
-header's outer tracks are equal-width `1fr` columns, independent of how wide
-either logo is; counters live on their own grid row, so a logo cannot overlap
-one. On a short screen (≤ 800px tall, e.g. a 1366 × 768 projector) both logos and
-the title step down a size. On a phone the title sits above a compact logo row.
+A logo renders with `object-fit: contain` at a maximum height of
+`clamp(44px, 5vw, 76px)`, so it keeps its own aspect ratio — never stretched,
+cropped or recoloured. The game title stays centred on the true viewport midline
+because the header's outer tracks are equal-width `1fr` columns, independent of
+what sits in either one; counters live on their own grid row, so a logo cannot
+overlap one. On a short screen (≤ 800px tall, e.g. a 1366 × 768 projector) the
+logo and the title step down a size. On a phone the title sits above a compact
+logo row.
 If a logo file is missing the header falls back to a text wordmark rather than a
 broken image.
 

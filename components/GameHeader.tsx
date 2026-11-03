@@ -4,8 +4,9 @@ import { useState } from "react";
 import { BRANDING, type BrandLogoConfig } from "@/lib/branding";
 
 /**
- * The one header used everywhere: partner logo left, game title centred,
- * partner logo right — plus optional counters, sound and full-screen controls.
+ * The one header used everywhere: partner logo left, game title centred, an
+ * optional partner logo right (see lib/branding.ts) — plus optional counters,
+ * sound and full-screen controls.
  *
  * Two variants:
  *
@@ -121,12 +122,14 @@ export function GameHeaderFull({
 
           <div className="flex min-w-0 items-center justify-end gap-[clamp(0.5rem,1.2vw,1rem)] sm:order-3 sm:justify-self-end">
             {actions}
-            <BrandLogo
-              logo={BRANDING.right}
-              height={FULL_LOGO_HEIGHT}
-              maxWidth={FULL_LOGO_MAX_WIDTH}
-              align="end"
-            />
+            {BRANDING.right && (
+              <BrandLogo
+                logo={BRANDING.right}
+                height={FULL_LOGO_HEIGHT}
+                maxWidth={FULL_LOGO_MAX_WIDTH}
+                align="end"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -162,12 +165,14 @@ export function GameHeaderSlim({
 
       <div className="flex min-w-0 items-center justify-end gap-3">{right}</div>
 
-      <BrandLogo
-        logo={BRANDING.right}
-        height={SLIM_LOGO_HEIGHT}
-        maxWidth={SLIM_LOGO_MAX_WIDTH}
-        align="end"
-      />
+      {BRANDING.right && (
+        <BrandLogo
+          logo={BRANDING.right}
+          height={SLIM_LOGO_HEIGHT}
+          maxWidth={SLIM_LOGO_MAX_WIDTH}
+          align="end"
+        />
+      )}
     </header>
   );
 }
