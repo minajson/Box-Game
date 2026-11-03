@@ -36,9 +36,16 @@ npm run music          # regenerate background loop → public/media/audio
 
 ## Puzzle types
 
-Nine types: **Scramble**, **Rebus**,
+Ten types: **Scramble**, **Rebus**,
 **Picture + Word**, **Picture Combination**, **Emoji Decode**, **Missing
-Letters**, **Zoom In**, **Odd One Out**, and **What Connects Them?**
+Letters**, **Zoom In**, **Odd One Out**, **What Connects Them?** and **Myth or
+Fact**.
+
+Myth or Fact shows a statement above large MYTH and FACT cards. On the reveal the
+correct card turns green and the explanation appears in large text. In the data,
+`clues[0]` is the statement, `answer` is `MYTH` or `FACT`, and `insight` is the
+required explanation. Boxes 13, 17, 24, 29, 33, 36, 40, 42, 45 and 47 hold the
+ten Mental Wellbeing questions.
 
 Images are referenced only through each puzzle's `imageAssets` array (never
 hard-coded in a component) and live in
@@ -54,11 +61,23 @@ fresh browser starts with, and the set that **Restore defaults** returns to. Kee
 it valid (`npm run check:puzzles`) but treat it as the factory default rather than
 the live content.
 
+The 50 questions from before the Mental Wellbeing update are kept in
+[`data/backups/`](data/backups): `puzzles-original-50.ts` is a verbatim copy of
+the old seed, and `crack-the-box-original-50.json` can be imported in the admin
+with **Replace everything** to restore them.
+
 ### Where questions are stored
 
-`localStorage`, key **`crackthebox.puzzles.v1`**, in the browser running the
+`localStorage`, key **`crackthebox.puzzles.v2`**, in the browser running the
 game. The app is a static export with no server, so this is the only durable
 store available.
+
+A saved bank takes priority over the seed, so the key was bumped from `v1` when
+the seed gained the Myth or Fact questions; otherwise an older bank would have
+hidden them. An older bank is never deleted. It stays under the `v1` key, and the
+game and admin both say so until it is dismissed. The admin can download it for
+re-import. Bump the key again for any future seed update that must reach browsers
+with a saved bank.
 
 Two consequences worth knowing before an event:
 
@@ -118,7 +137,7 @@ with no image) cannot be made active at all.
 
 It reproduces every rule in
 [`scripts/validate-puzzles.mjs`](scripts/validate-puzzles.mjs) except three that
-are true of the seed only — exactly 50 questions, every box 1..50 filled, all nine
+are true of the seed only — exactly 50 questions, every box 1..50 filled, all ten
 types present — which would otherwise make a twelve-question bank unsavable.
 
 ### CSV and JSON
@@ -190,7 +209,7 @@ Three `localStorage` keys:
 | --- | --- |
 | `crackthebox.state.v2` | opened boxes, outcomes, running score |
 | `crackthebox.settings.v1` | facilitator settings, including `adminPin` |
-| `crackthebox.puzzles.v1` | the editable question bank (see [Questions](#questions)) |
+| `crackthebox.puzzles.v2` | the editable question bank (see [Questions](#questions)) |
 
 A browser refresh mid-event resumes exactly where it left off. Opened boxes stay
 in place on the wall (faded, with a check mark) and cannot be reselected.

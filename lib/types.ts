@@ -6,7 +6,7 @@
  * paths only ever come from `imageAssets`, never from a component.
  */
 
-/** The nine supported puzzle types. (Wild Card was removed by request.) */
+/** The ten supported puzzle types. (Wild Card was removed by request.) */
 export type PuzzleType =
   | "rebus"
   | "scramble"
@@ -16,7 +16,8 @@ export type PuzzleType =
   | "missing-letters"
   | "zoom"
   | "odd-one-out"
-  | "connect";
+  | "connect"
+  | "myth-fact";
 
 export const PUZZLE_TYPES: PuzzleType[] = [
   "rebus",
@@ -28,6 +29,7 @@ export const PUZZLE_TYPES: PuzzleType[] = [
   "zoom",
   "odd-one-out",
   "connect",
+  "myth-fact",
 ];
 
 /** Admin-facing difficulty banding. Purely for filtering — the game ignores it. */
@@ -131,7 +133,11 @@ export interface Puzzle {
   /** odd-one-out: the four options and the id of the one that doesn't belong. */
   choices?: PuzzleChoice[];
   oddOneOutId?: string;
-  /** connect: the three clues. */
+  /**
+   * connect: the three clues.
+   * myth-fact: one entry, the statement. `answer` is then MYTH or FACT and
+   * `insight` is the required explanation.
+   */
   clues?: string[];
 }
 

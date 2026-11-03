@@ -17,6 +17,7 @@ import type { Puzzle, PuzzlePart, PuzzleRow } from "@/lib/types";
  *   zoom             the image zooms out to full
  *   odd-one-out      the odd one is highlighted, the rest dim away
  *   rebus / connect  the hidden reading fades into view
+ *   myth-fact        the right card turns green and the other dims away
  *
  * Images are only ever read from `puzzle.imageAssets` via `assetIndex` — no
  * component in this file knows a file path.
@@ -41,6 +42,8 @@ export default function PuzzleCanvas(props: CanvasProps) {
       return <OddOneOut {...props} />;
     case "connect":
       return <Connect {...props} />;
+    case "myth-fact":
+      return <MythFact {...props} />;
     case "rebus":
     case "picture-word":
     case "picture-combo":
@@ -302,6 +305,106 @@ function Connect({ puzzle, revealed }: CanvasProps) {
         <span className="h-[3px] w-[clamp(3rem,10vw,10rem)] rounded-full bg-ren-green/40" />
       </motion.div>
     </div>
+  );
+}
+
+// --------------------------------------------------------------- MYTH / FACT
+
+/** Same gradients as the violet and sky boxes, so the cards belong to the wall. */
+const MYTH_FACT_CARDS = [
+  { label: "MYTH", from: "#c084fc", to: "#7c3aed", rim: "#6d28d9" },
+  { label: "FACT", from: "#60b8fb", to: "#2563eb", rim: "#1d4ed8" },
+] as const;
+
+/*
+ * The min(vw, vh) sizes below keep the statement and explanation filling a very
+ * large display without overflowing a short 1366×768 one. Their upper limits sit
+ * well above the rest of the canvas because these are the words the room reads.
+ */
+const STATEMENT_SIZE = "clamp(1.5rem, min(3.5vw, 6.2vh), 7.5rem)";
+const CARD_LABEL_SIZE = "clamp(2.2rem, min(5.6vw, 9.5vh), 11rem)";
+const EXPLANATION_SIZE = "clamp(1.05rem, min(2.05vw, 3.7vh), 4.5rem)";
+
+function MythFact({ puzzle, revealed }: CanvasProps) {
+  const correct = puzzle.answer.trim().toUpperCase();
+
+  return (
+    <div className="flex w-full flex-col items-center gap-[clamp(0.75rem,3vh,3.5rem)]">
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 220, damping: 20 }}
+        className="max-w-full text-balance text-center font-black leading-[1.12] tracking-tight text-ink"
+        style={{ fontSize: STATEMENT_SIZE }}
+      >
+        {puzzle.clues?.[0]}
+      </motion.p>
+
+      <div className="grid w-[min(100%,70vw)] grid-cols-2 gap-[clamp(0.7rem,2vw,3rem)]">
+        {MYTH_FACT_CARDS.map((card, i) => {
+          const isCorrect = card.label === correct;
+          return (
+            <motion.div
+              key={card.label}
+              data-myth-fact-card={card.label}
+              data-correct={revealed && isCorrect ? "true" : undefined}
+              initial={{ opacity: 0, y: 24, scale: 0.9 }}
+              animate={{
+                opacity: revealed && !isCorrect ? 0.22 : 1,
+                y: 0,
+                scale: revealed ? (isCorrect ? 1.04 : 0.96) : 1,
+              }}
+              transition={{
+                delay: revealed ? 0 : 0.15 + i * 0.1,
+                type: "spring",
+                stiffness: 260,
+                damping: 18,
+              }}
+              className={`relative flex items-center justify-center overflow-hidden rounded-[clamp(1rem,2vw,2.5rem)] py-[clamp(0.7rem,3.2vh,3.5rem)] shadow-lift ${
+                revealed && isCorrect ? "ring-[clamp(5px,0.7vw,18px)] ring-ren-green/30" : ""
+              }`}
+              style={{ background: `linear-gradient(160deg, ${card.from} 0%, ${card.to} 100%)` }}
+            >
+              {/* The green fades in over the card's own colour on the reveal. */}
+              <motion.span
+                aria-hidden
+                className="absolute inset-0"
+                style={{ background: "linear-gradient(160deg, #34d399 0%, #059669 100%)" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: revealed && isCorrect ? 1 : 0 }}
+                transition={{ duration: 0.4 }}
+              />
+              <span
+                className="relative font-black leading-none tracking-tight text-white"
+                style={{
+                  fontSize: CARD_LABEL_SIZE,
+                  textShadow: `0 4px 0 ${revealed && isCorrect ? "#047857" : card.rim}, 0 10px 22px rgb(18 35 59 / 0.35)`,
+                }}
+              >
+                {revealed && isCorrect && <span aria-hidden>✓ </span>}
+                {card.label}
+              </span>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** The Myth or Fact explanation. It takes the place of the usual answer block. */
+export function MythFactExplanation({ puzzle }: { puzzle: Puzzle }) {
+  return (
+    <>
+      <p className="sr-only">The answer is {puzzle.answer}.</p>
+      <p
+        data-myth-fact-explanation
+        className="mx-auto max-w-[62ch] text-balance rounded-[clamp(1rem,1.6vw,2rem)] border-2 border-ren-green/30 bg-ren-green-soft px-[clamp(1rem,2vw,3rem)] py-[clamp(0.5rem,1.4vh,1.6rem)] text-center font-bold leading-snug text-ink shadow-panel"
+        style={{ fontSize: EXPLANATION_SIZE }}
+      >
+        {puzzle.insight}
+      </p>
+    </>
   );
 }
 

@@ -20,7 +20,11 @@ import {
   categoriesIn,
   SEED_BANK,
   hasCustomBank,
+  dismissLegacyBankNotice,
+  legacyBankJson,
+  legacyBankNoticePending,
 } from "@/lib/puzzleStore";
+import { dateStamp, downloadText } from "@/lib/download";
 import { KNOWN_ASSETS } from "@/lib/media";
 import { loadSettings, loadState } from "@/lib/storage";
 import { searchBlob, shortPreview } from "@/lib/puzzleSummary";
@@ -49,7 +53,7 @@ import { Btn, Callout } from "./ui";
  *
  * WHERE QUESTIONS ARE STORED
  * --------------------------
- * localStorage, key `crackthebox.puzzles.v1`, in THIS browser. There is no
+ * localStorage, key `crackthebox.puzzles.v2`, in THIS browser. There is no
  * server (static export), so that is the only durable store available. The
  * bundled 50 in `data/puzzles.ts` are the seed and the fallback. Moving a bank
  * to another machine means exporting CSV or JSON — see ImportExportPanel.
@@ -92,6 +96,7 @@ export default function QuestionsAdmin() {
   const [toast, setToast] = useState<{ tone: "success" | "error"; text: string } | null>(null);
   const [pending, setPending] = useState<Pending | null>(null);
   const [previewUid, setPreviewUid] = useState<string | null>(null);
+  const [legacyNotice, setLegacyNotice] = useState(legacyBankNoticePending);
 
   /** The in-progress add/edit form. Null when not editing. */
   const [draft, setDraft] = useState<ManagedPuzzle | null>(null);
@@ -548,6 +553,38 @@ export default function QuestionsAdmin() {
           {liveSession} box{liveSession === 1 ? " has" : "es have"} been opened.
           Saving a question change resets that session and clears the score —
           finish or reset the game first if that matters.
+        </Callout>
+      )}
+
+      {legacyNotice && (
+        <Callout tone="warn" title="Older saved questions were set aside">
+          This browser had questions saved before the Myth or Fact update. They
+          are no longer in play, so the updated questions show correctly, but
+          they have not been deleted. To use them again, download them here and
+          load the file with Import / export.
+          <span className="mt-2 flex flex-wrap gap-2">
+            <Btn
+              size="sm"
+              onClick={() =>
+                downloadText(
+                  `crack-the-box-older-saved-questions-${dateStamp()}.json`,
+                  legacyBankJson() ?? "[]",
+                  "application/json;charset=utf-8",
+                )
+              }
+            >
+              Download older questions
+            </Btn>
+            <Btn
+              size="sm"
+              onClick={() => {
+                dismissLegacyBankNotice();
+                setLegacyNotice(false);
+              }}
+            >
+              Dismiss
+            </Btn>
+          </span>
         </Callout>
       )}
 

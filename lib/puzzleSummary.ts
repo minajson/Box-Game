@@ -59,6 +59,8 @@ export function shortPreview(p: ManagedPuzzle): string {
       return clip(p.maskedValue || p.answer);
     case "connect":
       return clip((p.clues ?? []).join(" · ") || p.answer);
+    case "myth-fact":
+      return clip(p.clues?.[0] || p.answer);
     case "odd-one-out":
       return clip((p.choices ?? []).map((c) => c.label).join(" · ") || p.answer);
     case "zoom":

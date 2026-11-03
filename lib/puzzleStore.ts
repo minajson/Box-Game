@@ -15,11 +15,18 @@ import type { ManagedPuzzle, Puzzle, PuzzleDifficulty } from "./types";
  *
  * WHERE QUESTIONS ARE STORED
  * --------------------------
- * localStorage, key `crackthebox.puzzles.v1`, on the machine running the game.
+ * localStorage, key `crackthebox.puzzles.v2`, on the machine running the game.
  * The app is a static export with no server, so this is the only durable store
  * available. Absent that key, the bundled seed plays — which is why a fresh
  * browser behaves exactly like it always did. Use the admin's JSON export to
  * move a bank between machines.
+ *
+ * WHY THE KEY IS VERSIONED
+ * ------------------------
+ * A saved bank always wins over the seed, so one saved before a seed update
+ * would silently hide the new questions. Bumping the key makes the updated seed
+ * play instead. The old bank is never deleted: it stays under `LEGACY_KEY`, and
+ * the game and admin both say so until a facilitator dismisses the notice.
  *
  * BOX NUMBERS ARE DERIVED
  * -----------------------
@@ -28,7 +35,11 @@ import type { ManagedPuzzle, Puzzle, PuzzleDifficulty } from "./types";
  * can never leave a dead box behind on the wall.
  */
 
-const KEY = "crackthebox.puzzles.v1";
+const KEY = "crackthebox.puzzles.v2";
+
+/** Banks saved before the Myth or Fact update. Read-only from here on. */
+const LEGACY_KEY = "crackthebox.puzzles.v1";
+const LEGACY_NOTICE_KEY = "crackthebox.puzzles.v1.noticeDismissed";
 
 /** Fixed so the seed's timestamps are deterministic across reloads. */
 const SEED_STAMP = Date.UTC(2026, 0, 1);
@@ -136,6 +147,36 @@ export function hasCustomBank(): boolean {
     return localStorage.getItem(KEY) !== null;
   } catch {
     return false;
+  }
+}
+
+/** The bank saved before the update, exactly as it was stored, if there is one. */
+export function legacyBankJson(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return localStorage.getItem(LEGACY_KEY);
+  } catch {
+    return null;
+  }
+}
+
+/** True until a facilitator has acknowledged that an old bank was set aside. */
+export function legacyBankNoticePending(): boolean {
+  if (legacyBankJson() === null) return false;
+  try {
+    return localStorage.getItem(LEGACY_NOTICE_KEY) === null;
+  } catch {
+    return false;
+  }
+}
+
+/** Hides the notice only. The old bank itself stays in storage. */
+export function dismissLegacyBankNotice(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(LEGACY_NOTICE_KEY, "1");
+  } catch {
+    /* ignore */
   }
 }
 

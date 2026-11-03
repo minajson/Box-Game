@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import PuzzleCanvas from "./PuzzleCanvas";
+import PuzzleCanvas, { MythFactExplanation } from "./PuzzleCanvas";
 import MascotStage from "./MascotStage";
 import Timer from "./Timer";
 import { GameHeaderSlim } from "./GameHeader";
@@ -16,8 +16,9 @@ import type { GameSettings, MascotClip, Puzzle, PuzzleStage } from "@/lib/types"
  * cover the revealed answer or the NEXT PUZZLE button — the content simply
  * narrows to make room.
  *
- * No multiple-choice options are ever shown. The audience answers out loud and
- * the facilitator judges.
+ * The audience answers out loud and the facilitator judges. Myth or Fact is the
+ * only type with on-screen options, and those are for the room to call out, not
+ * to click.
  */
 
 export default function PuzzleScreen({
@@ -137,22 +138,29 @@ export default function PuzzleScreen({
                 transition={{ type: "spring", stiffness: 220, damping: 18 }}
                 className="shrink-0 pb-1 text-center"
               >
-                <p className="mb-1 text-[11px] font-black uppercase tracking-[0.3em] text-ink-soft">
-                  The answer is
-                </p>
-                <p
-                  className="font-black uppercase leading-[0.95] tracking-tight text-ren-green"
-                  style={{ fontSize: "clamp(1.8rem, 5.4vw, 7rem)" }}
-                >
-                  {puzzle.answer}
-                </p>
-                {puzzle.insight && (
-                  <p
-                    className="mx-auto mt-1.5 max-w-[46ch] font-semibold italic text-ink-soft"
-                    style={{ fontSize: "clamp(0.7rem, 1.25vw, 1.05rem)" }}
-                  >
-                    {puzzle.insight}
-                  </p>
+                {puzzle.type === "myth-fact" ? (
+                  // The highlighted card already shows the answer.
+                  <MythFactExplanation puzzle={puzzle} />
+                ) : (
+                  <>
+                    <p className="mb-1 text-[11px] font-black uppercase tracking-[0.3em] text-ink-soft">
+                      The answer is
+                    </p>
+                    <p
+                      className="font-black uppercase leading-[0.95] tracking-tight text-ren-green"
+                      style={{ fontSize: "clamp(1.8rem, 5.4vw, 7rem)" }}
+                    >
+                      {puzzle.answer}
+                    </p>
+                    {puzzle.insight && (
+                      <p
+                        className="mx-auto mt-1.5 max-w-[46ch] font-semibold italic text-ink-soft"
+                        style={{ fontSize: "clamp(0.7rem, 1.25vw, 1.05rem)" }}
+                      >
+                        {puzzle.insight}
+                      </p>
+                    )}
+                  </>
                 )}
               </motion.div>
             )}

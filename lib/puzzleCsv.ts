@@ -82,9 +82,9 @@ export const CSV_COLUMN_HELP: Record<CsvColumn, string> = {
   categoryLabel: "The banner shown as the box bursts open, e.g. SCRAMBLE IT!",
   difficulty: "easy, medium or hard. Blank means medium.",
   prompt: "The instruction shown above the puzzle.",
-  answer: "What the facilitator reveals. Must be unique across the bank.",
+  answer: "What the facilitator reveals. Must be unique across the bank, except Myth or Fact, where it is MYTH or FACT.",
   hint: "Shown when the facilitator asks for a hint.",
-  insight: "Optional line to read out after the reveal.",
+  insight: "Optional line to read out after the reveal. Required for Myth or Fact, where it is the explanation.",
   revealAnimation:
     "rearrange, fade, combine, fill-letters, zoom-out or highlight. Blank picks the one for the type.",
   scrambledValue: "Word Scramble only: the jumbled letters of the answer.",
@@ -93,7 +93,7 @@ export const CSV_COLUMN_HELP: Record<CsvColumn, string> = {
   imageAssets: 'JSON array of paths, e.g. ["/media/puzzles/zoom-key.svg"]. Also accepts paths separated by |.',
   rows: 'Rebus / Picture / Emoji only: JSON, e.g. [{"parts":[{"text":"STAND","size":"xl"}]},{"divider":true}]',
   choices: 'Odd One Out only: JSON, e.g. [{"id":"a","label":"LISTENING","emoji":"👂"}]',
-  clues: 'What Connects Them only: JSON array of 3 strings.',
+  clues: 'What Connects Them: JSON array of 3 strings. Myth or Fact: JSON array holding the 1 statement.',
   createdAt: "ISO date. Blank means now.",
   updatedAt: "ISO date. Rewritten on every save.",
 };
@@ -441,7 +441,7 @@ export function importPuzzlesCsv(
     const clues = parseJsonCell<string[]>(get(row, "clues"), "clues", issues);
     if (clues !== undefined) {
       if (Array.isArray(clues)) draft.clues = clues.map((c) => String(c));
-      else issues.push({ field: "clues", message: "Must be a JSON array of 3 clues.", severity: "error" });
+      else issues.push({ field: "clues", message: "Must be a JSON array of clues.", severity: "error" });
     }
 
     // The same validator the form uses — one rulebook, not two.

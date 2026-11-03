@@ -23,7 +23,7 @@ import {
  * that are true of the seed but must never be true of an admin's bank:
  *
  *   - exactly 50 puzzles          - every box 1..50 assigned
- *   - all nine types used at least once
+ *   - all ten types used at least once
  *
  * Enforcing those here would make a twelve-question bank unsavable. Every OTHER
  * rule in that script is reproduced below, plus the crash rules that only matter
@@ -114,6 +114,7 @@ export const DEFAULT_REVEAL: Record<PuzzleType, RevealAnimation> = {
   zoom: "zoom-out",
   "odd-one-out": "highlight",
   connect: "fade",
+  "myth-fact": "highlight",
 };
 
 /**
@@ -136,6 +137,7 @@ const ALLOWED_REVEALS: Record<PuzzleType, readonly RevealAnimation[]> = {
   zoom: ["zoom-out"],
   "odd-one-out": ["highlight"],
   connect: ["fade"],
+  "myth-fact": ["highlight"],
 };
 
 /** The on-stage banner shown as the box bursts open. */
@@ -149,6 +151,7 @@ export const DEFAULT_CATEGORY_LABEL: Record<PuzzleType, string> = {
   zoom: "ZOOM OUT!",
   "odd-one-out": "ODD ONE OUT!",
   connect: "WHAT CONNECTS THEM?",
+  "myth-fact": "MYTH OR FACT?",
 };
 
 export const DEFAULT_PROMPT: Record<PuzzleType, string> = {
@@ -161,6 +164,7 @@ export const DEFAULT_PROMPT: Record<PuzzleType, string> = {
   zoom: "What are you looking at?",
   "odd-one-out": "Which one does not belong?",
   connect: "What connects these three?",
+  "myth-fact": "Is this statement a myth or a fact?",
 };
 
 export const TYPE_LABELS: Record<PuzzleType, string> = {
@@ -173,7 +177,11 @@ export const TYPE_LABELS: Record<PuzzleType, string> = {
   zoom: "Zoom Image",
   "odd-one-out": "Odd One Out",
   connect: "What Connects Them",
+  "myth-fact": "Myth or Fact",
 };
+
+/** The only two answers a Myth or Fact question can have. */
+export const MYTH_FACT_ANSWERS = ["MYTH", "FACT"] as const;
 
 /* -------------------------------------------------------------- helpers -- */
 
@@ -325,6 +333,7 @@ export function removeAsset(p: ManagedPuzzle, index: number): ManagedPuzzle {
 const MAX_ANSWER = 60;
 const MAX_HINT = 160;
 const MAX_INSIGHT = 200;
+const MAX_STATEMENT = 110;
 
 function nonEmpty(v: unknown): boolean {
   return typeof v === "string" && v.trim().length > 0;
@@ -398,10 +407,14 @@ export function validatePuzzle(
     err("id", "Another question already uses this internal number.");
   }
 
-  // Two boxes revealing the same answer is obvious from the floor.
-  if (nonEmpty(draft.answer)) {
+  // Two boxes revealing the same answer is obvious from the floor. Myth or Fact
+  // is the exception: its answer is always one of two words, so its STATEMENT is
+  // what must not repeat (checked in its own case below).
+  if (nonEmpty(draft.answer) && type !== "myth-fact") {
     const mine = draft.answer!.trim().toUpperCase();
-    const clash = others.find((p) => (p.answer ?? "").trim().toUpperCase() === mine);
+    const clash = others.find(
+      (p) => p.type !== "myth-fact" && (p.answer ?? "").trim().toUpperCase() === mine,
+    );
     if (clash) {
       err("answer", `Question ${clash.order + 1} already uses the answer "${clash.answer}".`);
     }
@@ -558,6 +571,30 @@ export function validatePuzzle(
       break;
     }
 
+    case "myth-fact": {
+      const clues: string[] = Array.isArray(draft.clues) ? draft.clues : [];
+      const statement = clues[0] ?? "";
+      if (clues.length !== 1 || !nonEmpty(statement)) {
+        err("clues.0", "Enter the statement the room will judge.", true);
+      } else {
+        if (statement.trim().length > MAX_STATEMENT) {
+          warn("clues.0", `Statements over ${MAX_STATEMENT} characters are hard to read from the back of a room.`);
+        }
+        const mine = statement.trim().toLowerCase();
+        const clash = others.find(
+          (p) => p.type === "myth-fact" && (p.clues?.[0] ?? "").trim().toLowerCase() === mine,
+        );
+        if (clash) err("clues.0", `Question ${clash.order + 1} already uses this statement.`);
+      }
+      if (nonEmpty(draft.answer) && !(MYTH_FACT_ANSWERS as readonly string[]).includes(draft.answer!.trim().toUpperCase())) {
+        err("answer", "The answer must be MYTH or FACT.", true);
+      }
+      if (!nonEmpty(draft.insight)) {
+        err("insight", "An explanation is required — it is what the room learns on the reveal.");
+      }
+      break;
+    }
+
     case "zoom": {
       // PuzzleCanvas.tsx:166 reads imageAssets[0] with no guard.
       if (assets.length === 0) err("imageAssets", "Choose an image to zoom into.", true);
@@ -657,7 +694,7 @@ export function validatePuzzle(
     ["maskedValue", ["missing-letters"]],
     ["choices", ["odd-one-out"]],
     ["oddOneOutId", ["odd-one-out"]],
-    ["clues", ["connect"]],
+    ["clues", ["connect", "myth-fact"]],
     ["rows", [...ROWS_TYPES]],
   ];
   for (const [field, owners] of strays) {

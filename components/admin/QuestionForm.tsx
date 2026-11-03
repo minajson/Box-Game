@@ -20,6 +20,7 @@ import {
 
 import ConnectEditor from "./editors/ConnectEditor";
 import MissingLettersEditor from "./editors/MissingLettersEditor";
+import MythFactEditor from "./editors/MythFactEditor";
 import OddOneOutEditor from "./editors/OddOneOutEditor";
 import RowsEditor from "./editors/RowsEditor";
 import ScrambleEditor from "./editors/ScrambleEditor";
@@ -79,6 +80,8 @@ function SubEditor({ draft, issues, onChange }: SubEditorProps) {
       return <OddOneOutEditor draft={draft} issues={issues} onChange={onChange} />;
     case "connect":
       return <ConnectEditor draft={draft} issues={issues} onChange={onChange} />;
+    case "myth-fact":
+      return <MythFactEditor draft={draft} issues={issues} onChange={onChange} />;
     case "zoom":
       return <ZoomEditor draft={draft} issues={issues} onChange={onChange} />;
     default:
@@ -133,6 +136,13 @@ export default function QuestionForm({
 
     // Seed a usable starting shape so the new editor is not empty.
     if (next === "connect") patch.clues = ["", "", ""];
+    if (next === "myth-fact") {
+      patch.clues = [""];
+      patch.answer = "MYTH";
+    } else if (draft.type === "myth-fact") {
+      // MYTH or FACT would read as a real answer on any other type.
+      patch.answer = "";
+    }
     if (usesRows(next)) patch.rows = [{ parts: [{ text: "", size: "xl" }] }];
 
     onChange(patch);
@@ -173,22 +183,27 @@ export default function QuestionForm({
       {/* ------------------------------------------------------------ answer */}
       <Section title="Answer and text">
         <div className="flex flex-col gap-3">
-          <Field
-            label="Answer"
-            required
-            error={err("answer")}
-            hint={warnOn("answer") ?? "Short and uppercase — it is shown very large on the reveal."}
-          >
-            {(props) => (
-              <TextInput
-                {...props}
-                value={draft.answer}
-                onChange={(e) => onChange({ answer: e.target.value.toUpperCase() })}
-                placeholder="GROWTH"
-                className="font-black uppercase"
-              />
-            )}
-          </Field>
+          {draft.type === "myth-fact" ? (
+            // The answer is picked in the Myth or Fact section above.
+            err("answer") && <Callout tone="error">{err("answer")}</Callout>
+          ) : (
+            <Field
+              label="Answer"
+              required
+              error={err("answer")}
+              hint={warnOn("answer") ?? "Short and uppercase — it is shown very large on the reveal."}
+            >
+              {(props) => (
+                <TextInput
+                  {...props}
+                  value={draft.answer}
+                  onChange={(e) => onChange({ answer: e.target.value.toUpperCase() })}
+                  placeholder="GROWTH"
+                  className="font-black uppercase"
+                />
+              )}
+            </Field>
+          )}
 
           <Field
             label="Prompt"
@@ -223,9 +238,15 @@ export default function QuestionForm({
           </Field>
 
           <Field
-            label="Insight (optional)"
+            label={draft.type === "myth-fact" ? "Explanation" : "Insight (optional)"}
+            required={draft.type === "myth-fact"}
             error={err("insight")}
-            hint={warnOn("insight") ?? "A line the facilitator can read out after the reveal."}
+            hint={
+              warnOn("insight") ??
+              (draft.type === "myth-fact"
+                ? "Shown in large text beneath the cards on the reveal."
+                : "A line the facilitator can read out after the reveal.")
+            }
           >
             {(props) => (
               <TextArea

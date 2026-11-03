@@ -20,6 +20,8 @@ import Confetti from "@/components/Confetti";
 
 import {
   bankSignature,
+  dismissLegacyBankNotice,
+  legacyBankNoticePending,
   loadBank,
   puzzleForBox,
   selectActive,
@@ -103,6 +105,9 @@ export default function Game() {
 
   /** Shown once when a saved session was dropped because the questions changed. */
   const [bankChanged, setBankChanged] = useState(restored.wasReset);
+
+  /** Shown until dismissed when a bank saved before the update was set aside. */
+  const [legacyNotice, setLegacyNotice] = useState(legacyBankNoticePending);
 
   const [screen, setScreen] = useState<Screen>("boxes");
   const [currentBox, setCurrentBox] = useState<number | null>(null);
@@ -618,6 +623,30 @@ export default function Game() {
           <button
             type="button"
             onClick={() => setBankChanged(false)}
+            className="rounded-full px-2 py-0.5 text-sm leading-none text-amber-700 hover:bg-amber-100"
+            aria-label="Dismiss"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      {/* A bank saved before the update was kept but is no longer in play. */}
+      {legacyNotice && (
+        <div
+          role="status"
+          className={`fixed left-1/2 z-[80] flex -translate-x-1/2 items-center gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-xs font-bold text-amber-800 shadow-panel ${
+            bankChanged ? "bottom-16" : "bottom-4"
+          }`}
+        >
+          Updated questions loaded. Your older saved questions were kept — see
+          Manage questions.
+          <button
+            type="button"
+            onClick={() => {
+              dismissLegacyBankNotice();
+              setLegacyNotice(false);
+            }}
             className="rounded-full px-2 py-0.5 text-sm leading-none text-amber-700 hover:bg-amber-100"
             aria-label="Dismiss"
           >

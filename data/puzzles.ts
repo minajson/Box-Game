@@ -12,9 +12,14 @@ import type { Puzzle } from "@/lib/types";
  * admin order and numbers them 1..N, so `boxNumber` below is only a seed
  * ordering hint.
  *
- * Distribution across the nine supported types (Wild Card was removed):
- *   scramble 7 · rebus 6 · picture-word 6 · picture-combo 6 · emoji 5
- *   missing-letters 6 · zoom 5 · odd-one-out 4 · connect 5   =  50
+ * Distribution across the ten supported types (Wild Card was removed):
+ *   scramble 6 · rebus 5 · picture-word 5 · picture-combo 4 · emoji 5
+ *   missing-letters 3 · zoom 5 · odd-one-out 3 · connect 4 · myth-fact 10  =  50
+ *
+ * Boxes 13, 17, 24, 29, 33, 36, 40, 42, 45 and 47 hold the Mental Wellbeing
+ * Myth or Fact questions, with new ids (51-60) so a session saved against the
+ * questions they replaced is not carried across. The original 50 are kept in
+ * `data/backups/`.
  *
  * Types are interleaved by box number, so consecutive picks feel varied
  * rather than marching through one category at a time.
@@ -27,6 +32,8 @@ import type { Puzzle } from "@/lib/types";
  *   images through `assetIndex`, so no path is ever hard-coded in the UI.
  * - `scrambledValue` MUST be a letter-for-letter permutation of `answer`.
  * - `maskedValue` uses `_` for each blank and must otherwise match `answer`.
+ * - Myth or Fact: `clues[0]` is the statement, `answer` is MYTH or FACT, and
+ *   `insight` is the explanation shown large on the reveal.
  * - Run `npm run check:puzzles` after editing — it verifies all of the above.
  *
  * Themes: growth, feedback, teamwork, collaboration, communication,
@@ -242,25 +249,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "combine",
   },
   {
-    id: 13,
+    id: 51,
     boxNumber: 13,
-    type: "picture-combo",
-    categoryLabel: "PUT IT TOGETHER!",
-    prompt: "Combine the pictures into one phrase",
-    rows: [
-      {
-        parts: [
-          { emoji: "🌉", size: "xl", caption: "BRIDGE" },
-          { text: "+", size: "lg", muted: true },
-          { emoji: "🏗️", size: "xl", caption: "BUILDING" },
-        ],
-      },
-    ],
-    answer: "BRIDGE BUILDING",
-    hint: "It is what connectors do between two teams.",
-    insight: "Silos are built by accident. Bridges are built on purpose.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["Mental health problems are a sign of personal weakness."],
+    answer: "MYTH",
+    hint: "Think about what really causes them.",
+    insight: "They have nothing to do with being weak or lazy. Biological, psychological and social factors all play a part.",
     imageAssets: [],
-    revealAnimation: "combine",
+    revealAnimation: "highlight",
   },
   {
     id: 14,
@@ -309,21 +309,16 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "zoom-out",
   },
   {
-    id: 17,
+    id: 52,
     boxNumber: 17,
-    type: "odd-one-out",
-    categoryLabel: "ODD ONE OUT!",
-    prompt: "Which one does NOT belong?",
-    choices: [
-      { id: "a", label: "A NEW CHALLENGE", emoji: "🧗" },
-      { id: "b", label: "AN HONEST CRITIQUE", emoji: "🗣️" },
-      { id: "c", label: "THE COMFORT ZONE", emoji: "🛋️" },
-      { id: "d", label: "A HARD QUESTION", emoji: "❓" },
-    ],
-    oddOneOutId: "c",
-    answer: "THE COMFORT ZONE",
-    hint: "Three of them stretch you. One keeps you exactly where you are.",
-    insight: "Three of these grow you. The fourth is where growth goes to nap.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["A little stress can help you focus and get things done."],
+    answer: "FACT",
+    hint: "Think about a deadline.",
+    insight: "Some stress can motivate us. If it's constant or affecting daily life, it's time to seek support.",
     imageAssets: [],
     revealAnimation: "highlight",
   },
@@ -438,17 +433,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "fade",
   },
   {
-    id: 24,
+    id: 53,
     boxNumber: 24,
-    type: "missing-letters",
-    categoryLabel: "FILL THE GAPS!",
-    prompt: "Complete the word",
-    maskedValue: "A C _ O U _ T A B I _ I T Y",
-    answer: "ACCOUNTABILITY",
-    hint: "Owning the outcome — not just the task.",
-    insight: "It is the difference between an excuse and a result.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["People with mental health conditions can't handle demanding jobs."],
+    answer: "MYTH",
+    hint: "Look at the word \"can't\".",
+    insight: "Many people can be just as productive as their colleagues, especially when their condition is well managed.",
     imageAssets: [],
-    revealAnimation: "fill-letters",
+    revealAnimation: "highlight",
   },
   {
     id: 25,
@@ -510,21 +506,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "rearrange",
   },
   {
-    id: 29,
+    id: 54,
     boxNumber: 29,
-    type: "rebus",
-    categoryLabel: "REBUS!",
-    prompt: "What phrase is hiding here?",
-    rows: [
-      { parts: [{ text: "MIND", size: "xl" }] },
-      { divider: true },
-      { parts: [{ text: "MATTER", size: "xl" }] },
-    ],
-    answer: "MIND OVER MATTER",
-    hint: "One word is sitting OVER the other.",
-    insight: "Most limits are agreed to long before they are reached.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["Regular physical activity can lift your mood."],
+    answer: "FACT",
+    hint: "Think about how you feel after a walk.",
+    insight: "Being active can boost mood, self-esteem, sleep and energy. You don't need a gym to start.",
     imageAssets: [],
-    revealAnimation: "fade",
+    revealAnimation: "highlight",
   },
   {
     id: 30,
@@ -592,17 +585,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "fade",
   },
   {
-    id: 33,
+    id: 55,
     boxNumber: 33,
-    type: "missing-letters",
-    categoryLabel: "FILL THE GAPS!",
-    prompt: "Complete the word",
-    maskedValue: "C O _ M U N _ C A T I _ N",
-    answer: "COMMUNICATION",
-    hint: "It has not happened until the other person understands.",
-    insight: "The biggest problem with it is the illusion that it has occurred.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["People with mental health conditions are usually violent."],
+    answer: "MYTH",
+    hint: "Look at the word \"usually\".",
+    insight: "Most are no more likely to be violent than anyone else. People with severe mental illness are far more likely to be victims of violent crime.",
     imageAssets: [],
-    revealAnimation: "fill-letters",
+    revealAnimation: "highlight",
   },
   {
     id: 34,
@@ -636,17 +630,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "highlight",
   },
   {
-    id: 36,
+    id: 56,
     boxNumber: 36,
-    type: "connect",
-    categoryLabel: "WHAT CONNECTS THEM?",
-    prompt: "What do these three have in common?",
-    clues: ["WHAT YOU CELEBRATE", "WHAT YOU TOLERATE", "WHAT YOU IGNORE"],
-    answer: "CULTURE",
-    hint: "It is not the poster on the wall. It is the behaviour in the room.",
-    insight: "Culture is not what you say. It is what you walk past.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["Once you have a mental health condition, you can never recover."],
+    answer: "MYTH",
+    hint: "Look at the word \"never\".",
+    insight: "Effective support exists. Many people recover fully or manage their symptoms and live full lives.",
     imageAssets: [],
-    revealAnimation: "fade",
+    revealAnimation: "highlight",
   },
 
   // ================================================================ ROUND 5
@@ -702,25 +697,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "combine",
   },
   {
-    id: 40,
+    id: 57,
     boxNumber: 40,
-    type: "picture-combo",
-    categoryLabel: "PUT IT TOGETHER!",
-    prompt: "Combine the pictures into one phrase",
-    rows: [
-      {
-        parts: [
-          { emoji: "🔑", size: "xl", caption: "KEY" },
-          { text: "+", size: "lg", muted: true },
-          { emoji: "🧑", size: "xl", caption: "PLAYER" },
-        ],
-      },
-    ],
-    answer: "KEY PLAYER",
-    hint: "Two words. Every team has a few — often quietly.",
-    insight: "The key player is rarely the loudest one in the meeting.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["Poor sleep can make stress worse."],
+    answer: "FACT",
+    hint: "Think about the day after a bad night.",
+    insight: "Poor sleep and stress can feed each other, so protecting your sleep is a real wellbeing habit.",
     imageAssets: [],
-    revealAnimation: "combine",
+    revealAnimation: "highlight",
   },
   {
     id: 41,
@@ -743,17 +731,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "fade",
   },
   {
-    id: 42,
+    id: 58,
     boxNumber: 42,
-    type: "missing-letters",
-    categoryLabel: "FILL THE GAPS!",
-    prompt: "Complete the word",
-    maskedValue: "I N _ O V _ T I O _",
-    answer: "INNOVATION",
-    hint: "It usually starts with somebody asking a slightly annoying question.",
-    insight: "It is not about having new ideas. It is about stopping old ones.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["Mental health only matters if you have a diagnosis."],
+    answer: "MYTH",
+    hint: "Compare it with physical health.",
+    insight: "Everyone has mental health, just as everyone has physical health. It shifts over time and deserves care at every stage.",
     imageAssets: [],
-    revealAnimation: "fill-letters",
+    revealAnimation: "highlight",
   },
   {
     id: 43,
@@ -783,17 +772,18 @@ export const PUZZLES: Puzzle[] = [
 
   // ================================================================ ROUND 6
   {
-    id: 45,
+    id: 59,
     boxNumber: 45,
-    type: "scramble",
-    categoryLabel: "SCRAMBLE IT!",
-    prompt: "Unscramble this word",
-    scrambledValue: "ANTELOPIT",
-    answer: "POTENTIAL",
-    hint: "Nine letters. Everybody has it. Not everybody spends it.",
-    insight: "Unused potential is the most expensive thing an organisation owns.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["Depression and anxiety cost the world about 12 billion working days a year."],
+    answer: "FACT",
+    hint: "The number is meant to surprise you.",
+    insight: "That's a World Health Organization estimate, costing about US$1 trillion a year. Supportive workplaces matter.",
     imageAssets: [],
-    revealAnimation: "rearrange",
+    revealAnimation: "highlight",
   },
   {
     id: 46,
@@ -817,25 +807,18 @@ export const PUZZLES: Puzzle[] = [
     revealAnimation: "fade",
   },
   {
-    id: 47,
+    id: 60,
     boxNumber: 47,
-    type: "picture-word",
-    categoryLabel: "PICTURE THIS!",
-    prompt: "Read the word, then the picture",
-    rows: [
-      {
-        parts: [
-          { text: "OWN", size: "xl" },
-          { text: "+", size: "lg", muted: true },
-          { emoji: "🚢", size: "xl", caption: "SHIP" },
-        ],
-      },
-    ],
-    answer: "OWNERSHIP",
-    hint: "Nine letters. It means the problem is yours now.",
-    insight: "The moment you say \"that is not my job\", it becomes nobody's job.",
+    type: "myth-fact",
+    categoryLabel: "MYTH OR FACT?",
+    category: "Mental Wellbeing",
+    prompt: "Is this statement a myth or a fact?",
+    clues: ["If someone seems to be struggling, it's better not to ask."],
+    answer: "MYTH",
+    hint: "What would you want a friend to do?",
+    insight: "A caring question and real listening can help someone feel less alone. You don't need to have all the answers.",
     imageAssets: [],
-    revealAnimation: "combine",
+    revealAnimation: "highlight",
   },
   {
     id: 48,

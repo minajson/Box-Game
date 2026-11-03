@@ -37,6 +37,7 @@ const TYPES = [
   "zoom",
   "odd-one-out",
   "connect",
+  "myth-fact",
 ];
 
 const errors = [];
@@ -45,6 +46,7 @@ const letters = (s) => s.toUpperCase().replace(/[^A-Z]/g, "").split("").sort().j
 const seenBoxes = new Set();
 const seenIds = new Set();
 const seenAnswers = new Map();
+const seenStatements = new Map();
 const typeCounts = {};
 
 for (const p of puzzles) {
@@ -63,9 +65,11 @@ for (const p of puzzles) {
   if (!p.categoryLabel?.trim()) errors.push(`${tag}: missing categoryLabel`);
 
   // No puzzle should repeat during a game, and neither should an answer —
-  // revealing the same word twice deflates the room.
+  // revealing the same word twice deflates the room. Myth or Fact is the
+  // exception: its answer is always one of two words, so its statement is
+  // checked for repeats instead.
   const key = p.answer?.trim().toUpperCase();
-  if (key) {
+  if (key && p.type !== "myth-fact") {
     if (seenAnswers.has(key)) {
       errors.push(`${tag}: answer "${p.answer}" already used by box ${seenAnswers.get(key)}`);
     } else {
@@ -124,6 +128,20 @@ for (const p of puzzles) {
 
   if (p.type === "connect" && (!p.clues || p.clues.length !== 3))
     errors.push(`${tag}: connect needs exactly 3 clues`);
+
+  if (p.type === "myth-fact") {
+    const statement = p.clues?.[0]?.trim().toLowerCase();
+    if (p.clues?.length !== 1 || !statement) {
+      errors.push(`${tag}: myth-fact needs exactly 1 statement in clues`);
+    } else if (seenStatements.has(statement)) {
+      errors.push(`${tag}: statement already used by box ${seenStatements.get(statement)}`);
+    } else {
+      seenStatements.set(statement, p.boxNumber);
+    }
+    if (p.answer !== "MYTH" && p.answer !== "FACT")
+      errors.push(`${tag}: answer must be MYTH or FACT, found "${p.answer}"`);
+    if (!p.insight?.trim()) errors.push(`${tag}: myth-fact needs an explanation in insight`);
+  }
 
   if (p.challenge !== undefined)
     errors.push(`${tag}: "challenge" is a removed Wild Card field`);

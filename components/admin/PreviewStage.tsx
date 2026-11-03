@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import PuzzleCanvas from "@/components/PuzzleCanvas";
+import PuzzleCanvas, { MythFactExplanation } from "@/components/PuzzleCanvas";
 import type { ManagedPuzzle } from "@/lib/types";
 import type { ValidationResult } from "@/lib/puzzleValidation";
 import { useFocusTrap } from "@/lib/useFocusTrap";
@@ -94,22 +94,28 @@ function Stage({
 
         {revealed && (
           <div className="shrink-0 pb-1 text-center">
-            <p className="mb-1 text-[11px] font-black uppercase tracking-[0.3em] text-ink-soft">
-              The answer is
-            </p>
-            <p
-              className="font-black uppercase leading-[0.95] tracking-tight text-ren-green"
-              style={{ fontSize: "clamp(1.8rem, 5.4vw, 5.5rem)" }}
-            >
-              {puzzle.answer}
-            </p>
-            {puzzle.insight && (
-              <p
-                className="mx-auto mt-1.5 max-w-[46ch] font-semibold italic text-ink-soft"
-                style={{ fontSize: "clamp(0.7rem, 1.25vw, 1.05rem)" }}
-              >
-                {puzzle.insight}
-              </p>
+            {puzzle.type === "myth-fact" ? (
+              <MythFactExplanation puzzle={puzzle} />
+            ) : (
+              <>
+                <p className="mb-1 text-[11px] font-black uppercase tracking-[0.3em] text-ink-soft">
+                  The answer is
+                </p>
+                <p
+                  className="font-black uppercase leading-[0.95] tracking-tight text-ren-green"
+                  style={{ fontSize: "clamp(1.8rem, 5.4vw, 5.5rem)" }}
+                >
+                  {puzzle.answer}
+                </p>
+                {puzzle.insight && (
+                  <p
+                    className="mx-auto mt-1.5 max-w-[46ch] font-semibold italic text-ink-soft"
+                    style={{ fontSize: "clamp(0.7rem, 1.25vw, 1.05rem)" }}
+                  >
+                    {puzzle.insight}
+                  </p>
+                )}
+              </>
             )}
           </div>
         )}
