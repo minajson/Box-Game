@@ -2,7 +2,8 @@
 
 import { PUZZLE_DIFFICULTIES, PUZZLE_TYPES, type PuzzleDifficulty, type PuzzleType } from "@/lib/types";
 import { TYPE_LABELS } from "@/lib/puzzleValidation";
-import { Btn, Chip, InlineSelect } from "./ui";
+import { EVENTS, EVENT_IDS, type EventId } from "@/data/events";
+import { Btn, Chip, InlineSelect, Segmented } from "./ui";
 
 /**
  * Search, filters, sort and the bank-level actions.
@@ -16,7 +17,10 @@ export interface ListFilters {
   type: PuzzleType | "all";
   category: string | "all";
   difficulty: PuzzleDifficulty | "all";
+  /** Show All / Active Only / Hidden Only. ("inactive" is the stored name for Hidden.) */
   active: "all" | "active" | "inactive";
+  /** Which event a question belongs to (membership — whether or not it is Active now). */
+  event: EventId | "all";
   problems: boolean;
 }
 
@@ -25,6 +29,7 @@ export const EMPTY_FILTERS: ListFilters = {
   category: "all",
   difficulty: "all",
   active: "all",
+  event: "all",
   problems: false,
 };
 
@@ -35,6 +40,7 @@ export function filtersActive(f: ListFilters, query: string): boolean {
     f.category !== "all" ||
     f.difficulty !== "all" ||
     f.active !== "all" ||
+    f.event !== "all" ||
     f.problems
   );
 }
@@ -114,7 +120,7 @@ export default function ListToolbar({
           title={
             restoreDisabled
               ? "Already using the bundled questions."
-              : "Replace your saved questions with the bundled set."
+              : "Discard every admin change in this browser and go back to the bundled NAPE 2026 game."
           }
         >
           Restore defaults
@@ -162,14 +168,33 @@ export default function ListToolbar({
           ))}
         </InlineSelect>
 
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-ink-soft">
+            Show
+          </span>
+          <Segmented<ListFilters["active"]>
+            label="Show questions by status"
+            value={filters.active}
+            onChange={(v) => onFilters({ active: v })}
+            options={[
+              { value: "all", label: "Show All" },
+              { value: "active", label: "Active Only" },
+              { value: "inactive", label: "Hidden Only" },
+            ]}
+          />
+        </div>
+
         <InlineSelect
-          label="Status"
-          value={filters.active}
-          onChange={(v) => onFilters({ active: v as ListFilters["active"] })}
+          label="Event"
+          value={filters.event}
+          onChange={(v) => onFilters({ event: v as ListFilters["event"] })}
         >
-          <option value="all">Active and inactive</option>
-          <option value="active">Active only</option>
-          <option value="inactive">Inactive only</option>
+          <option value="all">All events</option>
+          {EVENT_IDS.map((id) => (
+            <option key={id} value={id}>
+              {EVENTS[id].name}
+            </option>
+          ))}
         </InlineSelect>
 
         <InlineSelect label="Sort by" value={sort} onChange={(v) => onSort(v as SortKey)}>
@@ -199,6 +224,8 @@ export default function ListToolbar({
           <span className="text-ink">{total}</span> question{total === 1 ? "" : "s"}
           {" · "}
           <span className="text-ink">{activeCount}</span> active
+          {" · "}
+          <span className="text-ink">{total - activeCount}</span> hidden
           {dirty && (
             <>
               {" · "}
@@ -223,7 +250,12 @@ export default function ListToolbar({
             </Chip>
           )}
           {filters.active !== "all" && (
-            <Chip onRemove={() => onFilters({ active: "all" })}>{filters.active}</Chip>
+            <Chip onRemove={() => onFilters({ active: "all" })}>
+              {filters.active === "active" ? "active only" : "hidden only"}
+            </Chip>
+          )}
+          {filters.event !== "all" && (
+            <Chip onRemove={() => onFilters({ event: "all" })}>{EVENTS[filters.event].name}</Chip>
           )}
           {filters.problems && (
             <Chip onRemove={() => onFilters({ problems: false })}>with problems</Chip>

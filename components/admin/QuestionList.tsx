@@ -30,6 +30,8 @@ export default function QuestionList({
   onPage,
   onPageSize,
   onClearFilters,
+  selected,
+  onToggleAllShown,
   cb,
 }: {
   /** The current page, already filtered and sorted. */
@@ -49,6 +51,10 @@ export default function QuestionList({
   onPage: (n: number) => void;
   onPageSize: (n: number | "all") => void;
   onClearFilters: () => void;
+  /** uids ticked for the bulk buttons. */
+  selected: ReadonlySet<string>;
+  /** Tick or untick every row on this page. */
+  onToggleAllShown: (checked: boolean) => void;
   cb: RowCallbacks;
 }) {
   if (total === 0) {
@@ -82,14 +88,21 @@ export default function QuestionList({
         role="presentation"
         className={`hidden border-b border-ink/10 bg-ink/[0.025] px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-ink-soft ${ROW_GRID}`}
       >
-        {/* Nine cells, matching ROW_GRID's nine tracks. */}
+        {/* Ten cells, matching ROW_GRID's ten tracks. */}
+        <input
+          type="checkbox"
+          checked={rows.length > 0 && rows.every((p) => selected.has(p.uid))}
+          onChange={(e) => onToggleAllShown(e.target.checked)}
+          aria-label="Select every question on this page"
+          className="h-4 w-4 accent-[var(--color-ren-green)]"
+        />
         <span />
         <span>#</span>
         <span>Question</span>
         <span>Type</span>
         <span>Category</span>
         <span>Level</span>
-        <span>Active</span>
+        <span>Status</span>
         <span>Updated</span>
         <span className="text-right">Actions</span>
       </div>
@@ -105,6 +118,7 @@ export default function QuestionList({
             dragEnabled={dragEnabled}
             dragging={dragUid === p.uid}
             dropEdge={dropTarget?.uid === p.uid ? dropTarget.edge : null}
+            selected={selected.has(p.uid)}
             cb={cb}
           />
         ))}

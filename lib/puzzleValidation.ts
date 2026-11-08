@@ -391,8 +391,11 @@ export function validatePuzzle(
   }
 
   if (!nonEmpty(draft.prompt)) err("prompt", "A prompt is required — it is shown above the puzzle.");
-  if (!nonEmpty(draft.hint)) err("hint", "A hint is required.");
-  else if (draft.hint!.trim().length > MAX_HINT) {
+  // Questions imported from the NAPE document have no hint to give (the Hint
+  // button is hidden when there is none), so only the other questions need one.
+  if (!nonEmpty(draft.hint)) {
+    if (!draft.nape) err("hint", "A hint is required.");
+  } else if (draft.hint!.trim().length > MAX_HINT) {
     warn("hint", `Hints over ${MAX_HINT} characters get cramped on screen.`);
   }
   if (!nonEmpty(draft.categoryLabel)) {
@@ -433,10 +436,12 @@ export function validatePuzzle(
   // Two boxes revealing the same answer is obvious from the floor. Myth or Fact
   // is the exception: its answer is always one of two words, so its STATEMENT is
   // what must not repeat (checked in its own case below).
-  if (nonEmpty(draft.answer) && type !== "myth-fact") {
+  // NAPE questions are exempt: their answers include "True" / "False" (eleven
+  // true-or-false questions) and are all different questions by wording.
+  if (nonEmpty(draft.answer) && type !== "myth-fact" && !draft.nape) {
     const mine = draft.answer!.trim().toUpperCase();
     const clash = others.find(
-      (p) => p.type !== "myth-fact" && (p.answer ?? "").trim().toUpperCase() === mine,
+      (p) => p.type !== "myth-fact" && !p.nape && (p.answer ?? "").trim().toUpperCase() === mine,
     );
     if (clash) {
       err("answer", `Question ${clash.order + 1} already uses the answer "${clash.answer}".`);

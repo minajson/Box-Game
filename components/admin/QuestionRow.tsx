@@ -4,7 +4,7 @@ import { memo, useEffect, useRef, useState } from "react";
 
 import type { ManagedPuzzle } from "@/lib/types";
 import type { ValidationResult } from "@/lib/puzzleValidation";
-import { fullTime, relativeTime, shortPreview, typeLabel } from "@/lib/puzzleSummary";
+import { fullTime, questionTypeLabel, relativeTime, shortPreview } from "@/lib/puzzleSummary";
 import { Badge, IconBtn, SrOnly } from "./ui";
 
 /**
@@ -20,15 +20,15 @@ import { Badge, IconBtn, SrOnly } from "./ui";
  */
 
 /**
- * Nine tracks for nine cells: grip · position · question · type · category ·
- * level · active · updated · actions.
+ * Ten tracks for ten cells: select · grip · position · question · type ·
+ * category · level · status · updated · actions.
  *
  * Keep this count in step with both the cells in `QuestionRow` and the heading
  * strip in `QuestionList` — one cell more than there are tracks and the extra
  * wraps onto an implicit second row, squeezed into the 2rem grip column.
  */
 export const ROW_GRID =
-  "md:grid md:grid-cols-[2rem_3.25rem_minmax(0,1fr)_8.5rem_7rem_5.5rem_4.5rem_6rem_auto] md:items-center md:gap-3";
+  "md:grid md:grid-cols-[1.5rem_2rem_3.25rem_minmax(0,1fr)_8.5rem_7rem_5.5rem_8rem_5.5rem_auto] md:items-center md:gap-3";
 
 export interface RowCallbacks {
   onEdit: (uid: string) => void;
@@ -36,6 +36,8 @@ export interface RowCallbacks {
   onDelete: (uid: string) => void;
   onPreview: (uid: string) => void;
   onToggleActive: (uid: string) => void;
+  /** Tick or untick a row for the bulk Activate / Hide buttons. */
+  onToggleSelect: (uid: string) => void;
   onMove: (uid: string, delta: -1 | 1) => void;
   onSetOrder: (uid: string, position: number) => void;
   /** Native drag: called with the dragged uid on drag start. */
@@ -60,6 +62,7 @@ const QuestionRow = memo(function QuestionRow({
   dragEnabled,
   dragging,
   dropEdge,
+  selected,
   cb,
 }: {
   puzzle: ManagedPuzzle;
@@ -71,6 +74,7 @@ const QuestionRow = memo(function QuestionRow({
   dragging: boolean;
   /** Where the insertion line sits, when this row is the drop target. */
   dropEdge: "before" | "after" | null;
+  selected: boolean;
   cb: RowCallbacks;
 }) {
   const errors = result?.errors.length ?? 0;
@@ -132,8 +136,21 @@ const QuestionRow = memo(function QuestionRow({
       onDragEnd={cb.onDragEnd}
       className={`relative border-b border-ink/8 px-3 py-3 transition-colors last:border-b-0 ${
         dragging ? "opacity-40" : "hover:bg-ink/[0.02]"
-      } ${!puzzle.active ? "bg-ink/[0.015]" : ""} ${ROW_GRID}`}
+      } ${!puzzle.active ? "bg-ink/[0.03]" : ""} ${selected ? "bg-ren-green-soft/50" : ""} ${ROW_GRID}`}
+      data-uid={puzzle.uid}
+      data-status={puzzle.active ? "active" : "hidden"}
     >
+      {/* Bulk-select tick */}
+      <div className="absolute left-3 top-3 md:static">
+        <input
+          type="checkbox"
+          checked={selected}
+          onChange={() => cb.onToggleSelect(puzzle.uid)}
+          aria-label={`Select ${puzzle.answer}`}
+          className="h-4 w-4 accent-[var(--color-ren-green)]"
+        />
+      </div>
+
       {/* Drop indicator — absolutely positioned so it never shifts the row. */}
       {dropEdge && (
         <span
@@ -233,6 +250,16 @@ const QuestionRow = memo(function QuestionRow({
             {puzzle.answer}
           </span>
         </button>
+        {puzzle.nape && (
+          <span className="mt-1 flex flex-wrap items-center gap-1">
+            <Badge tone="sky">{`NAPE Q${puzzle.nape.sourceNumber}`}</Badge>
+            {puzzle.nape.flags.includes("needs-verification") && <Badge tone="red">Needs verification</Badge>}
+            {puzzle.nape.flags.includes("wording-revised") && <Badge tone="amber">Revised wording</Badge>}
+            {puzzle.nape.flags.includes("safety-sensitive") && <Badge tone="amber">Safety-sensitive</Badge>}
+            {puzzle.nape.flags.includes("time-sensitive") && <Badge tone="amber">Time-sensitive</Badge>}
+            {puzzle.nape.visual && <Badge tone="neutral">{puzzle.nape.visual}</Badge>}
+          </span>
+        )}
         {errors > 0 && (
           <button
             type="button"
@@ -246,7 +273,7 @@ const QuestionRow = memo(function QuestionRow({
 
       <div className="mt-2 min-w-0 md:mt-0">
         <SrOnly>Type</SrOnly>
-        <Badge tone="sky">{typeLabel(puzzle.type)}</Badge>
+        <Badge tone="sky">{questionTypeLabel(puzzle)}</Badge>
       </div>
 
       <div className="mt-2 min-w-0 md:mt-0">
@@ -261,25 +288,28 @@ const QuestionRow = memo(function QuestionRow({
         <DifficultyPill value={puzzle.difficulty} />
       </div>
 
-      {/* Active switch */}
-      <div className="mt-2 md:mt-0">
+      {/* Active / Hidden switch */}
+      <div className="mt-2 flex items-center gap-2 md:mt-0">
         <SrOnly>Active</SrOnly>
         <button
           type="button"
           role="switch"
           aria-checked={puzzle.active}
-          aria-label={`${puzzle.active ? "Disable" : "Enable"} ${puzzle.answer}`}
+          aria-label={`${puzzle.active ? "Hide" : "Activate"} ${puzzle.answer}`}
           onClick={() => cb.onToggleActive(puzzle.uid)}
           className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
             puzzle.active ? "bg-ren-green" : "bg-ink/15"
           }`}
         >
           <span
-            className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
+            className={`absolute left-0 top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
               puzzle.active ? "translate-x-[1.15rem]" : "translate-x-0.5"
             }`}
           />
         </button>
+        <span className={`text-[10px] font-black uppercase tracking-[0.1em] ${puzzle.active ? "text-ren-green-deep" : "text-ink-soft"}`}>
+          {puzzle.active ? "Active" : "Hidden"}
+        </span>
       </div>
 
       <div className="mt-2 md:mt-0">
@@ -334,6 +364,7 @@ const QuestionRow = memo(function QuestionRow({
   a.dragEnabled === b.dragEnabled &&
   a.dragging === b.dragging &&
   a.dropEdge === b.dropEdge &&
+  a.selected === b.selected &&
   (a.result?.errors.length ?? 0) === (b.result?.errors.length ?? 0) &&
   a.cb === b.cb);
 

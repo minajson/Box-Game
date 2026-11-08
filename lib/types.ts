@@ -232,6 +232,48 @@ export interface Puzzle {
   sceneZoom?: boolean;
   /** clickable: the point the scene zooms in on, in percent. Defaults to the centre. */
   sceneFocus?: { x: number; y: number };
+
+  // --- Events ---------------------------------------------------------
+  /**
+   * Which events this question belongs to (membership, not visibility — whether
+   * it is Active is decided per event, see lib/events.ts). Used by the admin's
+   * "filter by event".
+   */
+  events?: string[];
+  /** Present on questions imported from the NAPE 2026 quiz document. */
+  nape?: NapeMeta;
+}
+
+/** Why a question is flagged for a human before it is published. */
+export type ReviewFlag =
+  | "safety-sensitive"
+  | "time-sensitive"
+  | "needs-verification"
+  | "wording-revised";
+
+/**
+ * Source-of-truth bookkeeping for a question imported from the supplied NAPE
+ * document. `original` is the document's wording, kept verbatim even when the
+ * live wording has been revised.
+ */
+export interface NapeMeta {
+  set: number;
+  /** The question's number in the source document (1–80). */
+  sourceNumber: number;
+  topic: string;
+  format: "multiple-choice" | "true-false";
+  original: {
+    prompt: string;
+    options: { label: string; correct: boolean }[];
+    answer: string;
+    funFact: string;
+  };
+  wording: "original" | "revised";
+  flags: ReviewFlag[];
+  /** Reviewer-facing explanation of the flags. Never shown to players. */
+  note?: string;
+  /** What kind of picture the question carries, for admin filtering. */
+  visual?: "photo" | "diagram";
 }
 
 /**

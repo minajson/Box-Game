@@ -59,6 +59,8 @@ interface Props {
   onSelect?: (boxNumber: number, rect: DOMRect) => void;
   /** Visual scale — the wall uses 1, the opening sequence scales up. */
   className?: string;
+  /** Overrides the number's font size (the dense 100-box wall scales it to the box). */
+  numberSize?: string;
 }
 
 const MysteryBox = forwardRef<HTMLButtonElement, Props>(function MysteryBox(
@@ -71,6 +73,7 @@ const MysteryBox = forwardRef<HTMLButtonElement, Props>(function MysteryBox(
     still = false,
     onSelect,
     className = "",
+    numberSize,
   },
   ref,
 ) {
@@ -145,7 +148,7 @@ const MysteryBox = forwardRef<HTMLButtonElement, Props>(function MysteryBox(
           <span
             className="absolute inset-0 flex items-center justify-center font-black leading-none text-white"
             style={{
-              fontSize: "clamp(1.6rem, 4.4vw, 3.4rem)",
+              fontSize: numberSize ?? "clamp(1.6rem, 4.4vw, 3.4rem)",
               textShadow: `0 3px 0 ${c.rim}, 0 8px 18px rgb(18 35 59 / 0.4)`,
             }}
           >

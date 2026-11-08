@@ -28,6 +28,8 @@ export default function AdminPanel({
   boxes,
   openedBoxes,
   activeCount,
+  eventName,
+  sessionLocked,
   onOpenBox,
   onShowHint,
   onReveal,
@@ -50,6 +52,10 @@ export default function AdminPanel({
   openedBoxes: number[];
   /** How many questions are active — same as boxes.length, named for clarity. */
   activeCount: number;
+  /** The selected event, e.g. "NAPE 2026". */
+  eventName: string;
+  /** True for a fixed-size event: the whole wall is always played. */
+  sessionLocked: boolean;
   onOpenBox: (n: number) => void;
   onShowHint: () => void;
   onReveal: () => void;
@@ -236,6 +242,15 @@ export default function AdminPanel({
                     Manage questions ↗
                   </a>
 
+                  <p className="mt-3 text-xs font-bold text-ink">
+                    Event: <span data-panel-event className="text-ren-green-deep">{eventName}</span>
+                  </p>
+
+                  {sessionLocked ? (
+                    <p className="mt-1.5 text-xs text-ink-soft">
+                      Every active question is played — this event always shows its full wall.
+                    </p>
+                  ) : (
                   <label className="mt-3 flex items-center justify-between gap-3 text-xs font-semibold text-ink-soft">
                     Questions per session
                     <select
@@ -255,12 +270,13 @@ export default function AdminPanel({
                       ))}
                     </select>
                   </label>
+                  )}
 
                   <p className="mt-1.5 text-xs text-ink-soft">
                     {activeCount} question{activeCount === 1 ? "" : "s"} active.
                   </p>
 
-                  {settings.questionsPerSession > activeCount && (
+                  {!sessionLocked && settings.questionsPerSession > activeCount && (
                     <p
                       role="status"
                       className="mt-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700"

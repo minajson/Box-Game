@@ -1,5 +1,5 @@
 import { parseCsv, toCsv } from "./csv";
-import { newUid, nextId } from "./puzzleStore";
+import { getEvent, newUid, nextId } from "./puzzleStore";
 import { DEFAULT_REVEAL, validatePuzzle, type Issue } from "./puzzleValidation";
 import {
   PUZZLE_DIFFICULTIES,
@@ -549,7 +549,9 @@ export function exportBankJson(list: ManagedPuzzle[]): string {
   return `${JSON.stringify(
     {
       format: "crack-the-box/questions",
-      version: 1,
+      version: 2,
+      // Active/Hidden and the order in `questions` are those of THIS event.
+      event: getEvent(),
       exportedAt: new Date().toISOString(),
       count: ordered.length,
       questions: ordered,

@@ -237,9 +237,14 @@ export default function QuestionForm({
 
           <Field
             label="Hint"
-            required
+            required={!draft.nape}
             error={err("hint")}
-            hint={warnOn("hint") ?? "Shown when the facilitator presses Hint."}
+            hint={
+              warnOn("hint") ??
+              (draft.nape
+                ? "Optional for Oil & Gas questions. Leave blank to hide the Hint button."
+                : "Shown when the facilitator presses Hint.")
+            }
           >
             {(props) => (
               <TextArea

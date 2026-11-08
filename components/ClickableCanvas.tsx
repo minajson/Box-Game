@@ -58,6 +58,8 @@ const LABEL_SIZE = "clamp(0.95rem, min(1.65vw, 3vh), 3rem)";
 /** Long answers (a sentence rather than a phrase) step down so they fit the card. */
 const LABEL_SIZE_LONG = "clamp(0.85rem, min(1.4vw, 2.55vh), 2.6rem)";
 const LONG_LABEL = 48;
+/** True / False: two cards that fill the canvas, so the words can be much larger. */
+const LABEL_SIZE_PAIR = "clamp(1.8rem, min(4.4vw, 8vh), 7rem)";
 const DETAIL_SIZE = "clamp(0.75rem, min(1.15vw, 2.1vh), 2rem)";
 const LETTER_SIZE = "clamp(1.6rem, min(2.6vw, 4.6vh), 4.6rem)";
 
@@ -243,14 +245,16 @@ function Choice({ puzzle, response, onChange, phase, zoomLevel = 0 }: ClickableP
     if (phase === "solving" && onChange) onChange(toggleChoice(puzzle, response, id));
   };
 
-  const cards = (layout: "column" | "row" | "grid") => (
+  const cards = (layout: "column" | "row" | "grid" | "pair") => (
     <div
       className={`grid h-full min-h-0 w-full gap-[clamp(0.5rem,1.2vw,1.6rem)] ${
         layout === "column"
           ? "grid-rows-[repeat(var(--n),minmax(0,1fr))]"
           : layout === "row"
             ? "grid-cols-[repeat(var(--n),minmax(0,1fr))]"
-            : "grid-cols-2 grid-rows-2"
+            : layout === "pair"
+              ? "grid-cols-2 grid-rows-1"
+              : "grid-cols-2 grid-rows-2"
       }`}
       style={{ ["--n" as string]: options.length }}
     >
@@ -264,6 +268,7 @@ function Choice({ puzzle, response, onChange, phase, zoomLevel = 0 }: ClickableP
           phase={phase}
           multi={multi}
           tall={layout === "row"}
+          big={layout === "pair" || (options.length === 2 && layout === "column")}
           onPick={onChange ? () => pick(option.id) : undefined}
         />
       ))}
@@ -273,7 +278,9 @@ function Choice({ puzzle, response, onChange, phase, zoomLevel = 0 }: ClickableP
   // No scene: the cards are the whole challenge.
   if (!scene) {
     const withPhotos = options.some((o) => o.assetIndex !== undefined);
-    return <div className="h-full w-full">{cards(withPhotos ? "row" : "grid")}</div>;
+    // Two cards (True / False) get a single row of very large cards.
+    const layout = withPhotos ? "row" : options.length === 2 ? "pair" : "grid";
+    return <div className="h-full w-full">{cards(layout)}</div>;
   }
 
   return (
@@ -282,7 +289,9 @@ function Choice({ puzzle, response, onChange, phase, zoomLevel = 0 }: ClickableP
         layout
         transition={{ type: "spring", stiffness: 120, damping: 22 }}
         className="flex h-full min-w-0 flex-col items-center justify-center gap-3"
-        style={{ containerType: "size", flex: zooming ? "1 1 100%" : "0 1 58%" }}
+        // NAPE picture questions give the picture more room (62/38); every
+        // other challenge keeps its original 58/42 split.
+        style={{ containerType: "size", flex: zooming ? "1 1 100%" : puzzle.nape ? "0 1 62%" : "0 1 58%" }}
       >
         <div className="flex min-h-0 w-full flex-1 items-center justify-center" style={{ containerType: "size" }}>
           <SceneFrame
@@ -303,7 +312,7 @@ function Choice({ puzzle, response, onChange, phase, zoomLevel = 0 }: ClickableP
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0 }}
             transition={{ type: "spring", stiffness: 160, damping: 22, delay: 0.15 }}
-            className="h-full min-w-0 flex-[0_1_42%]"
+            className={`h-full min-w-0 ${puzzle.nape ? "flex-[0_1_38%]" : "flex-[0_1_42%]"}`}
           >
             {cards("column")}
           </motion.div>
@@ -333,6 +342,7 @@ function OptionCard({
   phase,
   multi,
   tall,
+  big,
   badge,
   onPick,
 }: {
@@ -344,12 +354,14 @@ function OptionCard({
   multi: boolean;
   /** Photo above the text, filling the card's height. */
   tall: boolean;
+  /** A two-card (True / False) layout: much larger type. */
+  big?: boolean;
   /** Overrides the letter, e.g. a sequence step number. */
   badge?: React.ReactNode;
   onPick?: () => void;
 }) {
   const state = cardState(option, picked, phase);
-  return <CardShell {...{ puzzle, option, index, state, multi, tall, badge, onPick, phase }} />;
+  return <CardShell {...{ puzzle, option, index, state, multi, tall, big, badge, onPick, phase }} />;
 }
 
 /*
@@ -380,6 +392,7 @@ function CardShell({
   state,
   multi,
   tall,
+  big,
   badge,
   flag,
   onPick,
@@ -391,6 +404,7 @@ function CardShell({
   state: CardState;
   multi: boolean;
   tall: boolean;
+  big?: boolean;
   badge?: React.ReactNode;
   flag?: CardFlag;
   onPick?: () => void;
@@ -458,7 +472,11 @@ function CardShell({
         <span className="flex min-w-0 flex-col">
           <span
             className="font-black leading-[1.12] tracking-tight text-ink"
-            style={{ fontSize: fitted(option.label.length > LONG_LABEL ? LABEL_SIZE_LONG : LABEL_SIZE) }}
+            style={{
+              fontSize: fitted(
+                big ? LABEL_SIZE_PAIR : option.label.length > LONG_LABEL ? LABEL_SIZE_LONG : LABEL_SIZE,
+              ),
+            }}
           >
             {option.label}
           </span>
@@ -821,8 +839,16 @@ function Sequence({ puzzle, response, onChange, phase }: ClickableProps) {
 const ANSWER_SIZE = "clamp(1.3rem, min(3vw, 5.2vh), 5.5rem)";
 const EXPLANATION_SIZE = "clamp(0.95rem, min(1.7vw, 3vh), 3.6rem)";
 
+/**
+ * NAPE questions put the lesson first: a smaller answer line (the green card
+ * above already shows it) and a much larger, easier-to-read fun fact.
+ */
+const NAPE_ANSWER_SIZE = "clamp(1.1rem, min(2.2vw, 3.8vh), 4rem)";
+const NAPE_FACT_SIZE = "clamp(1.25rem, min(2.5vw, 4.4vh), 5rem)";
+
 /** Replaces the usual answer block: the short answer, then the lesson. */
 export function ClickableExplanation({ puzzle }: { puzzle: Puzzle }) {
+  const nape = Boolean(puzzle.nape);
   return (
     <div data-clickable-explanation className="mx-auto flex max-w-[min(96%,1800px)] flex-col items-center gap-[clamp(0.2rem,0.8vh,0.8rem)]">
       <p className="text-[11px] font-black uppercase tracking-[0.3em] text-ink-soft">
@@ -830,15 +856,21 @@ export function ClickableExplanation({ puzzle }: { puzzle: Puzzle }) {
       </p>
       <p
         className="text-balance text-center font-black uppercase leading-[1.02] tracking-tight text-ren-green"
-        style={{ fontSize: ANSWER_SIZE }}
+        style={{ fontSize: nape ? NAPE_ANSWER_SIZE : ANSWER_SIZE }}
       >
         {puzzle.answer}
       </p>
       {puzzle.insight && (
         <p
-          className="max-w-[70ch] text-balance rounded-[clamp(1rem,1.6vw,2rem)] border-2 border-ren-green/30 bg-ren-green-soft px-[clamp(1rem,2vw,3rem)] py-[clamp(0.4rem,1.1vh,1.4rem)] text-center font-bold leading-snug text-ink shadow-panel"
-          style={{ fontSize: EXPLANATION_SIZE }}
+          data-fun-fact
+          className={`text-balance rounded-[clamp(1rem,1.6vw,2rem)] border-2 border-ren-green/30 bg-ren-green-soft px-[clamp(1rem,2vw,3rem)] py-[clamp(0.4rem,1.1vh,1.4rem)] text-center font-bold leading-snug text-ink shadow-panel ${
+            nape ? "max-w-[56ch]" : "max-w-[70ch]"
+          }`}
+          style={{ fontSize: nape ? NAPE_FACT_SIZE : EXPLANATION_SIZE }}
         >
+          {nape && (
+            <span className="mr-2 font-black uppercase tracking-wide text-ren-green-deep">Fun fact:</span>
+          )}
           {puzzle.insight}
         </p>
       )}

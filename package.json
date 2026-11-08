@@ -2,17 +2,20 @@
   "name": "crack-the-box",
   "version": "1.0.0",
   "private": true,
-  "description": "CRACK THE BOX — Pick it. Open it. Solve it. A live audience puzzle game.",
+  "description": "CRACK THE BOX \u2014 Pick it. Open it. Solve it. A live audience puzzle game.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "serve:offline": "node scripts/serve-offline.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "sfx": "node scripts/generate-sfx.mjs",
     "music": "node scripts/generate-music.mjs",
     "check:puzzles": "node scripts/validate-puzzles.mjs",
-    "media:manifest": "node scripts/build-media-manifest.mjs"
+    "check:nape": "node scripts/validate-nape.mjs",
+    "media:manifest": "node scripts/build-media-manifest.mjs",
+    "validate": "npm run check:puzzles && npm run check:nape && npm run typecheck && npm run lint"
   },
   "dependencies": {
     "framer-motion": "^12.23.0",

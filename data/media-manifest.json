@@ -2,6 +2,168 @@
   "note": "Puzzle artwork available to the question admin. Regenerate with `npm run media:manifest` after adding files to public/media/puzzles/ — label, alt and tags are preserved across runs.",
   "images": [
     {
+      "path": "/media/puzzles/nape/diagrams/anticline.svg",
+      "label": "Anticline",
+      "alt": "A cross-section of rock layers folded into an arch",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/bop.svg",
+      "label": "Bop",
+      "alt": "A stack of ram and annular blowout preventers with choke and kill lines on a wellhead",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/casing.svg",
+      "label": "Casing",
+      "alt": "A cross-section of a wellbore with steel pipe cemented in place",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/christmas-tree.svg",
+      "label": "Christmas tree",
+      "alt": "A stack of valves with side flowlines on top of a producing wellhead",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/directional.svg",
+      "label": "Directional",
+      "alt": "Several wells fanning out from one platform to different underground targets",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/distillation.svg",
+      "label": "Distillation",
+      "alt": "A tall column with trays and pipes at several heights",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/fracking.svg",
+      "label": "Fracking",
+      "alt": "A cross-section showing fluid cracking rock around a horizontal well",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/petroleum-system.svg",
+      "label": "Petroleum system",
+      "alt": "Rock layers with arrows showing oil moving upward",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/pigging.svg",
+      "label": "Pigging",
+      "alt": "A cutaway of a pipeline with a cylindrical tool travelling through it",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/porosity.svg",
+      "label": "Porosity",
+      "alt": "A magnified rock with grains and empty pore spaces",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/seismic.svg",
+      "label": "Seismic",
+      "alt": "A ship towing cables that send sound waves into the seabed",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/separator.svg",
+      "label": "Separator",
+      "alt": "A cutaway of a horizontal vessel with gas above, oil in the middle and water below",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/waterflood.svg",
+      "label": "Waterflood",
+      "alt": "A cross-section with one well injecting and another producing",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/diagrams/well-log.svg",
+      "label": "Well log",
+      "alt": "A set of well-log curves plotted against depth",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/q06-fpso.webp",
+      "label": "Q06 fpso",
+      "alt": "A ship-shaped floating production vessel at sea",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/q16-gas-detector.webp",
+      "label": "Q16 gas detector",
+      "alt": "A worker holding a portable gas detector on an industrial site",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/q36-sedimentary-rock.webp",
+      "label": "Q36 sedimentary rock",
+      "alt": "Layered sedimentary rock in a cliff face",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/q43-lockout.webp",
+      "label": "Q43 lockout",
+      "alt": "A padlock and tag fitted to an industrial valve",
+      "tags": [
+        "nape",
+        "oil-gas"
+      ]
+    },
+    {
       "path": "/media/puzzles/security/s51-entrance.webp",
       "label": "Staff entrance — tailgating",
       "alt": "Staff entering a secure lobby door; a man without a badge follows closely behind a colleague who badges in",

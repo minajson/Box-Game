@@ -20,11 +20,17 @@ import {
   categoriesIn,
   SEED_BANK,
   hasCustomBank,
+  setActiveMany,
+  setEvent,
+  resetEventToPreset,
+  useEvent,
   dismissLegacyBankNotice,
   legacyBankJson,
   legacyBankNoticePending,
 } from "@/lib/puzzleStore";
 import { dateStamp, downloadText } from "@/lib/download";
+import { napeReviewCsv } from "@/lib/napeReview";
+import { EVENTS, type EventId } from "@/data/events";
 import { KNOWN_ASSETS } from "@/lib/media";
 import { loadSettings, loadState } from "@/lib/storage";
 import { searchBlob, shortPreview } from "@/lib/puzzleSummary";
@@ -34,6 +40,7 @@ import { useAdminRoute } from "@/lib/useAdminRoute";
 import type { ManagedPuzzle } from "@/lib/types";
 
 import ConfirmDialog from "./ConfirmDialog";
+import EventPanel from "./EventPanel";
 import ImportExportPanel from "./ImportExportPanel";
 import ListToolbar, {
   EMPTY_FILTERS,
@@ -62,6 +69,8 @@ import { Btn, Callout } from "./ui";
 type Pending =
   | { kind: "delete"; uid: string }
   | { kind: "restore" }
+  | { kind: "switch"; to: EventId }
+  | { kind: "resetEvent" }
   | { kind: "discard"; then: () => void };
 
 const AUTO_DISMISS_MS = 4000;
@@ -84,6 +93,7 @@ function getOpenedBoxCount(): number {
 
 export default function QuestionsAdmin() {
   const bank = useBank();
+  const event = useEvent();
   const { route, go } = useAdminRoute();
 
   const [query, setQuery] = useState("");
@@ -101,6 +111,9 @@ export default function QuestionsAdmin() {
   /** The in-progress add/edit form. Null when not editing. */
   const [draft, setDraft] = useState<ManagedPuzzle | null>(null);
   const [dirty, setDirty] = useState(false);
+
+  /** Rows ticked for the bulk Activate / Hide buttons. */
+  const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
 
   const [dragUid, setDragUid] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<{ uid: string; edge: "before" | "after" } | null>(null);
@@ -234,6 +247,7 @@ export default function QuestionsAdmin() {
       if (filters.difficulty !== "all" && p.difficulty !== filters.difficulty) return false;
       if (filters.active === "active" && !p.active) return false;
       if (filters.active === "inactive" && p.active) return false;
+      if (filters.event !== "all" && !(p.events ?? []).includes(filters.event)) return false;
       if (filters.problems && (results.get(p.uid)?.ok ?? true)) return false;
       if (q && !searchBlob(p).includes(q)) return false;
       return true;
@@ -276,10 +290,85 @@ export default function QuestionsAdmin() {
     (uid: string) => {
       const p = byUid(uid);
       if (!p) return;
-      commit(toggleActive(bank, uid), `“${p.answer}” is now ${p.active ? "inactive" : "active"}.`);
+      commit(toggleActive(bank, uid), `“${p.answer}” is now ${p.active ? "hidden" : "active"}.`);
     },
     [bank, byUid, commit],
   );
+
+  /* ---- Active / Hidden, in bulk ---- */
+  const toggleSelect = useCallback((uid: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(uid)) next.delete(uid);
+      else next.add(uid);
+      return next;
+    });
+  }, []);
+
+  const toggleAllShown = useCallback(
+    (checked: boolean) => {
+      setSelected((prev) => {
+        const next = new Set(prev);
+        for (const p of paged) {
+          if (checked) next.add(p.uid);
+          else next.delete(p.uid);
+        }
+        return next;
+      });
+    },
+    [paged],
+  );
+
+  const bulkSet = useCallback(
+    (uids: ReadonlySet<string>, active: boolean) => {
+      const changing = bank.filter((p) => uids.has(p.uid) && p.active !== active).length;
+      if (changing === 0) {
+        setToast({ tone: "success", text: `Nothing to change — they are already ${active ? "active" : "hidden"}.` });
+        return;
+      }
+      const after = activeCount + (active ? changing : -changing);
+      const target = EVENTS[event].playable;
+      const note =
+        after === target
+          ? ` ${EVENTS[event].name} now has exactly ${target} active.`
+          : ` ${after} active now — ${EVENTS[event].name} is set up for ${target}.`;
+      if (commit(setActiveMany(bank, uids, active), `${active ? "Activated" : "Hid"} ${changing} question${changing === 1 ? "" : "s"}.${note}`)) {
+        setSelected(new Set());
+      }
+    },
+    [bank, activeCount, event, commit],
+  );
+
+  const selectAllMatching = useCallback(() => {
+    setSelected(new Set(filtered.map((p) => p.uid)));
+  }, [filtered]);
+
+  /* ---- Events ---- */
+  const confirmSwitch = useCallback(() => {
+    if (pending?.kind !== "switch") return;
+    const to = pending.to;
+    setPending(null);
+    const result = setEvent(to);
+    if (!result.ok) {
+      setToast({ tone: "error", text: result.error ?? "Could not switch event." });
+      return;
+    }
+    setSelected(new Set());
+    setFilters(EMPTY_FILTERS);
+    setPage(1);
+    setToast({ tone: "success", text: `Switched to ${EVENTS[to].name}. No questions were deleted or duplicated.` });
+  }, [pending]);
+
+  const confirmResetEvent = useCallback(() => {
+    setPending(null);
+    const result = resetEventToPreset(event);
+    setToast(
+      result.ok
+        ? { tone: "success", text: `${EVENTS[event].name} is back to its preset.` }
+        : { tone: "error", text: result.error ?? "Could not reset." },
+    );
+    if (result.ok) setSelected(new Set());
+  }, [event]);
 
   const handleDuplicate = useCallback(
     (uid: string) => {
@@ -357,7 +446,7 @@ export default function QuestionsAdmin() {
     // resetBank() removes the key so the bundled seed loads. Never reset-then-
     // save: a failed second write would leave the admin with nothing.
     resetBank();
-    setToast({ tone: "success", text: `Restored the ${SEED_BANK.length} bundled questions.` });
+    setToast({ tone: "success", text: `Restored the bundled defaults (${SEED_BANK.filter((p) => p.active).length} boxes, NAPE 2026).` });
   }, []);
 
   /* -------------------------------------------------------------- editing -- */
@@ -469,6 +558,7 @@ export default function QuestionsAdmin() {
       onDelete: (uid) => setPending({ kind: "delete", uid }),
       onPreview: setPreviewUid,
       onToggleActive: handleToggleActive,
+      onToggleSelect: toggleSelect,
       onMove: handleMove,
       onSetOrder: handleSetOrder,
       onDragStart: setDragUid,
@@ -486,7 +576,7 @@ export default function QuestionsAdmin() {
         else grips.current.delete(uid);
       },
     }),
-    [openEdit, handleDuplicate, handleToggleActive, handleMove, handleSetOrder, handleDrop],
+    [openEdit, handleDuplicate, handleToggleActive, toggleSelect, handleMove, handleSetOrder, handleDrop],
   );
 
   const previewPuzzle = previewUid ? byUid(previewUid) : undefined;
@@ -545,14 +635,30 @@ export default function QuestionsAdmin() {
       <Header
         total={bank.length}
         activeCount={activeCount}
-        sessionLength={sessionLength}
+        eventName={EVENTS[event].name}
+        sessionLength={EVENTS[event].fixedSize ? 0 : sessionLength}
+      />
+
+      <EventPanel
+        event={event}
+        bank={bank}
+        onSwitch={(to) => setPending({ kind: "switch", to })}
+        onReset={() => setPending({ kind: "resetEvent" })}
+        onReport={() =>
+          downloadText(
+            `nape-2026-review-report-${dateStamp()}.csv`,
+            napeReviewCsv(bank),
+            "text/csv;charset=utf-8",
+          )
+        }
       />
 
       {liveSession > 0 && (
         <Callout tone="warn" title="A game session is in progress">
           {liveSession} box{liveSession === 1 ? " has" : "es have"} been opened.
-          Saving a question change resets that session and clears the score —
-          finish or reset the game first if that matters.
+          Switching event, or changing which questions are Active, resets that
+          session and clears the score — finish or reset the game first if that
+          matters.
         </Callout>
       )}
 
@@ -622,17 +728,47 @@ export default function QuestionsAdmin() {
 
           {activeCount === 0 && bank.length > 0 && (
             <Callout tone="error" title="No questions are active">
-              The game has nothing to show. Switch at least one question on.
+              The game has nothing to show. Activate at least one question.
             </Callout>
           )}
 
-          {sessionLength > 0 && sessionLength > activeCount && (
+          {!EVENTS[event].fixedSize && sessionLength > 0 && sessionLength > activeCount && (
             <Callout tone="warn" title="Session length is longer than the question bank">
               The game is set to {sessionLength} questions per session but only{" "}
               {activeCount} {activeCount === 1 ? "is" : "are"} active, so the wall
               will show {activeCount}. Activate more questions or lower the
               session length in the game’s facilitator panel.
             </Callout>
+          )}
+
+          {selected.size > 0 && (
+            <div
+              role="region"
+              aria-label="Bulk actions"
+              data-bulk-bar
+              className="sticky top-2 z-20 flex flex-wrap items-center gap-2 rounded-2xl border border-ren-green/40 bg-ren-green-soft px-4 py-2.5 shadow-lift"
+            >
+              <p className="text-sm font-black text-ren-green-deep">
+                {selected.size} selected
+              </p>
+              <Btn tone="primary" size="sm" onClick={() => bulkSet(selected, true)}>
+                Bulk Activate
+              </Btn>
+              <Btn size="sm" onClick={() => bulkSet(selected, false)}>
+                Bulk Hide
+              </Btn>
+              {selected.size < filtered.length && (
+                <Btn size="sm" onClick={selectAllMatching}>
+                  Select all {filtered.length} matching the filters
+                </Btn>
+              )}
+              <Btn size="sm" onClick={() => setSelected(new Set())}>
+                Clear selection
+              </Btn>
+              <span className="text-[11px] text-ink-soft">
+                Hiding never deletes — hidden questions keep their answers, images and explanations.
+              </span>
+            </div>
           )}
 
           <QuestionList
@@ -657,6 +793,8 @@ export default function QuestionsAdmin() {
               setFilters(EMPTY_FILTERS);
               setPage(1);
             }}
+            selected={selected}
+            onToggleAllShown={toggleAllShown}
             cb={cb}
           />
         </>
@@ -690,14 +828,54 @@ export default function QuestionsAdmin() {
       />
 
       <ConfirmDialog
+        open={pending?.kind === "switch"}
+        title={pending?.kind === "switch" ? `Switch to ${EVENTS[pending.to].name}?` : "Switch event?"}
+        body={
+          <>
+            <p>
+              This changes which questions are <strong>Active</strong> and the order of the boxes.
+              {pending?.kind === "switch" && ` ${EVENTS[pending.to].description}`}
+            </p>
+            <p className="mt-2">
+              Nothing is deleted or duplicated — you can switch back at any time. A game in progress
+              is reset, because its boxes would point at different questions.
+            </p>
+          </>
+        }
+        confirmLabel="Switch event"
+        onConfirm={confirmSwitch}
+        onCancel={() => setPending(null)}
+      />
+
+      <ConfirmDialog
+        open={pending?.kind === "resetEvent"}
+        title={`Reset ${EVENTS[event].name} to its preset?`}
+        body={
+          <>
+            <p>
+              Active/Hidden choices and the box order for this event go back to the preset, and any
+              bundled question you deleted is restored.
+            </p>
+            <p className="mt-2">
+              Your edits to question wording, answers and images are kept, and no question is deleted.
+            </p>
+          </>
+        }
+        confirmLabel="Reset event"
+        onConfirm={confirmResetEvent}
+        onCancel={() => setPending(null)}
+      />
+
+      <ConfirmDialog
         open={pending?.kind === "restore"}
-        title={`Restore the ${SEED_BANK.length} bundled questions?`}
+        title="Restore the bundled defaults?"
         body={
           <>
             <p className="font-bold text-ink">This action cannot be undone.</p>
             <p className="mt-2">
-              Every question you have added or edited in this browser will be
-              replaced by the bundled set. Export a backup first from{" "}
+              Every change made in this browser — added or edited questions,
+              Active/Hidden choices, order, and the selected event — is discarded
+              and the game goes back to the bundled NAPE 2026 set. Export a backup first from{" "}
               <button
                 type="button"
                 onClick={() => {
@@ -734,10 +912,12 @@ export default function QuestionsAdmin() {
 function Header({
   total,
   activeCount,
+  eventName,
   sessionLength,
 }: {
   total: number;
   activeCount: number;
+  eventName: string;
   sessionLength: number;
 }) {
   return (
@@ -747,7 +927,7 @@ function Header({
           Manage questions
         </h1>
         <p className="mt-0.5 text-xs text-ink-soft">
-          {total} question{total === 1 ? "" : "s"} · {activeCount} active ·{" "}
+          {eventName} · {total} question{total === 1 ? "" : "s"} · {activeCount} active ·{" "}
           {sessionLength > 0
             ? `${Math.min(sessionLength, activeCount)} per session`
             : "all active questions per session"}{" "}

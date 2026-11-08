@@ -17,6 +17,8 @@ import {
   type ImportMode,
   type ImportReport,
 } from "@/lib/puzzleCsv";
+import { exportOverrides, getEvent, importOverrides } from "@/lib/puzzleStore";
+import { EVENTS } from "@/data/events";
 import type { ManagedPuzzle } from "@/lib/types";
 
 import { Btn, Callout, Section, Segmented } from "./ui";
@@ -61,6 +63,11 @@ export default function ImportExportPanel({
   const [sourceName, setSourceName] = useState("");
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  /** Whole-browser admin state transfer (see exportOverrides). */
+  const stateRef = useRef<HTMLInputElement>(null);
+  const [stateFile, setStateFile] = useState<{ name: string; text: string } | null>(null);
+  const [stateMsg, setStateMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   const bytes = estimateBankBytes(bank);
 
@@ -182,6 +189,66 @@ export default function ImportExportPanel({
           Google Sheets and is the one to edit by hand.{" "}
           <strong className="text-ink">JSON</strong> is a lossless backup — use it
           to copy a bank between machines exactly.
+        </p>
+      </Section>
+
+      {/* ------------------------------------------------- admin-state transfer */}
+      <Section
+        title="Move all admin changes to another device"
+        description={`Everything you have changed in this browser — edits, added questions, Active/Hidden choices, order and the selected event (${EVENTS[getEvent()].name}) — as one file. Load it on another laptop to make it match.`}
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <Btn
+            tone="primary"
+            onClick={() =>
+              downloadText(
+                `crack-the-box-admin-changes-${dateStamp()}.json`,
+                exportOverrides(),
+                "application/json;charset=utf-8",
+              )
+            }
+          >
+            Export admin changes
+          </Btn>
+          <input
+            ref={stateRef}
+            type="file"
+            accept=".json,application/json"
+            aria-label="Choose an admin-changes file"
+            className="text-xs"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              setStateMsg(null);
+              setStateFile(file ? { name: file.name, text: await readTextFile(file) } : null);
+            }}
+          />
+          <Btn
+            disabled={!stateFile}
+            onClick={() => {
+              if (!stateFile) return;
+              const result = importOverrides(stateFile.text);
+              setStateMsg(
+                result.ok
+                  ? { ok: true, text: `Loaded ${stateFile.name}. This browser now matches that file.` }
+                  : { ok: false, text: result.error ?? "Could not load that file." },
+              );
+              if (result.ok) {
+                setStateFile(null);
+                if (stateRef.current) stateRef.current.value = "";
+              }
+            }}
+          >
+            Replace this browser’s changes with this file
+          </Btn>
+        </div>
+        {stateMsg && (
+          <p role="status" className={`mt-2 text-xs font-bold ${stateMsg.ok ? "text-ren-green-deep" : "text-red-700"}`}>
+            {stateMsg.text}
+          </p>
+        )}
+        <p className="mt-3 text-xs leading-relaxed text-ink-soft">
+          The bundled questions and pictures already ship with the game, so this file stays small.
+          Loading it replaces this browser’s admin changes and resets any game in progress.
         </p>
       </Section>
 

@@ -41,6 +41,12 @@ function rowText(p: ManagedPuzzle): string {
   return bits.join(" ");
 }
 
+/** The label for a whole question — NAPE ones say Multiple choice / True / false. */
+export function questionTypeLabel(p: ManagedPuzzle): string {
+  if (p.nape) return p.nape.format === "true-false" ? "True / false" : "Multiple choice";
+  return typeLabel(p.type);
+}
+
 export function typeLabel(t: PuzzleType): string {
   return TYPE_LABELS[t] ?? t;
 }
@@ -52,6 +58,8 @@ export function assetName(path: string): string {
 }
 
 export function shortPreview(p: ManagedPuzzle): string {
+  // An imported NAPE question is identified by its wording, not its options.
+  if (p.nape) return clip(p.prompt, 120);
   switch (p.type) {
     case "scramble":
       return clip(`${p.scrambledValue || "?"} → ${p.answer}`);
@@ -87,6 +95,7 @@ export function searchBlob(p: ManagedPuzzle): string {
     p.prompt,
     p.hint,
     p.insight,
+    p.nape?.original.prompt,
     p.category,
     p.categoryLabel,
     p.type,

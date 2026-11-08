@@ -26,7 +26,9 @@ import {
   puzzleForBox,
   selectActive,
   useActivePuzzles,
+  useEvent,
 } from "@/lib/puzzleStore";
+import { EVENTS } from "@/data/events";
 import { EMPTY_RESPONSE, isComplete, isCorrect } from "@/lib/clickable";
 import { pickClip, otherGender, preloadTargets } from "@/lib/mascots";
 import { sound } from "@/lib/sound";
@@ -175,6 +177,40 @@ export default function Game() {
   /** Stamped onto every save so a later reload can spot a changed bank. */
   const signature = useMemo(() => bankSignature(activePuzzles), [activePuzzles]);
 
+  const event = useEvent();
+  // The original game keeps its original subtitle.
+  const eventName = event === "original-60" ? "" : EVENTS[event].name;
+
+  /**
+   * A live session is only valid for the question set it started on. If the set
+   * changes underneath a running game — the event is switched, or questions are
+   * shown or hidden in the admin (this tab or another) — the opened boxes and
+   * the score would silently attach to different questions. Start clean and say
+   * so. Adjusted during render, not in an effect: the persist effect below then
+   * writes the fresh session, so a reload cannot resurrect the stale one.
+   *
+   * The first signature seen after hydration is adopted, not compared: before
+   * that the page rendered the server snapshot, and `restoreSession` has
+   * already vetted whatever was saved.
+   */
+  const [sessionSig, setSessionSig] = useState<string | null>(null);
+  if (hydrated && sessionSig === null) {
+    setSessionSig(signature);
+  } else if (hydrated && sessionSig !== signature) {
+    setSessionSig(signature);
+    setGame(initialGameState(settings.startingMascot));
+    setScreen("boxes");
+    setCurrentBox(null);
+    setLastBox(null);
+    setStage("solving");
+    setHintShown(false);
+    setZoomLevel(0);
+    setResponse(EMPTY_RESPONSE);
+    setMascotClip(null);
+    setConfetti(false);
+    setBankChanged(true);
+  }
+
   // ---- Persist ----------------------------------------------------------
   useEffect(() => {
     if (hydrated) saveState({ ...game, bankSignature: signature });
@@ -245,10 +281,10 @@ export default function Game() {
   }, []);
 
   const showHint = useCallback(() => {
-    if (stage !== "solving") return;
+    if (stage !== "solving" || !puzzle?.hint) return;
     void sound.play("click");
     setHintShown(true);
-  }, [stage]);
+  }, [stage, puzzle]);
 
   const zoomOut = useCallback(() => {
     void sound.play("pop");
@@ -531,6 +567,7 @@ export default function Game() {
               correctCount={game.correctCount}
               notQuiteCount={game.notQuiteCount}
               lastBox={lastBox}
+              eventName={eventName}
               settings={settings}
               onSettingsChange={patchSettings}
               getInitialScroll={getBoxScroll}
@@ -646,6 +683,8 @@ export default function Game() {
         boxes={boxNumbers}
         openedBoxes={game.openedBoxes}
         activeCount={totalBoxes}
+        eventName={EVENTS[event].name}
+        sessionLocked={EVENTS[event].fixedSize}
         onOpenBox={(n) => selectBox(n, null)}
         onShowHint={showHint}
         onReveal={revealOrSubmit}

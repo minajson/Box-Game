@@ -305,3 +305,28 @@ static server works:
 npx serve out
 python3 -m http.server -d out 8080
 ```
+
+## NAPE 2026 event mode
+
+The bank holds 140 questions: the original 60 plus the 80 NAPE 2026 Oil & Gas questions. An **event** is an ordered list of which questions are Active — switching event never creates, copies or deletes a question.
+
+- **NAPE 2026** (default): 80 Oil & Gas + 20 chosen visual puzzles = exactly 100 boxes; the other 40 originals are Hidden.
+- **Original Crack the Box**: the original 60 in their original order.
+
+Manage it at `/admin/questions`: switch event, Show All / Active Only / Hidden Only, filter by category or event, Activate / Hide (one or in bulk), and download the NAPE review report. Hiding never deletes anything.
+
+Where things live: questions, pictures and presets ship in the build; the admin's *changes* (edits, additions, Active/Hidden, order, selected event) are stored in the browser as a small diff (`crackthebox.overrides.v5`) and can be moved between devices with **Import / export → Export admin changes**.
+
+Source of the Oil & Gas questions: `data/source/nape-2026-quiz.txt` (verbatim). Regenerate with `node scripts/build-nape-source.mjs`, `node scripts/build-nape-meta.mjs`, `node scripts/build-event-order.mjs`; check with `npm run check:nape`; run everything with `npm run validate`.
+
+### Running at the event (no internet needed)
+
+```
+npm run build            # once, with internet
+npm run serve:offline    # at the venue → http://localhost:3000 (this laptop only)
+```
+
+The game loads pictures, mascot videos and music from its server as they are needed, so serve it from the event laptop itself rather than a remote host. `serve:offline` listens on 127.0.0.1 only because `/admin/questions` has no PIN gate (`ADMIN_AUTH_ENABLED = false` in `lib/adminAuth.ts`). Do a sound check on the venue system first — browsers only start audio after the first click.
+
+An end-to-end sweep that plays every box lives in `scripts/e2e/readiness.playwright.js`.
+

@@ -229,13 +229,15 @@ export default function PuzzleScreen({
 
             {stage === "solving" && (
               <>
-                <Button
-                  variant="secondary"
-                  onClick={onShowHint}
-                  disabled={hintShown}
-                >
-                  💡 Hint
-                </Button>
+                {puzzle.hint && (
+                  <Button
+                    variant="secondary"
+                    onClick={onShowHint}
+                    disabled={hintShown}
+                  >
+                    💡 Hint
+                  </Button>
+                )}
                 {canZoomOut && (
                   <Button variant={awaitingZoom ? "primary" : "secondary"} onClick={onZoomOut}>
                     🔍 Zoom Out ({3 - zoomLevel} left)

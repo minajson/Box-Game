@@ -1,0 +1,2212 @@
+[
+  {
+    "n": 1,
+    "set": 1,
+    "prompt": "Which device at the top of a well stops a blowout?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Christmas tree",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Derrick",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Mud pump",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Blowout preventer (BOP)",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Blowout preventer (BOP)",
+    "funFact": "A BOP can seal the well in seconds if pressure gets out of control."
+  },
+  {
+    "n": 2,
+    "set": 1,
+    "prompt": "Which well log measures the natural radioactivity of rocks?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Gamma ray",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Caliper",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Resistivity",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Sonic",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Gamma ray",
+    "funFact": "Shales usually give higher gamma ray readings than clean sandstones."
+  },
+  {
+    "n": 3,
+    "set": 1,
+    "prompt": "What does OPEC stand for?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Offshore Petroleum Engineering Club",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Organization of the Petroleum Exporting Countries",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Oil Producers' Energy Council",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Organization of Pipeline and Energy Companies",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Organization of the Petroleum Exporting Countries",
+    "funFact": "OPEC was founded in Baghdad in 1960."
+  },
+  {
+    "n": 4,
+    "set": 1,
+    "prompt": "What does \"pigging\" a pipeline mean?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Sending a device through to clean or inspect it",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Feeding animals near the pipeline",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Burying the pipeline",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Painting the pipeline pink",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Sending a device through to clean or inspect it",
+    "funFact": "The name may come from the squealing noise early pigs made in the pipe."
+  },
+  {
+    "n": 5,
+    "set": 1,
+    "prompt": "What is a Permit to Work used for?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Entering the canteen",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Booking annual leave",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Controlling high-risk work safely",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Getting a pay rise",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Controlling high-risk work safely",
+    "funFact": "Permits make sure hazards are checked and isolations are in place before work starts."
+  },
+  {
+    "n": 6,
+    "set": 1,
+    "prompt": "What does FPSO stand for?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Floating Production, Storage and Offloading",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Fast Pumping System Offshore",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Fuel Processing and Shipping Operation",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Floating Pipeline Safety Office",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Floating Production, Storage and Offloading",
+    "funFact": "Nigeria's deepwater fields use FPSOs, such as those at Bonga and Egina."
+  },
+  {
+    "n": 7,
+    "set": 1,
+    "prompt": "What does PPE stand for?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Primary Pressure Escape",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Personal Protective Equipment",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Petroleum Production Equipment",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Personal Pipeline Engineer",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Personal Protective Equipment",
+    "funFact": "Hard hat, safety boots, gloves, glasses and coveralls are all PPE."
+  },
+  {
+    "n": 8,
+    "set": 1,
+    "prompt": "What do we call the steel pipe cemented into a well to keep it stable?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Tubing",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Riser",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Casing",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Flowline",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Casing",
+    "funFact": "Casing protects groundwater zones and holds the hole open."
+  },
+  {
+    "n": 9,
+    "set": 1,
+    "prompt": "In a petroleum system, the \"source rock\" is where oil is…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Sold",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Stored",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Formed",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Refined",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Formed",
+    "funFact": "Source rock makes the oil, reservoir rock stores it, and the seal keeps it in."
+  },
+  {
+    "n": 10,
+    "set": 1,
+    "prompt": "Nigeria's large bitumen (tar sand) deposits are best known in which state?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Ondo",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Borno",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Kano",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Enugu",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Ondo",
+    "funFact": "The bitumen belt runs through Ondo, Ogun, Edo and Lagos States."
+  },
+  {
+    "n": 11,
+    "set": 1,
+    "prompt": "What is the set of valves on top of a producing well nicknamed?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Candlestick",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Pine cone",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Christmas tree",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Spider web",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Christmas tree",
+    "funFact": "Early valve stacks looked like decorated trees, and the name stuck."
+  },
+  {
+    "n": 12,
+    "set": 1,
+    "prompt": "Which country is currently the world's largest oil producer?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Russia",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Saudi Arabia",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "United States",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Nigeria",
+        "correct": false
+      }
+    ],
+    "answerLabel": "United States",
+    "funFact": "Shale oil drove the US to the top in the late 2010s."
+  },
+  {
+    "n": 13,
+    "set": 1,
+    "prompt": "Which tiny fossils help geologists date rocks from wells?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Dinosaur teeth",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Foraminifera",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Mammoth tusks",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Fish bones",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Foraminifera",
+    "funFact": "They are tiny enough for thousands to fit in a teaspoon of rock cuttings."
+  },
+  {
+    "n": 14,
+    "set": 1,
+    "prompt": "Who can stop a job if it looks unsafe?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Anyone on site",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Nobody, once work has started",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Only the HSE manager",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Only the supervisor",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Anyone on site",
+    "funFact": "Most companies give everyone Stop Work Authority. Use it!"
+  },
+  {
+    "n": 15,
+    "set": 1,
+    "prompt": "What is the design capacity of the Dangote Petroleum Refinery?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "6.5 million barrels per day",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "650,000 barrels per day",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "65,000 barrels per day",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "6,500 barrels per day",
+        "correct": false
+      }
+    ],
+    "answerLabel": "650,000 barrels per day",
+    "funFact": "It is Africa's largest refinery and among the world's largest single-train refineries."
+  },
+  {
+    "n": 16,
+    "set": 1,
+    "prompt": "True or false: if you can no longer smell H₂S, the danger has passed.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": true
+      }
+    ],
+    "answerLabel": "False",
+    "funFact": "High levels of H₂S can knock out your sense of smell. Trust your gas detector, not your nose."
+  },
+  {
+    "n": 17,
+    "set": 1,
+    "prompt": "Hydraulic fracturing (fracking) cracks rock using…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Hammers",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Dynamite",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "High-pressure fluid",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Lasers",
+        "correct": false
+      }
+    ],
+    "answerLabel": "High-pressure fluid",
+    "funFact": "Sand in the fluid props the cracks open so oil and gas can flow."
+  },
+  {
+    "n": 18,
+    "set": 1,
+    "prompt": "How many points of contact should you keep when climbing a ladder?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Two",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Three",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "One",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Four",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Three",
+    "funFact": "Two hands and a foot, or two feet and a hand, at all times."
+  },
+  {
+    "n": 19,
+    "set": 1,
+    "prompt": "Who drilled the first modern commercial oil well, in Pennsylvania in 1859?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Thomas Edison",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Edwin Drake",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Henry Ford",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Isaac Newton",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Edwin Drake",
+    "funFact": "The well was only about 21 metres deep."
+  },
+  {
+    "n": 20,
+    "set": 1,
+    "prompt": "Oil and gas formed mainly from…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Tiny marine plants and animals (plankton)",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Tree sap",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Volcanic gases",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Dinosaur bones",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Tiny marine plants and animals (plankton)",
+    "funFact": "Sorry, dinosaur fans. Most oil comes from microscopic sea life buried in mud."
+  },
+  {
+    "n": 21,
+    "set": 2,
+    "prompt": "Which of these is NOT made from crude oil?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Plastic bottles",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Cotton",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Candle wax",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Road asphalt",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Cotton",
+    "funFact": "Cotton grows on plants. Polyester, however, is made from oil."
+  },
+  {
+    "n": 22,
+    "set": 2,
+    "prompt": "True or false: every oil discovery is worth producing.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": true
+      }
+    ],
+    "answerLabel": "False",
+    "funFact": "A find must be big enough and cheap enough to produce before it counts as commercial."
+  },
+  {
+    "n": 23,
+    "set": 2,
+    "prompt": "True or false: gas flaring wastes a valuable resource and adds greenhouse gases to the air.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": false
+      }
+    ],
+    "answerLabel": "True",
+    "funFact": "Captured gas can power homes and industries instead."
+  },
+  {
+    "n": 24,
+    "set": 2,
+    "prompt": "What is burning off gas at a flare stack called?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Pigging",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Flaring",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Venting",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Coring",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Flaring",
+    "funFact": "Venting releases gas without burning it, which is worse for the climate."
+  },
+  {
+    "n": 25,
+    "set": 2,
+    "prompt": "True or false: a near miss doesn't need reporting because nobody was hurt.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": true
+      }
+    ],
+    "answerLabel": "False",
+    "funFact": "Near misses are free lessons. Report them before the next one becomes an injury."
+  },
+  {
+    "n": 26,
+    "set": 2,
+    "prompt": "Selling petrol at a filling station is part of which sector?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Offstream",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Upstream",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Midstream",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Downstream",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Downstream",
+    "funFact": "Upstream finds and produces, midstream moves and stores, downstream refines and sells."
+  },
+  {
+    "n": 27,
+    "set": 2,
+    "prompt": "In the hierarchy of controls, which control is the MOST effective?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Warning signs",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Elimination",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Training",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "PPE",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Elimination",
+    "funFact": "Remove the hazard completely, and nobody can be hurt by it."
+  },
+  {
+    "n": 28,
+    "set": 2,
+    "prompt": "What is \"Brent\"?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "A drilling tool",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "An oil company",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "A unit of gas",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "A benchmark crude oil price",
+        "correct": true
+      }
+    ],
+    "answerLabel": "A benchmark crude oil price",
+    "funFact": "Many Nigerian crudes are priced against Brent."
+  },
+  {
+    "n": 29,
+    "set": 2,
+    "prompt": "Before entering a confined space, you must first…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Remove your hard hat",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Take a selfie",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Test the atmosphere",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Switch off your phone",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Test the atmosphere",
+    "funFact": "The air inside may lack oxygen or contain toxic or flammable gas."
+  },
+  {
+    "n": 30,
+    "set": 2,
+    "prompt": "What do we call the empty pore space inside a rock?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Porosity",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Permeability",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Viscosity",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Density",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Porosity",
+    "funFact": "Porosity is how much the rock can hold. Permeability is how easily fluids flow through it."
+  },
+  {
+    "n": 31,
+    "set": 2,
+    "prompt": "How many US gallons are in one barrel of oil?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "42",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "20",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "55",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "100",
+        "correct": false
+      }
+    ],
+    "answerLabel": "42",
+    "funFact": "That's about 159 litres."
+  },
+  {
+    "n": 32,
+    "set": 2,
+    "prompt": "Long-term exposure to benzene, found in crude oil and petrol, can cause…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Short-sightedness",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Leukaemia",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Broken bones",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Malaria",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Leukaemia",
+    "funFact": "That is why benzene exposure is monitored in the oil and gas industry."
+  },
+  {
+    "n": 33,
+    "set": 2,
+    "prompt": "Which agency regulates Nigeria's upstream oil and gas sector under the PIA?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "NAFDAC",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "NUPRC",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "FRSC",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "NIPOST",
+        "correct": false
+      }
+    ],
+    "answerLabel": "NUPRC",
+    "funFact": "Its midstream and downstream counterpart is the NMDPRA."
+  },
+  {
+    "n": 34,
+    "set": 2,
+    "prompt": "True or false: natural gas is made up mainly of methane.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": false
+      }
+    ],
+    "answerLabel": "True",
+    "funFact": "Methane (CH₄) is the simplest hydrocarbon: one carbon atom and four hydrogen atoms."
+  },
+  {
+    "n": 35,
+    "set": 2,
+    "prompt": "What does NORM stand for?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Normal Operating Rig Method",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "New Offshore Rescue Measure",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "National Oil Refinery Manual",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Naturally Occurring Radioactive Material",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Naturally Occurring Radioactive Material",
+    "funFact": "NORM can build up as scale inside pipes and vessels."
+  },
+  {
+    "n": 36,
+    "set": 2,
+    "prompt": "Which rock type holds most of the world's oil and gas?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Metamorphic",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Volcanic glass",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Igneous",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Sedimentary",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Sedimentary",
+    "funFact": "Sandstones and limestones have pore space where oil and gas can collect."
+  },
+  {
+    "n": 37,
+    "set": 2,
+    "prompt": "What does hydrogen sulphide (H₂S) smell like at low levels?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Roses",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Rotten eggs",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Petrol",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Fresh bread",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Rotten eggs",
+    "funFact": "H₂S is toxic and flammable, and it is heavier than air."
+  },
+  {
+    "n": 38,
+    "set": 2,
+    "prompt": "What is a reservoir rock?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "A rock that stores oil or gas",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "A rock that holds drinking water only",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "A rock used to build dams",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "A rock that blocks oil",
+        "correct": false
+      }
+    ],
+    "answerLabel": "A rock that stores oil or gas",
+    "funFact": "A good reservoir needs both porosity and permeability."
+  },
+  {
+    "n": 39,
+    "set": 2,
+    "prompt": "What does \"energy transition\" mean?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Switching off lights at night",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Moving a rig from one site to another",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Moving from fossil fuels toward lower-carbon energy",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Changing a car's gearbox",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Moving from fossil fuels toward lower-carbon energy",
+    "funFact": "Natural gas is often called a \"transition fuel\"."
+  },
+  {
+    "n": 40,
+    "set": 2,
+    "prompt": "What does a Safety Data Sheet (SDS) tell you?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Who delivered the chemical",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "The price of a chemical",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "The company's safety record",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "A chemical's hazards and how to handle it safely",
+        "correct": true
+      }
+    ],
+    "answerLabel": "A chemical's hazards and how to handle it safely",
+    "funFact": "Read the SDS before you use any unfamiliar chemical."
+  },
+  {
+    "n": 41,
+    "set": 3,
+    "prompt": "What does API gravity tell you about a crude oil?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Its age",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Its colour",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Its price",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "How light or heavy it is",
+        "correct": true
+      }
+    ],
+    "answerLabel": "How light or heavy it is",
+    "funFact": "The higher the API gravity, the lighter the crude."
+  },
+  {
+    "n": 42,
+    "set": 3,
+    "prompt": "What does the NCDMB promote?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Nigerian cinema",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Northern crude drilling",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Nigerian content in the oil and gas industry",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "National cooking gas prices",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Nigerian content in the oil and gas industry",
+    "funFact": "NCDMB stands for Nigerian Content Development and Monitoring Board."
+  },
+  {
+    "n": 43,
+    "set": 3,
+    "prompt": "What does Lockout/Tagout (LOTO) do?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Locks the office at night",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Isolates energy sources before maintenance",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Tags new employees",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Locks the canteen fridge",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Isolates energy sources before maintenance",
+    "funFact": "It stops equipment from starting up while someone is working on it."
+  },
+  {
+    "n": 44,
+    "set": 3,
+    "prompt": "What is one main job of drilling mud?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Keep the crew cool",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Control well pressure and carry rock cuttings up",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Paint the inside of the pipe",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Make the rig look clean",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Control well pressure and carry rock cuttings up",
+    "funFact": "Mud also cools the drill bit and keeps the hole from collapsing."
+  },
+  {
+    "n": 45,
+    "set": 3,
+    "prompt": "True or false: molecule for molecule, methane traps more heat than carbon dioxide.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": false
+      }
+    ],
+    "answerLabel": "True",
+    "funFact": "That's why methane leaks matter so much."
+  },
+  {
+    "n": 46,
+    "set": 3,
+    "prompt": "What is \"Bonny Light\"?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "A gas field in the Sahara",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "A brand of torch",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "A lighthouse in Bonny",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "A Nigerian crude oil grade",
+        "correct": true
+      }
+    ],
+    "answerLabel": "A Nigerian crude oil grade",
+    "funFact": "Bonny Light is prized because it is light and low in sulphur."
+  },
+  {
+    "n": 47,
+    "set": 3,
+    "prompt": "When should a Job Hazard Analysis (JHA) be done?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "At the end of the year",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Only if the boss asks",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Before the task starts",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "After an accident",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Before the task starts",
+    "funFact": "A JHA breaks the job into steps and checks each step for hazards."
+  },
+  {
+    "n": 48,
+    "set": 3,
+    "prompt": "True or false: a \"trap\" stops oil and gas from escaping to the surface.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": false
+      }
+    ],
+    "answerLabel": "True",
+    "funFact": "Without a trap and a seal, oil keeps rising until it leaks out at the surface."
+  },
+  {
+    "n": 49,
+    "set": 3,
+    "prompt": "Gas production is often reported in…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Million standard cubic feet per day",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Barrels per hour",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Litres per minute",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Tonnes per second",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Million standard cubic feet per day",
+    "funFact": "You will often see it written as MMscf/d."
+  },
+  {
+    "n": 50,
+    "set": 3,
+    "prompt": "Where do you go when the emergency alarm sounds?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "The muster point",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "The car park exit",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "The canteen",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Your desk",
+        "correct": false
+      }
+    ],
+    "answerLabel": "The muster point",
+    "funFact": "At the muster point, everyone can be counted quickly."
+  },
+  {
+    "n": 51,
+    "set": 3,
+    "prompt": "What is an unexpected flow of formation fluid into a well while drilling called?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "A jab",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "A slap",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "A punch",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "A kick",
+        "correct": true
+      }
+    ],
+    "answerLabel": "A kick",
+    "funFact": "A kick that isn't controlled can become a blowout."
+  },
+  {
+    "n": 52,
+    "set": 3,
+    "prompt": "Which rock usually acts as the \"lid\" that seals oil in a reservoir?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Fractured limestone",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Coarse sandstone",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Shale or salt",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Loose gravel",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Shale or salt",
+    "funFact": "Fine-grained shale and salt let almost nothing pass through."
+  },
+  {
+    "n": 53,
+    "set": 3,
+    "prompt": "Where was oil first found in commercial quantities in Nigeria, in 1956?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Oloibiri",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Bonny",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Port Harcourt",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Warri",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Oloibiri",
+    "funFact": "Shell-BP made the discovery in present-day Bayelsa State."
+  },
+  {
+    "n": 54,
+    "set": 3,
+    "prompt": "Which refinery process separates crude oil by boiling point?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Freezing",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Filtration",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Distillation",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Magnetism",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Distillation",
+    "funFact": "Gases come off at the top of the column and heavy residue stays at the bottom."
+  },
+  {
+    "n": 55,
+    "set": 3,
+    "prompt": "Why do oil and gas move upward through rock?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Earthquakes push them",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "They are lighter than water",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "They are attracted to sunlight",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "They are magnetic",
+        "correct": false
+      }
+    ],
+    "answerLabel": "They are lighter than water",
+    "funFact": "Oil and gas float on the water that fills most rock pores."
+  },
+  {
+    "n": 56,
+    "set": 3,
+    "prompt": "What is the tall tower on a drilling rig called?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Flare boom",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Chimney",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Crane",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Derrick",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Derrick",
+    "funFact": "It holds the equipment used to raise and lower pipe."
+  },
+  {
+    "n": 57,
+    "set": 3,
+    "prompt": "What does NAPE stand for?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Nigerian Alliance of Pipeline Engineers",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Nigerian Association of Petroleum Explorationists",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "National Agency for Petroleum Engineering",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "New African Petroleum Exchange",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Nigerian Association of Petroleum Explorationists",
+    "funFact": "You're at its conference right now!"
+  },
+  {
+    "n": 58,
+    "set": 3,
+    "prompt": "True or false: PPE is the last line of defence.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": false
+      }
+    ],
+    "answerLabel": "True",
+    "funFact": "Use PPE only after higher controls such as elimination, engineering and procedures."
+  },
+  {
+    "n": 59,
+    "set": 3,
+    "prompt": "True or false: Nigeria has the largest proven natural gas reserves in Africa.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": false
+      }
+    ],
+    "answerLabel": "True",
+    "funFact": "Nigeria's gas reserves are over 200 trillion cubic feet."
+  },
+  {
+    "n": 60,
+    "set": 3,
+    "prompt": "True or false: a \"dry hole\" is a well that finds no commercial oil or gas.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": false
+      }
+    ],
+    "answerLabel": "True",
+    "funFact": "Dry holes are disappointing, but the data still teaches the team about the area."
+  },
+  {
+    "n": 61,
+    "set": 4,
+    "prompt": "Which extinguisher is best for a fire on live electrical equipment?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Water extinguisher",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "A bucket of water",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Foam extinguisher",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "CO₂ extinguisher",
+        "correct": true
+      }
+    ],
+    "answerLabel": "CO₂ extinguisher",
+    "funFact": "Water conducts electricity, so never use it on live electrical fires."
+  },
+  {
+    "n": 62,
+    "set": 4,
+    "prompt": "Pumping water into a reservoir to push more oil out is called…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Logging",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Waterflooding",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Fracking",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Flaring",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Waterflooding",
+    "funFact": "This is a common form of secondary recovery."
+  },
+  {
+    "n": 63,
+    "set": 4,
+    "prompt": "In what year did Nigeria join OPEC?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "2010",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "1971",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "1999",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "1960",
+        "correct": false
+      }
+    ],
+    "answerLabel": "1971",
+    "funFact": "Nigeria joined 11 years after Nigerian independence and OPEC's founding."
+  },
+  {
+    "n": 64,
+    "set": 4,
+    "prompt": "Roughly what temperature range \"cooks\" buried organic matter into oil?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "About 300–500 °C",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "About 0–30 °C",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "About 60–150 °C",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Above 1,000 °C",
+        "correct": false
+      }
+    ],
+    "answerLabel": "About 60–150 °C",
+    "funFact": "Geologists call this the \"oil window\". Hotter than that, you mostly get gas."
+  },
+  {
+    "n": 65,
+    "set": 4,
+    "prompt": "What is the best way to prevent heat stress on a hot site?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Remove your PPE",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Drink fizzy drinks only",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Work faster to finish early",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Drink water often and take shaded rest breaks",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Drink water often and take shaded rest breaks",
+    "funFact": "Thirst is a late sign. Drink water before you feel thirsty."
+  },
+  {
+    "n": 66,
+    "set": 4,
+    "prompt": "LPG, or cooking gas, is mainly…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Oxygen and nitrogen",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Steam",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Methane and hydrogen",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Propane and butane",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Propane and butane",
+    "funFact": "LPG stands for Liquefied Petroleum Gas."
+  },
+  {
+    "n": 67,
+    "set": 4,
+    "prompt": "In primary recovery, oil flows to the surface using…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Pumped seawater",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Natural reservoir pressure",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Injected steam",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Electric heaters",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Natural reservoir pressure",
+    "funFact": "Primary recovery usually produces only a small share of the oil in place."
+  },
+  {
+    "n": 68,
+    "set": 4,
+    "prompt": "In what year was Nigeria's Petroleum Industry Act (PIA) signed into law?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "2021",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "2001",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "2011",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "2024",
+        "correct": false
+      }
+    ],
+    "answerLabel": "2021",
+    "funFact": "It took almost 20 years to pass."
+  },
+  {
+    "n": 69,
+    "set": 4,
+    "prompt": "What does \"sweet\" crude oil mean?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "It is low in sulphur",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "It tastes sugary",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "It sells at a higher price",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "It is very thick",
+        "correct": false
+      }
+    ],
+    "answerLabel": "It is low in sulphur",
+    "funFact": "High-sulphur crude is called \"sour\". Please don't taste-test either one!"
+  },
+  {
+    "n": 70,
+    "set": 4,
+    "prompt": "Which of these is NOT part of the fire triangle?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Fuel",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Heat",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Oxygen",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Water",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Water",
+    "funFact": "Remove any one side of the triangle and the fire goes out."
+  },
+  {
+    "n": 71,
+    "set": 4,
+    "prompt": "What is a well drilled to test a brand-new, unproven area called?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "A water well",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "An injector well",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "A wildcat well",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "A relief well",
+        "correct": false
+      }
+    ],
+    "answerLabel": "A wildcat well",
+    "funFact": "The name comes from early American drillers working in wild country."
+  },
+  {
+    "n": 72,
+    "set": 4,
+    "prompt": "True or false: oil wells are always drilled straight down.",
+    "options": [
+      {
+        "letter": "A",
+        "label": "True",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "False",
+        "correct": true
+      }
+    ],
+    "answerLabel": "False",
+    "funFact": "Directional and horizontal drilling let one platform reach many targets."
+  },
+  {
+    "n": 73,
+    "set": 4,
+    "prompt": "What is an arch-shaped fold in rock layers called?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Basin",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Syncline",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Anticline",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "Delta",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Anticline",
+    "funFact": "Oil and gas float up and collect at the top of the arch."
+  },
+  {
+    "n": 74,
+    "set": 4,
+    "prompt": "Which part of the drill string actually cuts the rock?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Drill bit",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Kelly",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Derrick",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Swivel",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Drill bit",
+    "funFact": "Some bits use industrial diamonds to grind through hard rock."
+  },
+  {
+    "n": 75,
+    "set": 4,
+    "prompt": "What colour should a gas cooker flame be when it is burning well?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Blue",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Orange",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Red",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Yellow",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Blue",
+    "funFact": "A yellow or orange flame can mean poor combustion and carbon monoxide risk."
+  },
+  {
+    "n": 76,
+    "set": 4,
+    "prompt": "Which is Nigeria's main oil- and gas-producing area?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Niger Delta",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Jos Plateau",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Chad Basin",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Sokoto Basin",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Niger Delta",
+    "funFact": "The Niger Delta is one of the largest delta systems in the world."
+  },
+  {
+    "n": 77,
+    "set": 4,
+    "prompt": "Many companies require hearing protection when noise reaches about…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "60 dB(A)",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "140 dB(A)",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "85 dB(A)",
+        "correct": true
+      },
+      {
+        "letter": "D",
+        "label": "40 dB(A)",
+        "correct": false
+      }
+    ],
+    "answerLabel": "85 dB(A)",
+    "funFact": "Noise-induced hearing loss is permanent, but it can be prevented."
+  },
+  {
+    "n": 78,
+    "set": 4,
+    "prompt": "LNG is natural gas that has been…",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Cooled into a liquid",
+        "correct": true
+      },
+      {
+        "letter": "B",
+        "label": "Heated into steam",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Mixed with petrol",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Pressed into blocks",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Cooled into a liquid",
+    "funFact": "At about −162 °C, gas shrinks to about 1/600th of its volume."
+  },
+  {
+    "n": 79,
+    "set": 4,
+    "prompt": "Which survey uses sound waves to \"see\" rock layers deep underground?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Metal detector",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Weather radar",
+        "correct": false
+      },
+      {
+        "letter": "C",
+        "label": "Satellite photo",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Seismic survey",
+        "correct": true
+      }
+    ],
+    "answerLabel": "Seismic survey",
+    "funFact": "Sound bounces off rock layers, and computers turn the echoes into pictures."
+  },
+  {
+    "n": 80,
+    "set": 4,
+    "prompt": "Which equipment splits the well stream into oil, gas and water?",
+    "options": [
+      {
+        "letter": "A",
+        "label": "Heat exchanger",
+        "correct": false
+      },
+      {
+        "letter": "B",
+        "label": "Separator",
+        "correct": true
+      },
+      {
+        "letter": "C",
+        "label": "Compressor",
+        "correct": false
+      },
+      {
+        "letter": "D",
+        "label": "Blender",
+        "correct": false
+      }
+    ],
+    "answerLabel": "Separator",
+    "funFact": "Gravity does most of the work: gas rises, oil floats, water sinks."
+  }
+]

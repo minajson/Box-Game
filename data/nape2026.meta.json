@@ -1,0 +1,528 @@
+{
+  "1": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/bop.svg",
+      "kind": "diagram",
+      "alt": "A stack of ram and annular blowout preventers with choke and kill lines on a wellhead",
+      "zoom": false
+    }
+  },
+  "2": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/well-log.svg",
+      "kind": "diagram",
+      "alt": "A set of well-log curves plotted against depth",
+      "zoom": false
+    }
+  },
+  "3": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "4": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/pigging.svg",
+      "kind": "diagram",
+      "alt": "A cutaway of a pipeline with a cylindrical tool travelling through it",
+      "zoom": false
+    }
+  },
+  "5": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "6": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/q06-fpso.webp",
+      "kind": "photo",
+      "alt": "A ship-shaped floating production vessel at sea",
+      "zoom": true
+    }
+  },
+  "7": {
+    "topic": "Health & Safety",
+    "flags": []
+  },
+  "8": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/casing.svg",
+      "kind": "diagram",
+      "alt": "A cross-section of a wellbore with steel pipe cemented in place",
+      "zoom": false
+    }
+  },
+  "9": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/petroleum-system.svg",
+      "kind": "diagram",
+      "alt": "Rock layers with arrows showing oil moving upward",
+      "zoom": false
+    }
+  },
+  "10": {
+    "topic": "Geology",
+    "flags": []
+  },
+  "11": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/christmas-tree.svg",
+      "kind": "diagram",
+      "alt": "A stack of valves with side flowlines on top of a producing wellhead",
+      "zoom": false
+    }
+  },
+  "12": {
+    "topic": "Industry & Business",
+    "flags": [
+      "time-sensitive",
+      "wording-revised"
+    ],
+    "note": "Final wording applied (stem and fun fact). VERIFIED against EIA: Today in Energy, 'U.S. crude oil production…' (International Energy Statistics, July 2026, eia.gov/todayinenergy/detail.php?id=67844) says the US remained the world's largest crude oil producer in 2025, 'extending a streak that began in 2018 when the United States overtook Russia'; EIA (id=63824, Nov 2024) says the US 'became the world's top crude oil producer in 2018, a position it has maintained each year since'. US crude + lease condensate averaged a record ~13.6 million b/d in 2025, ~40% above Russia and Saudi Arabia. The fun fact's 'since 2018' is confirmed; wording unchanged. Time-sensitive: re-check before future events.",
+    "revision": {
+      "prompt": "Which country was the world's largest producer of crude oil and lease condensate in 2025?",
+      "funFact": "The United States has been the world's leading crude oil producer since 2018, with shale production playing a major role in its growth."
+    }
+  },
+  "13": {
+    "topic": "Geology",
+    "flags": []
+  },
+  "14": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "15": {
+    "topic": "Industry & Business",
+    "flags": [
+      "time-sensitive"
+    ],
+    "note": "Time-sensitive: the stated 650,000 b/d is design capacity; actual throughput may differ."
+  },
+  "16": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ],
+    "visual": {
+      "src": "/media/puzzles/nape/q16-gas-detector.webp",
+      "kind": "photo",
+      "alt": "A worker holding a portable gas detector on an industrial site",
+      "zoom": false
+    }
+  },
+  "17": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/fracking.svg",
+      "kind": "diagram",
+      "alt": "A cross-section showing fluid cracking rock around a horizontal well",
+      "zoom": false
+    }
+  },
+  "18": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "19": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "20": {
+    "topic": "Geology",
+    "flags": []
+  },
+  "21": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "22": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "23": {
+    "topic": "Health & Safety",
+    "flags": []
+  },
+  "24": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "25": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "26": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "27": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "28": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "29": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive",
+      "wording-revised"
+    ],
+    "note": "Final wording applied (stem, answer text, fun fact).",
+    "revision": {
+      "prompt": "Which of these is an essential safety check before entering a confined space?",
+      "optionLabels": {
+        "C": "Test the atmosphere for hazardous conditions"
+      },
+      "funFact": "Confined spaces can contain oxygen-deficient, toxic or flammable atmospheres. Atmospheric testing is an essential control alongside authorization, isolation and other entry precautions."
+    }
+  },
+  "30": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/porosity.svg",
+      "kind": "diagram",
+      "alt": "A magnified rock with grains and empty pore spaces",
+      "zoom": false
+    }
+  },
+  "31": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "32": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "33": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "34": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "35": {
+    "topic": "Health & Safety",
+    "flags": []
+  },
+  "36": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/q36-sedimentary-rock.webp",
+      "kind": "photo",
+      "alt": "Layered sedimentary rock in a cliff face",
+      "zoom": true
+    }
+  },
+  "37": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "38": {
+    "topic": "Geology",
+    "flags": []
+  },
+  "39": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "40": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "41": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "42": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "43": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ],
+    "visual": {
+      "src": "/media/puzzles/nape/q43-lockout.webp",
+      "kind": "photo",
+      "alt": "A padlock and tag fitted to an industrial valve",
+      "zoom": true
+    }
+  },
+  "44": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "45": {
+    "topic": "Health & Safety",
+    "flags": []
+  },
+  "46": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "47": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "48": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/anticline.svg",
+      "kind": "diagram",
+      "alt": "A cross-section of rock layers folded into an arch",
+      "zoom": false
+    }
+  },
+  "49": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "50": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "51": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "52": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/petroleum-system.svg",
+      "kind": "diagram",
+      "alt": "Rock layers with arrows showing oil moving upward",
+      "zoom": false
+    }
+  },
+  "53": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "54": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/distillation.svg",
+      "kind": "diagram",
+      "alt": "A tall column with trays and pipes at several heights",
+      "zoom": false
+    }
+  },
+  "55": {
+    "topic": "Geology",
+    "flags": []
+  },
+  "56": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "57": {
+    "topic": "Industry & Business",
+    "flags": []
+  },
+  "58": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "59": {
+    "topic": "Industry & Business",
+    "flags": [],
+    "note": "Technical verification CLEARED (owner approval). Original wording and answer kept (True). Supporting source: OPEC Annual Statistical Bulletin 2026, Table 9.1 (proven natural gas reserves, bn standard m³) — Nigeria 6,111 (≈216 tcf) vs Algeria 4,504 (≈159 tcf) in 2025; Nigeria is the largest in Africa in every year 2021–2025 (Mozambique 2,840, Egypt 2,209). Corroborated by EIA (citing OPEC): Nigeria 211.1 tcf for 2024, and NUPRC: 210.54 tcf at 1 Jan 2025. The fun fact ('over 200 trillion cubic feet') is consistent."
+  },
+  "60": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "61": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive",
+      "wording-revised"
+    ],
+    "note": "Final wording applied (stem, option C, fun fact).",
+    "revision": {
+      "prompt": "Which of these extinguishers is generally suitable for use on energized electrical equipment?",
+      "optionLabels": {
+        "C": "Standard foam extinguisher"
+      },
+      "funFact": "CO₂ extinguishers are non-conductive and leave no residue. Other appropriately rated extinguishers may also be suitable. Always follow site emergency procedures and equipment ratings."
+    }
+  },
+  "62": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/waterflood.svg",
+      "kind": "diagram",
+      "alt": "A cross-section with one well injecting and another producing",
+      "zoom": false
+    }
+  },
+  "63": {
+    "topic": "Industry & Business",
+    "flags": [],
+    "note": "Fun fact arithmetic: 1971 minus 1960 = 11 years, consistent with the answer."
+  },
+  "64": {
+    "topic": "Geology",
+    "flags": []
+  },
+  "65": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive",
+      "wording-revised"
+    ],
+    "note": "Final wording applied (stem, options A and D, fun fact).",
+    "revision": {
+      "prompt": "Which combination of measures helps prevent heat stress during work in hot conditions?",
+      "optionLabels": {
+        "A": "Remove your PPE and continue working",
+        "D": "Drink water regularly and take scheduled rest breaks in shaded or cooled areas"
+      },
+      "funFact": "Heat-stress prevention also includes acclimatization, appropriate work-rest schedules, monitoring and controls suited to the working conditions."
+    }
+  },
+  "66": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "67": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "68": {
+    "topic": "Industry & Business",
+    "flags": [],
+    "note": "Fun fact says the Act 'took almost 20 years to pass' — broadly accurate (reform proposals date from the early 2000s) but imprecise."
+  },
+  "69": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "70": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "71": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "72": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/directional.svg",
+      "kind": "diagram",
+      "alt": "Several wells fanning out from one platform to different underground targets",
+      "zoom": false
+    }
+  },
+  "73": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/anticline.svg",
+      "kind": "diagram",
+      "alt": "A cross-section of rock layers folded into an arch",
+      "zoom": false
+    }
+  },
+  "74": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "75": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive"
+    ]
+  },
+  "76": {
+    "topic": "Geology",
+    "flags": []
+  },
+  "77": {
+    "topic": "Health & Safety",
+    "flags": [
+      "safety-sensitive",
+      "wording-revised"
+    ],
+    "note": "Final wording applied (stem, fun fact). Thresholds vary by regulator.",
+    "revision": {
+      "prompt": "At approximately what 8-hour time-weighted average noise exposure level do many occupational hearing conservation programmes require protective measures?",
+      "funFact": "Prolonged exposure to excessive noise can cause permanent hearing damage. Hearing conservation action levels, exposure limits and mandatory hearing protection requirements vary by regulation and company standard."
+    }
+  },
+  "78": {
+    "topic": "Drilling & Production",
+    "flags": []
+  },
+  "79": {
+    "topic": "Geology",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/seismic.svg",
+      "kind": "diagram",
+      "alt": "A ship towing cables that send sound waves into the seabed",
+      "zoom": false
+    }
+  },
+  "80": {
+    "topic": "Drilling & Production",
+    "flags": [],
+    "visual": {
+      "src": "/media/puzzles/nape/diagrams/separator.svg",
+      "kind": "diagram",
+      "alt": "A cutaway of a horizontal vessel with gas above, oil in the middle and water below",
+      "zoom": false
+    }
+  }
+}

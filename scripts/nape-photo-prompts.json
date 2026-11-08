@@ -1,0 +1,20 @@
+{
+  "note": "Photo prompts for the NAPE 2026 pictures that are still pending (image-generation allowance was exhausted). Generate 16:9, save as WebP (cwebp -q 84, ~1344 px wide) to public/media/puzzles/nape/<file>, then run: npm run media:manifest; node scripts/build-nape-meta.mjs; node scripts/build-event-order.mjs; npm run validate. Every prompt forbids text, logos and labels so nothing can give an answer away. Review each image at full size before keeping it.",
+  "suffix": "No text, no logos, no watermark, no captions, no labels.",
+  "images": {
+    "q07-ppe.webp": "Professional photograph of an oil and gas worker standing on an industrial site, wearing a white hard hat, clear safety glasses, orange hi-vis coveralls with reflective stripes, work gloves and steel-toe safety boots, pipework in the background, full body visible, face turned slightly away.",
+    "q13-microfossils.webp": "Scientific microscope photograph of microfossil foraminifera: many tiny chambered calcium-carbonate shells in varied coiled shapes clustered on a dark background, centered, macro detail, realistic. No scale bar.",
+    "q15-refinery.webp": "Professional wide photograph of a large modern oil refinery at dusk with tall distillation columns, pipe racks, flare stacks and storage tanks lit up, sharp detail.",
+    "q18-ladder.webp": "Professional photograph looking up at a worker in hard hat and safety harness climbing a vertical steel ladder on an offshore oil platform, sea and sky behind, correct climbing posture.",
+    "q24-flare-stack.webp": "Professional photograph of a tall gas flare stack burning with an orange flame against a deep dusk sky, flare centered, industrial plant silhouette below, sharp detail.",
+    "q29-confined-space.webp": "Professional photograph of a circular steel manway hatch on an industrial storage tank, a worker in coveralls, hard hat and harness beside it with a portable gas tester held toward the opening, a second worker standing by as attendant, safety barrier, realistic.",
+    "q56-derrick.webp": "Professional photograph of a tall steel lattice drilling derrick of a land drilling rig against a blue sky, seen from ground level, centered, sharp detail.",
+    "q61-extinguishers.webp": "Professional close-up photograph of a row of different fire extinguishers (red bodies, one with a horn-shaped discharge nozzle) mounted on an industrial plant wall, shallow depth of field.",
+    "q74-drill-bit.webp": "Close-up studio-style photograph of a steel tricone roller-cone drill bit with tungsten carbide teeth on a workshop surface, sharp detail, centered.",
+    "q76-niger-delta.webp": "Aerial photograph of a river delta: a vast network of winding creeks and rivers through dense green mangrove forest with a few small fishing canoes, hazy morning light, wide view.",
+    "q77-ear-defenders.webp": "Professional photograph of a worker wearing yellow ear defenders and a hard hat in a noisy industrial plant, side profile view, pipework blurred behind.",
+    "q78-lng-tanker.webp": "Professional photograph of a large LNG carrier ship with spherical tanks moored at an LNG terminal at sunset, sharp detail."
+  },
+  "zoomQuestions": ["Q13", "Q24", "Q56", "Q74"],
+  "deliberatelyNotAdded": "Q44 mud shaker, Q50 muster point, Q66 LPG cylinders, Q75 blue flame — dropped rather than pad the picture count."
+}

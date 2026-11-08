@@ -8,6 +8,43 @@ import FullscreenControl from "./FullscreenControl";
 import { GameHeaderFull } from "./GameHeader";
 import type { GameSettings } from "@/lib/types";
 
+/** Above this many boxes the wall switches to a fit-to-screen grid (no scrolling). */
+const DENSE_FROM = 61;
+/** Smallest box the fit-to-screen grid will use before it falls back to scrolling. */
+const MIN_DENSE_BOX = 64;
+const MAX_BOX = 250;
+
+interface FitGrid {
+  cols: number;
+  size: number;
+  gap: number;
+}
+
+/**
+ * Picks the column count that makes every box as large as possible while the
+ * whole wall still fits the available space — so a 100-box wall is visible and
+ * navigable at a glance on a projector, rather than 20 rows of scrolling.
+ */
+function bestGrid(count: number, width: number, height: number): FitGrid {
+  const gap = Math.max(8, Math.min(18, Math.round(width * 0.009)));
+  let best: FitGrid = { cols: 1, size: 0, gap };
+  for (let cols = 1; cols <= count; cols++) {
+    const rows = Math.ceil(count / cols);
+    const size = Math.min(
+      MAX_BOX,
+      Math.floor((width - (cols - 1) * gap) / cols),
+      Math.floor((height - (rows - 1) * gap) / rows),
+    );
+    if (size > best.size) best = { cols, size, gap };
+  }
+  if (best.size < MIN_DENSE_BOX) {
+    // Too small to read: keep readable boxes and let the grid scroll instead.
+    const cols = Math.max(1, Math.floor((width + gap) / (MIN_DENSE_BOX + gap)));
+    return { cols, size: Math.min(MAX_BOX, Math.floor((width - (cols - 1) * gap) / cols)), gap };
+  }
+  return best;
+}
+
 /**
  * The box wall. Every box shows only its number — the puzzle type inside
  * stays a mystery until the lid comes off.
@@ -28,6 +65,7 @@ export default function BoxWall({
   correctCount,
   notQuiteCount,
   lastBox,
+  eventName,
   settings,
   onSettingsChange,
   getInitialScroll,
@@ -42,6 +80,8 @@ export default function BoxWall({
   notQuiteCount: number;
   /** The box opened most recently — kept in view when we return to the grid. */
   lastBox: number | null;
+  /** The selected event, shown in the subtitle. */
+  eventName: string;  // Empty for the original game, whose subtitle is unchanged.
   settings: GameSettings;
   onSettingsChange: (patch: Partial<GameSettings>) => void;
   /** Reads the last-saved scroll position (called inside the restore effect). */
@@ -55,7 +95,26 @@ export default function BoxWall({
   // question behind it is impossible by construction.
   const remaining = boxes.filter((n) => !openedBoxes.includes(n)).length;
 
+  const dense = boxes.length >= DENSE_FROM;
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [fit, setFit] = useState<FitGrid | null>(null);
+
+  // Measure the scrolling area and re-fit the dense grid whenever it resizes.
+  useLayoutEffect(() => {
+    const el = scrollRef.current;
+    if (!dense || !el) return;
+    const measure = () => {
+      const cs = getComputedStyle(el);
+      const w = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      // Leave room for the one-line caption under the wall.
+      const h = el.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 44;
+      if (w > 0 && h > 0) setFit(bestGrid(boxes.length, w, h));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [dense, boxes.length]);
   const lastBoxRef = useRef<HTMLDivElement | null>(null);
   const [showScrollHint, setShowScrollHint] = useState(false);
 
@@ -129,7 +188,7 @@ export default function BoxWall({
             className="mt-1 font-bold uppercase tracking-[0.3em] text-ink-soft"
             style={{ fontSize: "clamp(0.55rem, 1vw, 0.9rem)" }}
           >
-            Pick it. Open it. Solve it.
+            {eventName ? `${eventName} · ` : ""}Pick it. Open it. Solve it.
           </p>
         }
         actions={
@@ -152,7 +211,9 @@ export default function BoxWall({
       {/* ---------------- Scrolling grid ---------------- */}
       <div
         ref={scrollRef}
-        className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-[clamp(1rem,3vw,3rem)] pb-24 pt-5"
+        className={`min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-[clamp(1rem,3vw,3rem)] ${
+          dense ? "pb-3 pt-3" : "pb-24 pt-5"
+        }`}
       >
         {boxes.length === 0 ? (
           <div className="mx-auto mt-16 max-w-[46ch] text-center">
@@ -174,7 +235,20 @@ export default function BoxWall({
             </p>
           </div>
         ) : (
-        <div className="mx-auto grid w-full max-w-[1680px] grid-cols-2 gap-[clamp(0.75rem,1.8vw,1.9rem)] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div
+          className={
+            dense
+              ? "mx-auto grid w-fit justify-center"
+              : "mx-auto grid w-full max-w-[1680px] grid-cols-2 gap-[clamp(0.75rem,1.8vw,1.9rem)] sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+          }
+          style={
+            dense && fit
+              ? { gridTemplateColumns: `repeat(${fit.cols}, ${fit.size}px)`, gap: fit.gap }
+              : undefined
+          }
+          data-wall={dense ? "dense" : "standard"}
+          data-boxes={boxes.length}
+        >
           {boxes.map((n, i) => (
             <motion.div
               key={n}
@@ -182,7 +256,8 @@ export default function BoxWall({
               // Cap each box so it keeps its attractive ~240px size and never
               // balloons on a large projector — bigger screens simply show
               // more boxes, they do not blow up the ones already visible.
-              className="mx-auto aspect-square w-full max-w-[250px]"
+              className={dense ? "" : "mx-auto aspect-square w-full max-w-[250px]"}
+              style={dense && fit ? { width: fit.size, height: fit.size } : undefined}
               initial={{ opacity: 0, y: 22, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{
@@ -198,6 +273,7 @@ export default function BoxWall({
                 boxNumber={n}
                 opened={openedBoxes.includes(n)}
                 onSelect={onSelect}
+                numberSize={dense && fit ? `${Math.round(fit.size * 0.3)}px` : undefined}
               />
             </motion.div>
           ))}
@@ -205,7 +281,7 @@ export default function BoxWall({
         )}
 
         {boxes.length > 0 && (
-          <div className="mt-6 flex flex-col items-center gap-4">
+          <div className={`flex flex-col items-center gap-4 ${dense ? "mt-3" : "mt-6"}`}>
             <p className="text-center text-sm font-semibold text-ink-soft">
               {remaining > 0
                 ? "Pick a box — nobody knows what is inside."
