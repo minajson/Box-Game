@@ -12,7 +12,7 @@
     },
     {
       "path": "/media/puzzles/nape/diagrams/bop.svg",
-      "label": "Bop",
+      "label": "BOP",
       "alt": "A stack of ram and annular blowout preventers with choke and kill lines on a wellhead",
       "tags": [
         "nape",
@@ -161,6 +161,56 @@
       "tags": [
         "nape",
         "oil-gas"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/zoom/bop.svg",
+      "label": "BOP",
+      "alt": "A stack of ram and annular blowout preventers with choke and kill lines on a wellhead",
+      "tags": [
+        "nape",
+        "oil-gas",
+        "zoom"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/zoom/christmas-tree.svg",
+      "label": "Christmas tree",
+      "alt": "A stack of valves with side flowlines on top of a producing wellhead",
+      "tags": [
+        "nape",
+        "oil-gas",
+        "zoom"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/zoom/drill-bit.svg",
+      "label": "Drill bit",
+      "alt": "A tricone drill bit with three cones studded with carbide inserts and a threaded pin",
+      "tags": [
+        "nape",
+        "oil-gas",
+        "zoom"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/zoom/pipeline-pig.svg",
+      "label": "Pipeline pig",
+      "alt": "A cylindrical pipeline pig with sealing discs and wire brushes on a cradle",
+      "tags": [
+        "nape",
+        "oil-gas",
+        "zoom"
+      ]
+    },
+    {
+      "path": "/media/puzzles/nape/zoom/pressure-gauge.svg",
+      "label": "Pressure gauge",
+      "alt": "A round dial pressure gauge with a needle, numbered scale and threaded connection",
+      "tags": [
+        "nape",
+        "oil-gas",
+        "zoom"
       ]
     },
     {

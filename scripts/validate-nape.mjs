@@ -10,7 +10,7 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseNapeSource } from "./parse-nape-source.mjs";
-import { VISUAL_IDS } from "./nape-config.mjs";
+import { VISUAL_IDS, NAPE_ZOOM_SWAP } from "./nape-config.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (p) => readFileSync(join(ROOT, p), "utf8");
@@ -79,15 +79,51 @@ const originalIds = puzzlesTs.split(/\n  \{\n\s+id:/).slice(1).map((p) => Number
 ok(originalIds.length === 60, `data/puzzles.ts has ${originalIds.length} questions, expected 60`);
 const nape = order["nape-2026"];
 const play = nape.slice(0, 100);
-ok(nape.length === 140 && new Set(nape).size === 140, "NAPE order must list all 140 questions exactly once");
-ok(play.filter((u) => u.startsWith("nape26-")).length === 80, "100 playable must contain all 80 NAPE questions");
-ok(new Set(play.filter((u) => u.startsWith("nape26-"))).size === 80, "NAPE questions duplicated in the playable set");
+const SWAPPED = Object.keys(NAPE_ZOOM_SWAP).map(Number);
+const ZOOM_UIDS = Object.values(NAPE_ZOOM_SWAP);
+ok(nape.length === 145 && new Set(nape).size === 145, "NAPE order must list all 145 questions (140 + 5 NAPE zoom) exactly once");
+ok(play.length === 100, "NAPE playable set must be exactly 100 boxes");
+ok(play.filter((u) => u.startsWith("nape26-q")).length === 80, "100 playable must contain all 80 NAPE questions");
+ok(new Set(play.filter((u) => u.startsWith("nape26-q"))).size === 80, "NAPE questions duplicated in the playable set");
 const visual = play.filter((u) => u.startsWith("seed-")).map((u) => Number(u.slice(5))).sort((a, b) => a - b);
-ok(JSON.stringify(visual) === JSON.stringify([...VISUAL_IDS].sort((a, b) => a - b)), "playable visual puzzles are not the approved 20");
-ok(visual.length === 20, `${visual.length} visual puzzles active, expected 20`);
+const expectVisual = VISUAL_IDS.filter((id) => !SWAPPED.includes(id)).sort((a, b) => a - b);
+ok(JSON.stringify(visual) === JSON.stringify(expectVisual), "playable original visual puzzles are not the approved 20 minus the 5 swapped zoom puzzles");
+ok(visual.length === 15, `${visual.length} original visual puzzles active, expected 15`);
+ok(ZOOM_UIDS.length === 5 && ZOOM_UIDS.every((u) => play.includes(u)), "all 5 NAPE equipment zoom records must be in the 100 playable boxes");
+ok(play.filter((u) => u.startsWith("nape26-zoom-")).length === 5, "exactly 5 NAPE zoom records must be playable");
 const hidden = nape.slice(100);
-ok(hidden.length === 40 && hidden.every((u) => u.startsWith("seed-") && !visual.includes(Number(u.slice(5)))), "hidden set must be the other 40 originals");
+const otherOriginals = originalIds.filter((id) => !VISUAL_IDS.includes(id)).map((id) => `seed-${id}`);
+ok(hidden.length === 45 && JSON.stringify(hidden) === JSON.stringify([...otherOriginals, ...SWAPPED.map((id) => `seed-${id}`)]), "hidden set must be the other 40 originals plus the 5 swapped-out zoom originals");
 ok(JSON.stringify(order["original-60"]) === JSON.stringify(originalIds.map((i) => `seed-${i}`)), "original-60 order must equal data/puzzles.ts order");
+ok(SWAPPED.every((id) => order["original-60"].includes(`seed-${id}`)), "the five original zoom puzzles must remain in Original Crack the Box");
+ok(order["original-60"].length === 60 && !order["original-60"].some((u) => u.startsWith("nape26-")), "original-60 must be exactly the 60 originals");
+
+/* 3b. The five NAPE equipment zoom records ----------------------------------- */
+const zoomTs = read("data/nape2026.zoom.ts");
+const zoomRecords = [...zoomTs.matchAll(/zoom\(\s*(\d+),\s*"([\w-]+)",\s*"([^"]+)",\s*"([^"]+)",\s*"([^"]+)",\s*"([^"]+)",?\s*\)/g)]
+  .map((m) => ({ id: Number(m[1]), slug: m[2], answer: m[3], hint: m[4], insight: m[5], picture: m[6] }));
+ok(zoomRecords.length === 5, `found ${zoomRecords.length} NAPE zoom records, expected 5`);
+ok(JSON.stringify(zoomRecords.map((r) => `nape26-zoom-${r.slug}`)) === JSON.stringify(ZOOM_UIDS), "NAPE zoom record uids must match NAPE_ZOOM_SWAP");
+ok(new Set(zoomRecords.map((r) => r.id)).size === 5 && zoomRecords.every((r) => r.id > 180 && !originalIds.includes(r.id)), "NAPE zoom record ids must be new and unique");
+ok(JSON.stringify(zoomRecords.map((r) => r.answer)) === JSON.stringify(["A BLOWOUT PREVENTER (BOP)", "A WELLHEAD CHRISTMAS TREE", "A DRILL BIT", "A PIPELINE PIG", "A PRESSURE GAUGE"]), "NAPE zoom answers");
+for (const r of zoomRecords) {
+  const parts = r.hint.split(" · ");
+  ok(parts.length === 2 && parts.every((h) => h.trim().length > 8), `${r.slug}: hint must hold exactly two hints separated by " · "`);
+  ok(r.hint.length <= 100, `${r.slug}: hint is ${r.hint.length} characters — keep it to one line on the projector`);
+  const phrase = r.answer.replace(/^A /, "").replace(/ \(BOP\)$/, "").replace(/^WELLHEAD /, "");
+  ok(!r.hint.toLowerCase().includes(phrase.toLowerCase()) && !/\bBOP\b/.test(r.hint), `${r.slug}: hint gives away the answer ("${phrase}")`);
+  ok(r.insight.length > 20 && r.insight.length <= 110, `${r.slug}: insight is ${r.insight.length} characters — keep it to two lines on the projector`);
+  const file = join(ROOT, "public", "media", "puzzles", "nape", "zoom", r.picture);
+  ok(existsSync(file), `${r.slug}: picture missing (${r.picture})`);
+  if (existsSync(file)) {
+    const svg = readFileSync(file, "utf8");
+    ok(svg.includes('viewBox="0 0 600 600"'), `${r.slug}: picture must be 600×600 like the original zoom pictures`);
+    ok(!/https?:\/\/(?!www\.w3\.org)/.test(svg), `${r.slug}: picture references an external URL`);
+    const words = [...svg.matchAll(/<text[^>]*>([^<]*)<\/text>/g)].map((t) => t[1]).filter((t) => /[A-Za-z]/.test(t));
+    ok(words.length === 0, `${r.slug}: picture carries words that could give the answer away (${words.join(", ")})`);
+  }
+}
+// The originals' zoom records are byte-identical (compared with the backup in section 4).
 
 /* 4. The original 60 are untouched ------------------------------------------ */
 ok(read("data/puzzles.ts") === read("data/backups/puzzles-original-60.ts"), "data/puzzles.ts differs from data/backups/puzzles-original-60.ts");
@@ -122,5 +158,5 @@ if (errors.length) {
 console.log("✓ NAPE integrity OK");
 console.log(`  80 questions (69 multiple choice, 11 true/false) · 4 sets of 20 · answers and fun facts match the document`);
 console.log(`  5 approved revisions (Q${REVISED.join(", Q")}) · Q59 original, verification cleared`);
-console.log(`  100 playable boxes = 80 NAPE + 20 approved visual puzzles · 40 hidden · original-60 order preserved`);
+console.log(`  100 playable boxes = 80 NAPE + 15 approved visual puzzles + 5 NAPE equipment zoom · 45 hidden · original-60 order preserved (5 original zoom puzzles stay in Original)`);
 console.log(`  pictures: ${withPic} questions (${zoom} staged-zoom), ${Math.round(bytes / 1024)} KB total, all local`);

@@ -4,6 +4,7 @@ import { useMemo, useSyncExternalStore } from "react";
 
 import { PUZZLES } from "@/data/puzzles";
 import { NAPE_PUZZLES } from "@/data/nape2026";
+import { NAPE_ZOOM_PUZZLES } from "@/data/nape2026.zoom";
 import {
   DEFAULT_EVENT,
   EVENTS,
@@ -109,8 +110,8 @@ function normalize(p: Puzzle, index: number): ManagedPuzzle {
   };
 }
 
-/** Every bundled question (60 original + 80 NAPE), normalised and tagged. Never mutated. */
-const SEED_LIST: ManagedPuzzle[] = [...PUZZLES, ...NAPE_PUZZLES].map((p, i) => {
+/** Every bundled question (60 original + 80 NAPE + 5 NAPE zoom), normalised and tagged. Never mutated. */
+const SEED_LIST: ManagedPuzzle[] = [...PUZZLES, ...NAPE_PUZZLES, ...NAPE_ZOOM_PUZZLES].map((p, i) => {
   const n = normalize(p, i);
   return { ...n, events: n.events ?? membershipOf(n.uid) };
 });

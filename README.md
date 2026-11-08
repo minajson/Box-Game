@@ -308,9 +308,9 @@ python3 -m http.server -d out 8080
 
 ## NAPE 2026 event mode
 
-The bank holds 140 questions: the original 60 plus the 80 NAPE 2026 Oil & Gas questions. An **event** is an ordered list of which questions are Active — switching event never creates, copies or deletes a question.
+The bank holds 145 questions: the original 60, the 80 NAPE 2026 Oil & Gas questions and 5 NAPE-only oil-and-gas equipment Zoom In questions (`data/nape2026.zoom.ts`). An **event** is an ordered list of which questions are Active — switching event never creates, copies or deletes a question.
 
-- **NAPE 2026** (default): 80 Oil & Gas + 20 chosen visual puzzles = exactly 100 boxes; the other 40 originals are Hidden.
+- **NAPE 2026** (default): 80 Oil & Gas + 15 chosen original visual puzzles + 5 equipment Zoom In puzzles (BOP, Christmas tree, drill bit, pipeline pig, pressure gauge — they replace the light bulb, compass, key, jigsaw piece and seedling box for box) = exactly 100 boxes; the other 45 originals, including those five everyday-object Zoom In puzzles, are Hidden.
 - **Original Crack the Box**: the original 60 in their original order.
 
 Manage it at `/admin/questions`: switch event, Show All / Active Only / Hidden Only, filter by category or event, Activate / Hide (one or in bulk), and download the NAPE review report. Hiding never deletes anything.

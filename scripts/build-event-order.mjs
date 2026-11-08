@@ -4,7 +4,9 @@
  * NAPE 2026: 80 Oil & Gas questions are shuffled (seeded, so the result is the
  * same every build) with no two neighbouring boxes sharing a topic, then the 20
  * approved visual puzzles are dropped in one per block of five boxes, so the
- * wall is evenly mixed. The 40 other original questions follow, hidden.
+ * wall is evenly mixed (five of the everyday-object zoom puzzles are then swapped
+ * for NAPE equipment records, see NAPE_ZOOM_SWAP). The 40 other originals and the
+ * five swapped-out zoom originals follow, hidden.
  *
  * Original Crack the Box: the bundled order, untouched.
  */
@@ -14,7 +16,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-import { VISUAL_IDS } from "./nape-config.mjs";
+import { VISUAL_IDS, NAPE_ZOOM_SWAP } from "./nape-config.mjs";
 
 function rng(seed) {
   let a = seed >>> 0;
@@ -92,16 +94,30 @@ for (let pos = 0; pos < 100; pos++) {
   play.push(slots.has(pos) ? `seed-${slots.get(pos)}` : `nape26-q${String(nape[k++]).padStart(2, "0")}`);
 }
 if (k !== 80) throw new Error("NAPE placement mismatch");
-const hidden = original.filter((o) => !VISUAL_IDS.includes(o.id)).map((o) => `seed-${o.id}`);
+// 4. Swap the five everyday-object zoom puzzles for the NAPE equipment records,
+// box for box. The originals move to the hidden tail (still in the bank, and
+// still Active in Original Crack the Box).
+const swapped = Object.keys(NAPE_ZOOM_SWAP).map(Number);
+for (const id of swapped) {
+  if (typeOf.get(id) !== "zoom") throw new Error(`Swap source ${id} is not an original zoom puzzle`);
+  const at = play.indexOf(`seed-${id}`);
+  if (at < 0) throw new Error(`seed-${id} is not in the NAPE playable set`);
+  play[at] = NAPE_ZOOM_SWAP[id];
+}
+const hidden = [
+  ...original.filter((o) => !VISUAL_IDS.includes(o.id)).map((o) => `seed-${o.id}`),
+  ...swapped.map((id) => `seed-${id}`),
+];
 
 const order = {
   "nape-2026": [...play, ...hidden],
   "original-60": original.map((o) => `seed-${o.id}`),
 };
-if (new Set(order["nape-2026"]).size !== 140) throw new Error("NAPE order has duplicates");
+if (new Set(order["nape-2026"]).size !== 145) throw new Error("NAPE order has duplicates");
 writeFileSync(join(ROOT, "data", "events.order.json"), JSON.stringify(order, null, 2) + "\n");
 
 // Report
-const adj = play.filter((u, i) => i && u.startsWith("nape") && play[i - 1].startsWith("nape") && topic(Number(u.slice(-2))) === topic(Number(play[i - 1].slice(-2)))).length;
+const isQ = (u) => u.startsWith("nape26-q");
+const adj = play.filter((u, i) => i && isQ(u) && isQ(play[i - 1]) && topic(Number(u.slice(-2))) === topic(Number(play[i - 1].slice(-2)))).length;
 console.log(`order: 100 playable (80 NAPE + 20 visual), 40 hidden; same-topic neighbours: ${adj}`);
-console.log(play.map((u, i) => `${i + 1}:${u.replace("nape26-q", "N").replace("seed-", "V")}`).join(" "));
+console.log(play.map((u, i) => `${i + 1}:${u.replace("nape26-q", "N").replace("nape26-zoom-", "Z-").replace("seed-", "V")}`).join(" "));

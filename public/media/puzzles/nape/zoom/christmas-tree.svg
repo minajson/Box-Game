@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="A stack of valves with side flowlines on top of a producing wellhead">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b97a6"/><stop offset="0.35" stop-color="#eef2f6"/>
+      <stop offset="0.62" stop-color="#b9c3cf"/><stop offset="1" stop-color="#6b7686"/>
+    </linearGradient>
+    <linearGradient id="steelV" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#707c8c"/><stop offset="0.3" stop-color="#e9eef3"/>
+      <stop offset="0.65" stop-color="#b3bdc9"/><stop offset="1" stop-color="#5f6b7b"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8685b"/><stop offset="0.5" stop-color="#c0392b"/><stop offset="1" stop-color="#8a2318"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a82bf"/><stop offset="0.5" stop-color="#25598f"/><stop offset="1" stop-color="#173b60"/>
+    </linearGradient>
+    <linearGradient id="blueV" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#173b60"/><stop offset="0.35" stop-color="#4a82bf"/><stop offset="1" stop-color="#1b4673"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b9631a"/><stop offset="0.4" stop-color="#f3a04b"/><stop offset="1" stop-color="#a8561a"/>
+    </linearGradient>
+    <radialGradient id="metal" cx="0.38" cy="0.32" r="0.8">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#c3ccd7"/><stop offset="1" stop-color="#6e7a8a"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="600" fill="#f4f7fa"/>
+
+  <ellipse cx="300" cy="548" rx="230" ry="22" fill="#12233b" opacity="0.09"/>
+  <!-- wellhead / tubing head -->
+  <rect x="232" y="506" width="136" height="18" rx="3" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/><circle cx="248" cy="515" r="3.6" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="268.8" cy="515" r="3.6" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="289.6" cy="515" r="3.6" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="310.4" cy="515" r="3.6" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="331.2" cy="515" r="3.6" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="352" cy="515" r="3.6" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/>
+  <rect x="252" y="478" width="96" height="30" rx="4" fill="url(#steel)" stroke="#1c2733" stroke-width="3.5"/>
+  <rect x="244" y="466" width="112" height="12" rx="3" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/><circle cx="258" cy="472" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="274.8" cy="472" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="291.6" cy="472" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="308.4" cy="472" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="325.2" cy="472" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="342" cy="472" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/>
+  <!-- lower master valve + handwheel on its bonnet -->
+  <rect x="264" y="398" width="72" height="70" rx="6" fill="url(#blueV)" stroke="#1c2733" stroke-width="3.5"/>
+  <rect x="214" y="420" width="52" height="26" rx="4" fill="url(#steel)" stroke="#1c2733" stroke-width="3.5"/>
+    <g>
+      <circle cx="184" cy="433" r="30" fill="none" stroke="#1c2733" stroke-width="9"/>
+      <circle cx="184" cy="433" r="30" fill="none" stroke="#c0392b" stroke-width="6"/>
+      <line x1="154" y1="433" x2="214" y2="433" stroke="#1c2733" stroke-width="5"/><line x1="169" y1="407.01923788646684" x2="199" y2="458.98076211353316" stroke="#1c2733" stroke-width="5"/><line x1="199" y1="407.01923788646684" x2="169" y2="458.98076211353316" stroke="#1c2733" stroke-width="5"/>
+      <circle cx="184" cy="433" r="6" fill="url(#metal)" stroke="#1c2733" stroke-width="2.5"/>
+    </g>
+  <rect x="244" y="386" width="112" height="12" rx="3" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/><circle cx="258" cy="392" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="274.8" cy="392" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="291.6" cy="392" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="308.4" cy="392" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="325.2" cy="392" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="342" cy="392" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/>
+  <!-- upper master valve -->
+  <rect x="264" y="330" width="72" height="58" rx="6" fill="url(#blue)" stroke="#1c2733" stroke-width="3.5"/>
+  <rect x="334" y="346" width="52" height="26" rx="4" fill="url(#steel)" stroke="#1c2733" stroke-width="3.5"/>
+    <g>
+      <circle cx="416" cy="359" r="30" fill="none" stroke="#1c2733" stroke-width="9"/>
+      <circle cx="416" cy="359" r="30" fill="none" stroke="#c0392b" stroke-width="6"/>
+      <line x1="386" y1="359" x2="446" y2="359" stroke="#1c2733" stroke-width="5"/><line x1="401" y1="333.01923788646684" x2="431" y2="384.98076211353316" stroke="#1c2733" stroke-width="5"/><line x1="431" y1="333.01923788646684" x2="401" y2="384.98076211353316" stroke="#1c2733" stroke-width="5"/>
+      <circle cx="416" cy="359" r="6" fill="url(#metal)" stroke="#1c2733" stroke-width="2.5"/>
+    </g>
+  <rect x="244" y="318" width="112" height="12" rx="3" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/><circle cx="258" cy="324" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="274.8" cy="324" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="291.6" cy="324" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="308.4" cy="324" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="325.2" cy="324" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="342" cy="324" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/>
+  <!-- flow cross with wing valves and flowlines -->
+  <rect x="264" y="262" width="72" height="58" rx="6" fill="url(#blueV)" stroke="#1c2733" stroke-width="3.5"/>
+  <rect x="188" y="276" width="76" height="40" rx="5" fill="url(#blue)" stroke="#1c2733" stroke-width="3.5"/>
+    <rect x="176" y="270" width="12" height="52" rx="3" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/><rect x="336" y="276" width="76" height="40" rx="5" fill="url(#blue)" stroke="#1c2733" stroke-width="3.5"/>
+    <rect x="412" y="270" width="12" height="52" rx="3" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/>
+  <rect x="100" y="284" width="78" height="24" rx="4" fill="url(#steel)" stroke="#1c2733" stroke-width="3.5"/><rect x="422" y="284" width="78" height="24" rx="4" fill="url(#steel)" stroke="#1c2733" stroke-width="3.5"/>
+  <line x1="226" y1="276" x2="226" y2="236" stroke="#1c2733" stroke-width="7"/>
+    <g>
+      <circle cx="226" cy="214" r="26" fill="none" stroke="#1c2733" stroke-width="8.2"/>
+      <circle cx="226" cy="214" r="26" fill="none" stroke="#c0392b" stroke-width="5.2"/>
+      <line x1="200" y1="214" x2="252" y2="214" stroke="#1c2733" stroke-width="5"/><line x1="213" y1="191.4833395016046" x2="239" y2="236.5166604983954" stroke="#1c2733" stroke-width="5"/><line x1="239" y1="191.4833395016046" x2="213" y2="236.5166604983954" stroke="#1c2733" stroke-width="5"/>
+      <circle cx="226" cy="214" r="5.2" fill="url(#metal)" stroke="#1c2733" stroke-width="2.5"/>
+    </g>
+  <line x1="374" y1="276" x2="374" y2="236" stroke="#1c2733" stroke-width="7"/>
+    <g>
+      <circle cx="374" cy="214" r="26" fill="none" stroke="#1c2733" stroke-width="8.2"/>
+      <circle cx="374" cy="214" r="26" fill="none" stroke="#c0392b" stroke-width="5.2"/>
+      <line x1="348" y1="214" x2="400" y2="214" stroke="#1c2733" stroke-width="5"/><line x1="361" y1="191.4833395016046" x2="387" y2="236.5166604983954" stroke="#1c2733" stroke-width="5"/><line x1="387" y1="191.4833395016046" x2="361" y2="236.5166604983954" stroke="#1c2733" stroke-width="5"/>
+      <circle cx="374" cy="214" r="5.2" fill="url(#metal)" stroke="#1c2733" stroke-width="2.5"/>
+    </g>
+  <rect x="244" y="250" width="112" height="12" rx="3" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/><circle cx="258" cy="256" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="274.8" cy="256" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="291.6" cy="256" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="308.4" cy="256" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="325.2" cy="256" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/><circle cx="342" cy="256" r="3.4" fill="url(#metal)" stroke="#1c2733" stroke-width="1.6"/>
+  <!-- swab valve and tree cap -->
+  <rect x="266" y="186" width="68" height="66" rx="6" fill="url(#blueV)" stroke="#1c2733" stroke-width="3.5"/>
+  <rect x="279" y="156" width="42" height="32" rx="4" fill="url(#steelV)" stroke="#1c2733" stroke-width="3.5"/>
+  <line x1="300" y1="156" x2="300" y2="124" stroke="#1c2733" stroke-width="7"/>
+  
+    <g>
+      <circle cx="300" cy="98" r="32" fill="none" stroke="#1c2733" stroke-width="9.4"/>
+      <circle cx="300" cy="98" r="32" fill="none" stroke="#c0392b" stroke-width="6.4"/>
+      <line x1="268" y1="98" x2="332" y2="98" stroke="#1c2733" stroke-width="5"/><line x1="284" y1="70.28718707889797" x2="316" y2="125.71281292110203" stroke="#1c2733" stroke-width="5"/><line x1="316" y1="70.28718707889796" x2="284" y2="125.71281292110204" stroke="#1c2733" stroke-width="5"/>
+      <circle cx="300" cy="98" r="6.4" fill="url(#metal)" stroke="#1c2733" stroke-width="2.5"/>
+    </g>
+</svg>
