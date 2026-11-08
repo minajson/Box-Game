@@ -321,12 +321,24 @@ Source of the Oil & Gas questions: `data/source/nape-2026-quiz.txt` (verbatim). 
 
 ### Running at the event (no internet needed)
 
+**Easiest — the offline event packages.** Two self-contained folders (and zips), one for Windows and one for Mac, each with a double-click launcher and a **bundled portable Node.js** (official build from nodejs.org, SHA-256 verified). The event laptop needs nothing installed — no Node.js, npm, git, VS Code or Terminal — and no internet.
+
 ```
-npm run build            # once, with internet
-npm run serve:offline    # at the venue → http://localhost:3000 (this laptop only)
+npm run package:offline     # builds the game, then writes into offline-package/ (git-ignored):
+                            #   Crack-the-Box-NAPE-2026-Windows/  + .zip   (~100 MB zip)
+                            #   Crack-the-Box-NAPE-2026-Mac/      + .zip   (~140 MB zip; Apple-chip and Intel)
 ```
 
-The game loads pictures, mascot videos and music from its server as they are needed, so serve it from the event laptop itself rather than a remote host. `serve:offline` listens on 127.0.0.1 only because `/admin/questions` has no PIN gate (`ADMIN_AUTH_ENABLED = false` in `lib/adminAuth.ts`). Do a sound check on the venue system first — browsers only start audio after the first click.
+The first run downloads the Node.js runtimes (needs internet on the packaging machine once; they are checked against checksums pinned in `scripts/package-offline.mjs` and cached in `offline-package/.runtime-cache/`). Copy the right zip to a USB stick, then to the event laptop, extract it and double-click `START-GAME-Windows.bat` or `START-GAME-Mac.command`. Each package's `READ-ME-FIRST.txt` walks through the USB copy, the laptop setup, the event-day checklist, troubleshooting and a 5-minute check to do on the real laptop. At every start the server checks all game files against `server/files.json`, so a half-copied folder is caught at the desk; `VERSION.txt` records the commit and Node.js version.
+
+**From the project folder** (developer machine):
+
+```
+npm run build            # once, with internet
+npm run serve:offline    # → http://localhost:3000 (this laptop only)
+```
+
+The game loads pictures, mascot videos and music from its server as they are needed, so serve it from the event laptop itself rather than a remote host. The server listens on 127.0.0.1 only because `/admin/questions` has no PIN gate (`ADMIN_AUTH_ENABLED = false` in `lib/adminAuth.ts`). Browser progress is stored per address, so always use the same address and port. Do a sound check on the venue system first — browsers only start audio after the first click.
 
 An end-to-end sweep that plays every box lives in `scripts/e2e/readiness.playwright.js`.
 

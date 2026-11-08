@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "serve:offline": "node scripts/serve-offline.mjs",
+    "package:offline": "node scripts/package-offline.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "sfx": "node scripts/generate-sfx.mjs",
